@@ -1,186 +1,246 @@
 {
-  "updated_at": "2026-11-12T13:50:31.589212+00:00",
-  "generation": "free-headline",
+  "updated_at": "2026-11-12T14:08:11.187721+00:00",
+  "generation": "rss-summary-with-headline-fallback",
   "items": [
+    {
+      "title": "食料品の消費税減税見据え うどんチェーンが値下げ発表",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261112de75068",
+      "source": "NHK 経済",
+      "published": "2026-11-12T13:49:00+00:00",
+      "summary": "政府が来年4月から始める方針の食料品の消費税減税をめぐり、うどんチェーンの丸亀製麺は、外食の税率が据え置かれることを見越して、今月下旬から一部の商品を値下げすると発表しました。",
+      "detail_level": "rss-summary"
+    },
+    {
+      "title": "自民 石破前首相 定数31削減法案“考え方としてどうか”",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261112de75073",
+      "source": "NHK 主要",
+      "published": "2026-11-12T13:40:00+00:00",
+      "summary": "自民党の石破前総理大臣は、党が日本維新の会、国民民主党とともに国会に提出した衆議院議員の定数を比例代表で31議席削減するなどとした法案について「少数意見を尊重するために入れた比例代表を削るというのは考…",
+      "detail_level": "rss-summary"
+    },
     {
       "title": "アメリカ ウィトコフ特使らとプーチン大統領の会談始まる",
       "url": "https://news.web.nhk/newsweb/na/nd-20261112de75057",
       "source": "NHK 主要",
-      "published": "2026-11-12T13:14:28+00:00"
-    },
-    {
-      "title": "遅くとも２０２０年から保険金不正請求か、タマホームが全店調査…「損保各社と連携」 - 読売新聞",
-      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTFBjRUlDUkowRzdrYmhrNmZqZzIzRExTRGhxeWg3bHdtSXF1MmR2aExzR3BRM0QzSGI2VnNkMlg2QnptaWtNSmFFLTBJVzdGS2g3VkhFTGVYTUZSc2Q4d1Z2eS1pdng?oc=5",
-      "source": "Google ニュース・ビジネス",
-      "published": "2026-11-12T13:07:56+00:00"
+      "published": "2026-11-12T13:14:28+00:00",
+      "summary": "ロシアとウクライナの和平をめぐるアメリカも交えた3か国の高官協議に参加したアメリカのウィトコフ特使、トランプ大統領の娘の夫クシュナー氏と、プーチン大統領の会談が12日モスクワで始まりました。\n今後3か…",
+      "detail_level": "rss-summary"
     },
     {
       "title": "【ソフト＆ハード週間販売数】『ゼルダの伝説 時のオカリナ』リメイク版が首位スタート。Switch2版『ステラーブレイド』もランクイン【11/2～11/8】 - ファミ通",
       "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE1jVjN4emhGS3VoQ3dWUmVHZ2Z0QjVsZ2N0dmR2LWxOMzRjMHoxSEpLXzNFUHNSTFNUVEhOZHF3aFpFbVM3Z3JDeTRoMTU0SWZwY24zVDhxbw?oc=5",
       "source": "Google ニュース",
-      "published": "2026-11-12T13:00:00+00:00"
+      "published": "2026-11-12T13:00:00+00:00",
+      "summary": "【ソフト＆ハード週間販売数】『ゼルダの伝説 時のオカリナ』リメイク版が首位スタート。Switch2版『ステラーブレイド』もランクイン【11/2～11/8】    ファミ通 Switch 2『ゼルダの伝説 時のオカリナ』 発売後4日間で520万本突破 1998年発売ソフトのリメイク作（日テレNEWS NNN）    Yahoo!ニュース 任天堂、株価が反発 「ゼルダ」新作発売4日間で520万本    日本経済新聞 ｢今のゲームに比べれば単調｣なのに世界が大絶賛…1998年発売｢ゼルダの伝説 時のオカリナ｣のリメイクが\"歴史的な高評価\"を得た本当の理由    東洋経済オンライン 「時オカ」のこどもリンクがamiiboに！ ゲームと連動で特別なお面も    ASCII.jp",
+      "detail_level": "rss-summary"
     },
     {
       "title": "エヌビディアCEO“解任準備”報道 解任なら業界全体に影響も",
       "url": "https://news.web.nhk/newsweb/na/nd-20261112de74529",
       "source": "NHK 主要",
-      "published": "2026-11-12T12:55:19+00:00"
+      "published": "2026-11-12T12:55:19+00:00",
+      "summary": "アメリカの有力紙「ウォール・ストリート・ジャーナル」は11日、アメリカの半導体大手「エヌビディア」がジェンスン・フアンCEOを解任する準備を進めていると報じました。",
+      "detail_level": "rss-summary"
     },
     {
       "title": "米ヘグセス国防長官ら「無名戦士の墓」で笑い声 衛兵が叱責",
       "url": "https://news.web.nhk/newsweb/na/nd-20261112de75054",
       "source": "NHK 主要",
-      "published": "2026-11-12T12:15:00+00:00"
+      "published": "2026-11-12T12:15:00+00:00",
+      "summary": "アメリカのヘグセス国防長官が、戦没者が埋葬されている首都ワシントン近郊のアーリントン国立墓地を妻や側近と訪問した際、笑い声が上がるなどして衛兵から大声で叱責される一幕がありました。\n\n退役軍人などから…",
+      "detail_level": "rss-summary"
     },
     {
       "title": "ブラジル代表、ヴィニシウス・エステヴァン・ハイラン・ハフィーニャ共存の攻撃的布陣で日本戦へ！ ブルーノ・ギマランイスも全体練習に合流（サッカーキング） - Yahoo!ニュース",
       "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFBtR1dQNFJzbTlZSXlWMVIyNlFWTEEwbU5kZXRlaEhEbVVCUFR1Wkx4VzhKbnpRRlNFUW45S29yZHQ3WDJiS25QeWRUMVdOUnFQMUU5QjRTak0yT0xmaDBObzZsYzlsMjdqNk55X3lVbzUteEU5SUhIQml5eXlublk?oc=5",
       "source": "Google ニュース",
-      "published": "2026-11-12T11:50:07+00:00"
+      "published": "2026-11-12T11:50:07+00:00",
+      "summary": "ブラジル代表、ヴィニシウス・エステヴァン・ハイラン・ハフィーニャ共存の攻撃的布陣で日本戦へ！ ブルーノ・ギマランイスも全体練習に合流（サッカーキング）    Yahoo!ニュース 画像・写真：サッカー日本代表、１４日にブラジル戦：時事ドットコム    時事ドットコム 「失点しないことが重要」 ブラジルＤＦガブリエル    沖縄タイムス社 ブラジル代表の日本戦スタメンを母国メディアが予想！ ガブリエウ、ラフィーニャ、ヴィニシウスら“８人は確定”と報道。「最大の懸念」に挙げたポジションは？    au Webポータル 記者会見するサッカーのブラジル代表エンドリッキ＝10日、シンガポール（共同） - 「日本の実力は分かっている」 ブラジルFWエンドリッキ - 写真・画像(1/1)    西日本新聞me",
+      "detail_level": "rss-summary"
     },
     {
       "title": "首都圏で食品スーパーを展開の会社 約6.4万件の個人情報流出か",
       "url": "https://news.web.nhk/newsweb/na/nd-20261112de75046",
       "source": "NHK 経済",
-      "published": "2026-11-12T11:44:55+00:00"
+      "published": "2026-11-12T11:44:55+00:00",
+      "summary": "首都圏で食品スーパーを展開する「ユナイテッド・スーパーマーケット・ホールディングス」は、不正アクセスを受け、名前とメールアドレス、およそ6万4000件の個人情報が流出したおそれがあると発表しました。\n…",
+      "detail_level": "rss-summary"
     },
     {
       "title": "セキュリティーサービス企業に不正アクセス 顧客情報漏えいか",
       "url": "https://news.web.nhk/newsweb/na/nd-20261112de75041",
       "source": "NHK 経済",
-      "published": "2026-11-12T11:39:02+00:00"
+      "published": "2026-11-12T11:39:02+00:00",
+      "summary": "企業向けのセキュリティーサービスを扱っている「サイバーセキュリティクラウド」は、不正アクセスを受けて顧客の情報が漏えいしたおそれがあると発表しました。",
+      "detail_level": "rss-summary"
     },
     {
       "title": "スターシールドに障害、速度制限で迎撃に支障＝ゼレンスキー氏 - Reuters",
       "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPdlNId19veVpOT2FieFlnRFBTeWZvN0JHXzVYSUVCYjdQLS1qLVVWd0hwcHZVT1M5QnBIeERES3U5d2RYZkszTkpLV3hJSEtnMlJIU1p0bnJQOWRoVUNjWVF5Rl9TNGFSZktBcHlPMllwaGdpMG1uS3Jtc2lHZzM1aWxTVENEQQ?oc=5",
       "source": "Google ニュース",
-      "published": "2026-11-12T11:33:44+00:00"
+      "published": "2026-11-12T11:33:44+00:00",
+      "summary": "スターシールドに障害、速度制限で迎撃に支障＝ゼレンスキー氏    Reuters Google ニュースで見出しと意見をもっと見る",
+      "detail_level": "rss-summary"
     },
     {
       "title": "不二家 メルマガ会員のアドレス 最大で約15万件流出のおそれ",
       "url": "https://news.web.nhk/newsweb/na/nd-20261112de75040",
       "source": "NHK 主要",
-      "published": "2026-11-12T11:14:32+00:00"
+      "published": "2026-11-12T11:14:32+00:00",
+      "summary": "菓子メーカーの不二家は、メール配信業務を委託していた企業が不正アクセスを受けた影響で、会社の通販サイトのメールマガジンに登録されていたメールアドレスが最大でおよそ15万件流出したおそれがあると発表しま…",
+      "detail_level": "rss-summary"
     },
     {
       "title": "令和の虎で「ナンパで少子化解決」豪語、ナンパ講師系YouTuberに厳しい意見 (2026年11月12日掲載) - ライブドアニュース",
       "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9vMFZjZnNYQUJQX1dEOU9uSl8wVmRnU05oQXItMlFwZEJORWx3YWJlMllZb0xGRnVkcWNqWHBobjRiUEZUSlRaQlUxYnZJamlYVHdRYjNFa3BlZTBGTWc?oc=5",
       "source": "Google ニュース",
-      "published": "2026-11-12T11:13:51+00:00"
+      "published": "2026-11-12T11:13:51+00:00",
+      "summary": "令和の虎で「ナンパで少子化解決」豪語、ナンパ講師系YouTuberに厳しい意見 (2026年11月12日掲載)    ライブドアニュース",
+      "detail_level": "rss-summary"
     },
     {
       "title": "イタリア公立校８割強の６３００校に爆破予告…メローニ首相ら、国家的組織による「ハイブリッド攻撃」の見方 - 読売新聞",
       "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBxNzlsWjhXSTItWEJyMC1XVWstQnN3UmVjeGtWMTJsblVIdUlhWE9PVHdESzJFVWRZZHpvQVhnQjUwVVN3M0E0cktCZS1NVTNyVkU0TXVobG5DWW1VU3lSYW13?oc=5",
       "source": "Google ニュース",
-      "published": "2026-11-12T11:07:00+00:00"
+      "published": "2026-11-12T11:07:00+00:00",
+      "summary": "イタリア公立校８割強の６３００校に爆破予告…メローニ首相ら、国家的組織による「ハイブリッド攻撃」の見方    読売新聞 イタリアで約6300の学校に爆破予告 生徒ら一時避難など混乱広がる ヨーロッパで予告相次ぐ    日テレNEWS NNN 伊、６３００校に爆破予告メール 千校超で避難、英などにも    沖縄タイムス社 イタリアで約6300校に爆破予告 休み時間中にベル…ローマの小学校に通う児童は（日テレNEWS NNN）    Yahoo!ニュース 画像・写真：イタリアと英国、学校に爆破予告相次ぐ：時事ドットコム    時事ドットコム",
+      "detail_level": "rss-summary"
     },
     {
       "title": "養鶏場で今シーズン初 鳥インフルエンザ感染確認 卵価格影響は",
       "url": "https://news.web.nhk/newsweb/na/nd-20261112de74535",
       "source": "NHK 主要",
-      "published": "2026-11-12T10:41:48+00:00"
+      "published": "2026-11-12T10:41:48+00:00",
+      "summary": "11日、京都府亀岡市の養鶏場でニワトリ14羽が死んでいるのが見つかったことをうけて、府が詳しい検査を進めた結果、高病原性の「H5型」の鳥インフルエンザウイルスが検出されたことがわかりました。\n感染が確…",
+      "detail_level": "rss-summary"
     },
     {
-      "title": "侍ジャパン 正木智也が衝撃の２打席連発！東京ドームがどよめく １３２メートル弾に続き１２９・５メートル弾（デイリースポーツ） - Yahoo!ニュース",
+      "title": "侍ジャパン「最高の出だしです」正木智也が衝撃の２打席連発！東京ドームがどよめく １３２メートル弾に続き１２９・５メートル弾「切れなくてよかった」（デイリースポーツ） - Yahoo!ニュース",
       "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9saVhOUkp3ME1oMGg5TGNNNmFIS3JpSUNQZnljbmV6aElSTnJ6NnJ1TmFUaVJibTRyM2Q2c2x1V3k1VHAyMGhRTmhlc3F5czFUQVo2ZWtQQ0dJYjd4NFBSTlU1ZkZQVGs5NElHS3RMenlhbmFPRWtYQlJTYUJOcjA?oc=5",
       "source": "Google ニュース",
-      "published": "2026-11-12T10:40:05+00:00"
+      "published": "2026-11-12T10:40:05+00:00",
+      "summary": "侍ジャパン「最高の出だしです」正木智也が衝撃の２打席連発！東京ドームがどよめく １３２メートル弾に続き１２９・５メートル弾「切れなくてよかった」（デイリースポーツ）    Yahoo!ニュース 【侍ジャパン】正木智也、3月WBCの大谷翔平以来の先頭打者弾含む2打席連発＆3打点！合宿不調も映像で「手打ち」修正し大暴れ（中日スポーツ）    Yahoo!ニュース 日本、台湾に５―０で快勝 アジアプロ野球が開幕 | 全国のニュース    福井新聞社 正木、衝撃の2打席連続アーチ「いいスタートダッシュ切れた」 アジアプロ野球CS    産経ニュース 【アジアCS】最後を締めた吉田聖弥 先発金丸夢斗の好投に「自分も波に乗れた」    スポーツブル",
+      "detail_level": "rss-summary"
     },
     {
       "title": "森七菜「タクシーで何度も名前を聞かれ」「言っちゃいました。ごめんなさい」偽名で通す「蒔田彩珠です」 - デイリースポーツ",
       "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1LckE4bTBERFcwMU1OZ2VlSjJQRG5QZ2JRdkhXMXMwXzMyblp1THpVRFdtSF9PSW5iMW1IbjhzcEJHaWFlZWNKbGNGRHBTR3d6QWZvTGZORjZ4c0U2akJ4VTFHblB6c29BaGc?oc=5",
       "source": "Google ニュース",
-      "published": "2026-11-12T10:34:46+00:00"
+      "published": "2026-11-12T10:34:46+00:00",
+      "summary": "森七菜「タクシーで何度も名前を聞かれ」「言っちゃいました。ごめんなさい」偽名で通す「蒔田彩珠です」    デイリースポーツ 蒔田彩珠です 森七菜がついたうそ    Yahoo!ニュース 森七菜、タクシーでの“嘘”を告白「友達だからいいかなって…」    テレ朝NEWS 山下美月、「腹をくくって」強烈なキャラクター演じる 10センチ以上切ったヘアスタイルは共演者からメロつかれる    オリコンニュース 「地雷グリコ」キャスト陣が登場：時事ドットコム    時事ドットコム",
+      "detail_level": "rss-summary"
     },
     {
       "title": "無印良品 展開の良品計画 顧客情報漏えいで会見 社長陳謝",
       "url": "https://news.web.nhk/newsweb/na/nd-20261112de74562",
       "source": "NHK 主要",
-      "published": "2026-11-12T10:33:28+00:00"
+      "published": "2026-11-12T10:33:28+00:00",
+      "summary": "「無印良品」を展開する良品計画が不正アクセスを受け、顧客の情報が漏えいした問題で、会社は12日、記者会見を開き、清水智社長が陳謝しました。",
+      "detail_level": "rss-summary"
     },
     {
       "title": "本日の【自社株買い】銘柄 (12日大引け後 発表分) - 株探",
       "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5oYzhEOHhPRWtGdVJ6bFBaQWE4dkhtOEhaMmVLMHFIb2hkTzlidE81R0lQcGpUMkRZVkhVYWdOaHdOZ21wb1l5bldvdVY5UDhaNXZVREFmYmxkVUxHdU81dw?oc=5",
       "source": "Google ニュース・ビジネス",
-      "published": "2026-11-12T10:20:00+00:00"
+      "published": "2026-11-12T10:20:00+00:00",
+      "summary": "本日の【自社株買い】銘柄 (12日大引け後 発表分)    株探 明治HDの4〜9月 純利益35%増、400億円自社株買い    日本経済新聞 乳業3社、営業益に差 26年9月中間決算 明治と森永は大幅増、雪印は減    北海道新聞デジタル 明治ＨＤ、発行済み株式の4.4％・400億円上限に自社株買い（ロイター）    Yahoo!ニュース 【決算】明治HD、医薬は39.6％の営業増益 新薬群が伸長、AGも寄与 | 日刊薬業 - 医薬品産業の総合情報サイト    日刊薬業",
+      "detail_level": "rss-summary"
     },
     {
       "title": "在日米軍駐留経費の日本負担、3千億円超へ増額検討 米の圧力背景に - 朝日新聞",
       "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBsdVY2Z0JJLTJkYlllaGFfcTNuLUs4X3NaZHF0ZkEwdkwxMHNTZXQ4VTVFR2tYbnJlZVVSWUpZX0Nsa0dDMlp6M0tlWmI4NjdvRzZUa3hjOVRrVS1pLVBJWFJXcUFlbFU?oc=5",
       "source": "Google ニュース",
-      "published": "2026-11-12T10:00:00+00:00"
+      "published": "2026-11-12T10:00:00+00:00",
+      "summary": "在日米軍駐留経費の日本負担、3千億円超へ増額検討 米の圧力背景に    朝日新聞 在日米軍駐留経費負担の推移 - 思いやり予算5年で3兆円超要求 米軍駐留経費負担、大幅増へ - 写真・画像(2/2)    西日本新聞me アメリカ側が「思いやり予算」大幅増を要求…来年度以降の日本側負担巡る交渉、難航の恐れ（読売新聞オンライン）    Yahoo!ニュース 思いやり予算５年で３兆円超要求    大分合同新聞 思いやり予算５年で３兆円超要求／米軍駐留経費負担、大幅増へ    四国新聞",
+      "detail_level": "rss-summary"
     },
     {
       "title": "第2154回ロト6の当選番号速報 11月12日の抽選結果、キャリーオーバー額 - 福井新聞社",
       "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE5xWjdpUVI1ZXo5WV93UTBkUEMxZlE2LXc4bDNLdWFYT3ZnTldMRXZKNmZnN3NwZF9vZ0ZzU2l3ci1na1RLeURtM3JqTWtydXNWYlVKRjRkeFpXWGZPZGc?oc=5",
       "source": "Google ニュース・ビジネス",
-      "published": "2026-11-12T09:59:00+00:00"
+      "published": "2026-11-12T09:59:00+00:00",
+      "summary": "第2154回ロト6の当選番号速報 11月12日の抽選結果、キャリーオーバー額    福井新聞社 Google ニュースで見出しと意見をもっと見る",
+      "detail_level": "rss-summary"
     },
     {
       "title": "千葉 旭の養鶏場で鳥インフルエンザの疑い ニワトリ30羽死ぬ",
       "url": "https://news.web.nhk/newsweb/na/nd-20261112de74995",
       "source": "NHK 経済",
-      "published": "2026-11-12T09:43:15+00:00"
+      "published": "2026-11-12T09:43:15+00:00",
+      "summary": "12日午前、千葉県旭市の養鶏場で30羽のニワトリが死んでいるのが見つかり、簡易検査の結果、鳥インフルエンザウイルスに感染している疑いがあることが分かりました。県によりますと、詳しい検査の結果は13日朝…",
+      "detail_level": "rss-summary"
     },
     {
       "title": "東京外国為替市場で円安進む 一時1ドル＝160円に迫る水準に",
       "url": "https://news.web.nhk/newsweb/na/nd-20261112de74982",
       "source": "NHK 経済",
-      "published": "2026-11-12T09:19:08+00:00"
+      "published": "2026-11-12T09:19:08+00:00",
+      "summary": "12日の東京外国為替市場は、アメリカの追加利上げの観測を背景に円安ドル高が進んだ海外市場の流れを引き継いで1ドル＝159円台後半での取り引きが続き、一時1ドル＝160円に迫る場面もありました。",
+      "detail_level": "rss-summary"
     },
     {
       "title": "自民 麻生副総裁 石破氏ら退席に苦言 引き締めを",
       "url": "https://news.web.nhk/newsweb/na/nd-20261112de74970",
       "source": "NHK 経済",
-      "published": "2026-11-12T09:15:00+00:00"
+      "published": "2026-11-12T09:15:00+00:00",
+      "summary": "衆議院での食料品の消費税減税関連法案の採決を前に自民党の石破前総理大臣ら4人が退席したことについて、麻生副総裁は「党として決定したことには結束して臨むのが自民党だ」と苦言を呈した上で、いっそう気を引き…",
+      "detail_level": "rss-summary"
     },
     {
       "title": "豊昇龍まさかの３連敗、藤青雲に初金星許す…大の里・琴桜・霧島が４勝目・熱海富士５連勝 - 読売新聞",
       "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE8tcjlreVJIN0xtYVAxRzA3WnBRQkpkQUlnaGQyWDVxbDBwQXJEcTdRVWV4d3hOanZ3OXdjbDlWS3cwT2d1NjZYbUVYZGFsREhxckFzVS0zSDdqeW11aXRFUHBhSWI4bktoWkE?oc=5",
       "source": "Google ニュース",
-      "published": "2026-11-12T09:08:00+00:00"
+      "published": "2026-11-12T09:08:00+00:00",
+      "summary": "豊昇龍まさかの３連敗、藤青雲に初金星許す…大の里・琴桜・霧島が４勝目・熱海富士５連勝    読売新聞 【大相撲】豊昇龍が３日連続の金星配給…九重審判長「おびえて相撲を取っているように見える」（東スポWEB）    Yahoo!ニュース 3連敗の横綱豊昇龍、解説の琴風さんが気になった『表情』、「2日目までは、これはいいと思ってましたが…」「心配ですね、本当に」    中日新聞Web 立浪親方「明日は出ます」３日連続金星配給の豊昇龍の６日目出場を明言　３連敗後に本人が電話で直訴「逃げたくない。取らせてください」親方はハッパ「昨日今日の相撲ならお客さんに失礼」    ｄメニューニュース 八角理事長が３連敗の豊昇龍に「厳しいね」「常に強気でいかないとだめだよ」立て直し求める    日刊スポーツ",
+      "detail_level": "rss-summary"
+    },
+    {
+      "title": "経済安保の重要物資、老朽生産設備の国有化検討 化学・鋳造品など - 日本経済新聞",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBnYnRDMjI3WnUtLTg3Q245akFwcmlYMFRTNnAyUko5cUJGb3VadVZrYnZYT01pUlVqNGxEc1VoRDVGbFAxZEJZTHVrVmJLZGlQcGNYY1hYQUhVZ0ZWd1dUMmZqR1p0ODk5M2gzMQ?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-12T09:00:00+00:00",
+      "summary": "経済安保の重要物資、老朽生産設備の国有化検討 化学・鋳造品など    日本経済新聞 Google ニュースで見出しと意見をもっと見る",
+      "detail_level": "rss-summary"
     },
     {
       "title": "エヌビディアＣＥＯと不倫疑惑のアリス氏、半導体ビジネスで頭角現す…米情報機関は中国スパイと判断 - 読売新聞",
       "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1XeXJKVHFTX2hLMGFQNEY1WW9ySmQ2aVdGRjJhdmRJRk1GTl9DNGVIcUdsMXV6ZnVLa2xzRW5HZXdEbVY1cXFhUklLLTNOTzZodlh4SWMwX0d4UnVOSVVxaXZEMVc?oc=5",
       "source": "Google ニュース",
-      "published": "2026-11-12T09:00:00+00:00"
-    },
-    {
-      "title": "経済安保の重要物資、老朽生産設備の国有化検討 化学・鋳造品など - 日本経済新聞",
-      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBnYnRDMjI3WnUtLTg3Q245akFwcmlYMFRTNnAyUko5cUJGb3VadVZrYnZYT01pUlVqNGxEc1VoRDVGbFAxZEJZTHVrVmJLZGlQcGNYY1hYQUhVZ0ZWd1dUMmZqR1p0ODk5M2gzMQ?oc=5",
-      "source": "Google ニュース・ビジネス",
-      "published": "2026-11-12T09:00:00+00:00"
+      "published": "2026-11-12T09:00:00+00:00",
+      "summary": "エヌビディアＣＥＯと不倫疑惑のアリス氏、半導体ビジネスで頭角現す…米情報機関は中国スパイと判断    読売新聞 エヌビディアCEOに愛人紹介した謎の実業家、正体は「夫」    WSJ 密輸疑惑のシンガポール企業が声明「調査に協力」エヌビディア情報漏えい疑惑（TBS NEWS DIG Powered by JNN）    Yahoo!ニュース イーロン・マスク、ジェンスン・フアンを雇用する意向を示す    Business Insider Japan NVIDIA、ジェンスン・ファンCEO辞任 暫定CEOにクレスCFO    日本経済新聞",
+      "detail_level": "rss-summary"
     },
     {
       "title": "芥川龍之介「藪の中」直筆原稿見つかる 推敲の過程が明らかに",
       "url": "https://news.web.nhk/newsweb/na/nd-20261112de74907",
       "source": "NHK 科学・医療",
-      "published": "2026-11-12T08:50:00+00:00"
+      "published": "2026-11-12T08:50:00+00:00",
+      "summary": "大正時代に活躍した文豪・芥川龍之介の代表作のひとつ、「藪の中」の直筆の原稿が見つかりました。\n専門家は、作品名や結末を巡る推敲の過程が初めて明らかになったと評価しています。",
+      "detail_level": "rss-summary"
+    },
+    {
+      "title": "来週中頃は低気圧が急発達 全国的に荒天のおそれ - ウェザーニュース",
+      "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBYM0N6bTBfX25NMzN0YkkwOEU2UDV6SnUtZndMR3VrSnpZd2JMY0xzMUJjVEt4SlV4MXh3a3BMNFNUYWFlR1hZZm5QazVUejNUaEx3Zw?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-12T08:44:00+00:00",
+      "summary": "来週中頃は低気圧が急発達 全国的に荒天のおそれ    ウェザーニュース 週間天気予報 日曜日は広範囲で雨 寒暖差が大きく体調管理を    ウェザーニュース 明日13日は広く晴れて気温上昇 20℃超え続出 15日は広く雨(気象予報士 石榑 亜紀子 2026年11月12日)    tenki.jp 【動画】13日の天気 - 広く小春日和に 一日の気温差大 東北・北陸・近畿は不安定 強い雷雨の所も（12日19時更新）    Yahoo!ニュース 【 今後の雨 】15日(日)は東京・大阪・新潟などで雨予報 13日(金)は北陸・東北・近畿などで落雷や突風に注意【17日(火)午後3時までの雨風シミュレーション・12日正午更新】    TBS NEWS DIG",
+      "detail_level": "rss-summary"
     },
     {
       "title": "トヨタ アルファードGやカローラなど30車種 約9.6万台リコール",
       "url": "https://news.web.nhk/newsweb/na/nd-20261112de74902",
-      "source": "NHK 主要",
-      "published": "2026-11-12T08:39:14+00:00"
-    },
-    {
-      "title": "ダイハツ「ロッキー」など3車種 17万6000台余をリコール",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261112de74896",
       "source": "NHK 経済",
-      "published": "2026-11-12T08:38:14+00:00"
+      "published": "2026-11-12T08:39:14+00:00",
+      "summary": "トヨタ自動車は「アルファードG」や「カローラ」など30車種、およそ9万6000台のリコールを国土交通省に届け出ました。\n助手席のエアバッグを膨らませるガス発生剤が劣化し、エアバッグが作動した際に想定と…",
+      "detail_level": "rss-summary"
     },
     {
-      "title": "ダイハツ「ロッキー」など3車種 17万6000台余をリコール - NHKニュース",
-      "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE51bThtc0p4cHRtQzlLMENRd2gxODlnand6bXJTQmJOUUhwR0JKNHExLWJrLS1qVjNJS2tzYnZwZ3ZUZ2pmMkpPTnpWUV9RRnI4TmVnYzJxblN3dHN6X253?oc=5",
+      "title": "トヨタ アルファードGやカローラなど30車種 約9.6万台リコール - NHKニュース",
+      "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBlcUU5NUVLdHZQcFRCaHB3em10ckE0azBvVmJBUzZCMGVYWDg2dUwwMTdzNHNoc2FxWTJmNldLS01aaFhnZS1Sc3hQcEF5QmlOZ3ZCT2pDeUtVbVo1TEdN?oc=5",
       "source": "Google ニュース・ビジネス",
-      "published": "2026-11-12T08:38:14+00:00"
-    },
-    {
-      "title": "「長嶋茂雄賞」初代はセ・リーグ三冠王 阪神 佐藤輝明選手 - NHKニュース",
-      "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE80UWw5ZDMyb1U5RFZOb0o5a084ZVA2WTlMb203TDdXZE5qMWo2TkpLSFg1U1JhMnI0cWYzd3lJNmRmWEtVa1lpSkxWem9vMVM1emhHRzJKdkxxSFFZclhR?oc=5",
-      "source": "Google ニュース",
-      "published": "2026-11-12T08:36:00+00:00"
+      "published": "2026-11-12T08:39:14+00:00",
+      "summary": "トヨタ アルファードGやカローラなど30車種 約9.6万台リコール    NHKニュース Google ニュースで見出しと意見をもっと見る",
+      "detail_level": "rss-summary"
     }
   ]
 }
