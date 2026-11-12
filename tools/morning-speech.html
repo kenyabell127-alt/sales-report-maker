@@ -11,10 +11,38 @@ button.secondary{background:#e3eff0;color:#24575b}.row{display:flex;gap:12px;fle
 .muted{font-size:14px;color:#5f707b}.script{white-space:pre-wrap;line-height:2.05;background:#f5f8f8;border-radius:10px;padding:20px}
 .hidden{display:none}.notice{background:#f5f8f8;padding:12px;border-radius:9px;font-size:14px}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
 @media print{.inputs,.actions,.muted,.notice,a{display:none!important}.card{border:0;padding:0}body{background:white}main{padding:0}}
-.brand{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0 25px;border-bottom:1px solid #d9e3e6;margin-bottom:22px}.brand a{font-size:22px;font-weight:850;text-decoration:none;color:#173e42;letter-spacing:-.05em}.brand span{font-size:11px;color:#6c8083}body{background:#f7f9f7;color:#1c363b}h1{letter-spacing:-.05em;color:#173e42}.card{box-shadow:0 8px 28px #173e4210}button{background:#176f66}button:hover{background:#11584f}select:focus,textarea:focus{outline:2px solid #77b7a9;outline-offset:2px}@media(max-width:500px){.brand span{display:none}.card{padding:17px}} </style></head><body><main><div class="brand"><a href="/">◈ 話す準備室</a><span>伝えたいことが、ちゃんと伝わる。</span></div>
+.brand{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0 25px;border-bottom:1px solid #d9e3e6;margin-bottom:22px}.brand a{font-size:22px;font-weight:850;text-decoration:none;color:#173e42;letter-spacing:-.05em}.brand span{font-size:11px;color:#6c8083}body{background:#f7f9f7;color:#1c363b}h1{letter-spacing:-.05em;color:#173e42}.card{box-shadow:0 8px 28px #173e4210}button{background:#176f66}button:hover{background:#11584f}select:focus,textarea:focus{outline:2px solid #77b7a9;outline-offset:2px}@media(max-width:500px){.brand span{display:none}.card{padding:17px}} 
+/* Editorial refresh: restrained typography, clear hierarchy, touch-first controls */
+:root{--ink:#182b2a;--paper:#f7f5ef;--line:#deded5;--accent:#315c49}
+body{background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.75}
+main{max-width:840px;padding:22px 20px 90px}
+.brand{border-color:var(--line);margin-bottom:42px;padding-bottom:18px}
+.brand a{color:var(--ink);font-size:19px;font-weight:800;letter-spacing:.02em}
+.brand span{letter-spacing:.12em}
+h1{font-size:clamp(34px,7.4vw,57px);line-height:1.24;letter-spacing:-.065em;margin:24px 0 16px;color:var(--ink);font-weight:850}
+h2{font-size:24px;letter-spacing:-.04em}
+h1+.muted{max-width:570px;font-size:16px;line-height:1.9;margin-bottom:32px}
+.card{border:1px solid var(--line);border-radius:5px;box-shadow:none;background:#fff;padding:clamp(20px,4vw,36px);margin:22px 0}
+label{font-size:14px;letter-spacing:.01em;margin:21px 0 8px}
+select,textarea{border:1px solid #c8ccc5;border-radius:4px;padding:14px 13px;background:#fff;min-height:52px;color:var(--ink)}
+select:focus,textarea:focus{outline:2px solid #819e8e;outline-offset:1px}
+button{background:var(--accent);border-radius:4px;min-height:49px;padding:12px 22px;transition:background .15s ease}
+button:hover{background:#224936}
+button.secondary{background:#e9eee8;color:#264a39}
+button.secondary:hover{background:#dce7db}
+button:disabled{opacity:.48;cursor:not-allowed}
+button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-between;align-items:center;font-size:17px}
+.script{background:#fbfaf6;border:1px solid var(--line);border-radius:3px;padding:clamp(18px,4vw,32px);font-size:17px;line-height:2.15;min-height:150px}
+.notice{background:#f4f5f0;border-left:3px solid #b0c4b1;border-radius:0;padding:13px 16px;margin:14px 0}
+.muted{color:#64706a}
+.rehearsal{border-top:1px solid var(--line);padding-top:22px;margin-top:28px}
+.rehearsal .actions{margin:12px 0}
+@media(max-width:500px){main{padding:16px 14px 60px}.card{padding:20px 16px}.brand{margin-bottom:28px}.row>*{min-width:120px}.actions button{flex:1}}
+@media print{.rehearsal{display:none}.script{border:0}}
+</style></head><body><main><div class="brand"><a href="/">◈ 話す準備室</a><span>伝えたいことが、ちゃんと伝わる。</span></div>
 <a href="keyword-speech.html">← 会議で伝える</a>
 <h1>ニュースから、<br>自分の言葉で話そう。</h1>
-<p class="muted">ニュースを選んで、朝礼で話せる原稿を無料作成。会員登録・APIキー・文章入力は不要です。</p>
+<p class="muted">明日の朝礼、何を話そう。ニュースを選び、考えを一つ添えるだけ。書く・整える・声に出すまで、ここで。</p>
 <section class="card inputs">
 <label for="news">1. ニュースを選ぶ</label>
 <select id="news"><option value="">ニュースを使わない（仕事の話題から作る）</option></select>
@@ -33,15 +61,15 @@ button.secondary{background:#e3eff0;color:#24575b}.row{display:flex;gap:12px;fle
 <option value="natural">自然で親しみやすい</option><option value="formal">丁寧・落ち着いた</option><option value="light">明るく簡潔</option></select></div></div>
 <label for="stance">このニュースを見て、どう思った？（任意）</label><textarea id="stance" maxlength="280" placeholder="例：便利になる一方で、最後の確認は人がするべきだと思う"></textarea><label for="experience">実際にあったこと・身近な例（任意）</label>
 <textarea id="experience" maxlength="450" placeholder="例：昨日、確認の声かけでミスを防げた"></textarea>
-<button id="make" type="button">スピーチをつくる</button>
+<button id="make" type="button" class="primary">原稿をつくる <span aria-hidden="true">→</span></button>
 </section>
 <section id="result" class="card hidden" aria-live="polite">
-<h2>あなたのスピーチ</h2><p id="stats" class="muted"></p><div id="quality" class="notice" role="status"></div><div id="talkNotes" class="notice" aria-label="カンペ"></div>
+<h2>あなたのスピーチ</h2><p id="stats" class="muted"></p><div id="quality" class="notice" role="status"></div><div id="talkNotes" class="notice" aria-label="カンペ"></div><div class="rehearsal"><div><strong>声に出して練習</strong><p class="muted" style="margin:0">ボタンを押してから読み始め、読み終わったら停止。実際の時間を測れます。</p></div><div class="actions"><button id="startTimer" class="secondary" type="button">計測開始</button><button id="stopTimer" class="secondary" type="button" disabled>計測終了</button></div><p id="timerResult" role="status" class="muted">まだ計測していません</p></div>
 <div id="script" class="script" contenteditable="true" role="textbox" aria-label="原稿を直接編集" aria-multiline="true" spellcheck="true"></div><p class="muted">原稿をタップすると、その場で書き直せます。コピーは修正後の文章を使います。</p><p id="source" class="muted"></p>
 <p id="notice" class="notice"></p>
 <div class="actions"><button id="copy" type="button">原稿をコピー</button><button id="again" class="secondary" type="button">別の言い回しで作る</button><button id="print" class="secondary" type="button">印刷・PDF保存</button></div>
 </section>
-<p class="muted">ニュースの見出しだけを使用します。記事の本文・背景を読んだ要約ではありません。利用前に必ず出典を確認してください。自動取得に失敗した場合は、ニュースなしの原稿を作れます。</p>
+<p class="muted">ニュースはRSSで公開された見出しと、取得できる場合は配信元の概要を使用します。記事全文の確認・事実検証は行っていません。発表前に必ず出典をご確認ください。</p>
 </main><script>
 'use strict';
 const $=id=>document.getElementById(id), BL='\n\n';
@@ -82,19 +110,19 @@ async function loadNews(){
   $('newsStatus').textContent=newsItems.length?'最近のニュース '+newsItems.length+'件（更新 '+new Date(updated).toLocaleString('ja-JP')+'）':'現在、朝礼向けのニュース候補がありません。';
  }catch(error){$('newsStatus').textContent='ニュースを取得できませんでした。ニュースなしの原稿は利用できます。'}
 }
-function cleanSentence(value){return String(value||'').trim().replace(/[。！？\\s]+$/,'')}
+function cleanSentence(value){return String(value||'').trim().replace(/[。！？\s]+$/,'')}
 function build(){
  const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)];
- const headline=news?news.title.replace(/\\s+-\\s+[^-]{2,35}$/,'').trim():'';
+ const headline=news?news.title.replace(/\s+-\s+[^-]{2,35}$/,'').trim():'';
  const summary=news&&news.detail_level==='rss-summary'&&typeof news.summary==='string'?news.summary.trim():'';
  const angle=news?angleFor(headline+' '+summary):null;
  const requested=$('topic').value,topic=requested==='auto'?topicFor(headline+' '+summary):requested;
  const t=topics[topic],seconds=Number($('duration').value),tone=$('tone').value,audience=$('audience').value,perspective=$('perspective').value;
  const experience=cleanSentence($('experience').value),stance=cleanSentence($('stance').value);
  const open=tone==='formal'?'おはようございます。今日は、最近気になった話を一つ紹介します。':tone==='light'?'おはようございます。最近、気になった話があります。':'おはようございます。今日は、最近気になったことを一つ。';
- const factual=news?(summary?'「'+headline+'」というニュースを見ました。配信元の概要では、'+summary.slice(0,105).replace(/[。！？\\s]+$/,'')+'と紹介されています。':'「'+headline+'」というニュースを見ました。詳しい内容は記事で確認する必要がありますが、見出しを見て考えたことがあります。'):'最近、'+t.intro;
- const opinion=stance?'私は、'+stance+'と感じました。':angle?angle.view:t.point;
- const example=experience?'私自身、'+experience+'という経験があります。':angle?angle.example:t.example;
+ const factual=news?(summary?'「'+headline+'」というニュースが気になりました。配信元の概要によると、'+summary.slice(0,105).replace(/[。！？\s]+$/,'')+'ということです。':'「'+headline+'」という見出しが気になりました。記事の詳細はまだ確認できていませんが、この話題から考えたことがあります。'):'最近、'+t.intro;
+ const opinion=stance?'私が思ったのは、'+stance+'ということです。':angle?angle.view:t.point;
+ const example=experience?'実際に、'+experience+'ということがありました。':angle?angle.example:t.example;
  const question=perspective==='question'?'皆さんだったら、こういうとき何を大事にしますか。':perspective==='practical'?'仕事に置き換えるなら、何を一つ変えられるでしょうか。':angle?angle.question:t.action;
  const closing=perspective==='practical'?'今日は一つ、実際に試してみようと思います。':perspective==='question'?'すぐに答えが出なくても、少し考えるきっかけになればと思います。':'私も、いつものやり方を少し見直してみようと思います。';
  const parts=[open,factual,opinion];
@@ -111,7 +139,7 @@ function build(){
  parts.push(question,closing);
  let lines=parts.filter((x,i)=>x&&parts.indexOf(x)===i);
  let speech=lines.join(BL);
- const chars=speech.replace(/\\s/g,'').length,estimate=Math.round(chars/300*60);
+ const chars=speech.replace(/\s/g,'').length,estimate=Math.round(chars/300*60);
  $('script').textContent=speech;
  $('stats').textContent='約'+chars+'文字／読み上げ目安 '+estimate+'秒／設定 '+seconds+'秒';
  updateQuality(speech,seconds,!!news,!!summary);
@@ -123,11 +151,12 @@ function build(){
  $('result').classList.remove('hidden');
 }
 function updateQuality(speech,seconds,hasNews,hasSummary){
- const length=speech.replace(/\\s/g,'').length,actual=Math.round(length/300*60);
+ const length=speech.replace(/\s/g,'').length,actual=Math.round(length/300*60);
  const sentences=speech.split(/[。！？]/).filter(Boolean);
  const long=sentences.filter(x=>x.length>85).length;
  const duplicates=sentences.length-new Set(sentences.map(x=>x.trim())).size;
  const flags=[];
+ if(/(?:大切だと思います|意識したいと思います|見直してみたいと思います)/.test(speech)&&!speech.includes('実際に、'))flags.push('少し抽象的です。自分の体験を一つ足すと伝わりやすくなります');
  if(Math.abs(actual-seconds)>20)flags.push('読み上げ時間が設定と'+Math.abs(actual-seconds)+'秒ずれています。無理に定型文で水増しせず、具体的な体験を加えてください');
  if(long)flags.push('長い一文が'+long+'件あります。短く区切ると話しやすくなります');
  if(duplicates)flags.push('似た文の繰り返しがあります');
@@ -144,9 +173,20 @@ function showNewsDetail(){
 }
 $('news').addEventListener('change',showNewsDetail);
 $('make').addEventListener('click',()=>{variant=0;build()});
-$('again').addEventListener('click',()=>{variant++;build()});
+$('again').addEventListener('click',()=>{variant++;const tones=['natural','light','formal'];$('tone').value=tones[variant%tones.length];build()});
 $('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('script').innerText);alert('コピーしました')}catch{alert('コピーできませんでした。原稿を長押ししてコピーしてください。')}});
 $('print').addEventListener('click',()=>window.print());
-$('script').addEventListener('input',()=>{const content=$('script').innerText,n=content.replace(/\\s/g,'').length;$('stats').textContent='編集中：約'+n+'文字／読み上げ目安 '+Math.round(n/300*60)+'秒';updateQuality(content,Number($('duration').value),$('news').value!=='',Boolean(newsItems[Number($('news').value)]?.summary))});
+$('script').addEventListener('input',()=>{const content=$('script').innerText,n=content.replace(/\s/g,'').length;$('stats').textContent='編集中：約'+n+'文字／読み上げ目安 '+Math.round(n/300*60)+'秒';updateQuality(content,Number($('duration').value),$('news').value!=='',Boolean(newsItems[Number($('news').value)]?.summary))});
+let timerStarted=0;
+$('startTimer').addEventListener('click',()=>{
+ timerStarted=Date.now();$('startTimer').disabled=true;$('stopTimer').disabled=false;
+ $('timerResult').textContent='計測中。原稿を声に出して読んでください。';
+});
+$('stopTimer').addEventListener('click',()=>{
+ if(!timerStarted)return;
+ const elapsed=Math.round((Date.now()-timerStarted)/1000),target=Number($('duration').value),difference=elapsed-target;
+ $('timerResult').textContent='実測 '+elapsed+'秒（目標 '+target+'秒）。'+(Math.abs(difference)<=10?'ちょうどよい長さです。':difference>0?'目標より'+difference+'秒長め。少し短くすると収まります。':'目標より'+(-difference)+'秒短め。体験談を一つ加えると自然に伸ばせます。');
+ timerStarted=0;$('startTimer').disabled=false;$('stopTimer').disabled=true;
+});
 loadNews();
 </script></body></html>
