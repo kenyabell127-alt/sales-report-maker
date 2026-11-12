@@ -106,11 +106,11 @@ async function loadNews(){
    const data=await res.json();
    if(!Array.isArray(data.items))throw new Error('データ形式が不正');
    const now=Date.now();
-   newsItems=data.items.filter(item=>item&&typeof item.title==='string'&&typeof item.url==='string'&&/^https:\/\//.test(item.url)&&(!item.published||!Number.isFinite(Date.parse(item.published))||Math.abs(now-Date.parse(item.published))<7*86400000));
+   newsItems=data.items.filter(item=>item&&typeof item.title==='string'&&typeof item.url==='string'&&/^https:\/\//.test(item.url)&&(!item.published||!Number.isFinite(Date.parse(item.published))||Math.abs(now-Date.parse(item.published))<7*86400000)).sort((a,b)=>Number(Boolean(firstVerifiedSentence(b.summary)))-Number(Boolean(firstVerifiedSentence(a.summary))));
    $('news').querySelectorAll('option:not(:first-child)').forEach(el=>el.remove());
    for(let i=0;i<newsItems.length;i++){
     const option=document.createElement('option');option.value=String(i);
-    option.textContent=newsItems[i].title+(firstVerifiedSentence(newsItems[i].summary)?'':'［見出しのみ］');
+    option.textContent=(firstVerifiedSentence(newsItems[i].summary)?'【内容あり】':'【見出しのみ】')+newsItems[i].title;
     $('news').append(option);
    }
    const updated=Date.parse(data.updated_at);
@@ -167,6 +167,7 @@ function conversationQuestion(text){
  if(/バスケ|バスケット|Bリーグ|NBA/.test(x))return 'バスケって見ます？ 好きな選手とかいますか？';
  if(/スポーツ|優勝|試合|大会|選手/.test(x))return 'こういうスポーツのニュース、普段チェックします？';
  if(/旅行|観光|温泉|旅館|ホテル|空港/.test(x))return 'そのあたり、行ったことあります？';
+ if(/Apple TV|ホームシアター|スピーカー|配信動画|テレビ|映画/.test(x))return '家で映画とか見ます？ テレビの音ってこだわります？';
  if(/新商品|発売|スマホ|アプリ|家電|サービス/.test(x))return 'こういうの、使ってみたいと思います？';
  if(/料理|食事|飲食|ラーメン|うどん|食品|グルメ/.test(x))return '皆さんは、最近食べておいしかったものってあります？';
  if(/天気|気温|猛暑|寒波|雨|雪/.test(x))return '最近、気温の変化を感じることってあります？';
@@ -182,7 +183,7 @@ async function generateWithAI(){
  const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)];
  const summary=news&&news.detail_level==='rss-summary'?String(news.summary||'').slice(0,1200):'';
  const opinion=$('stance').value.trim(),experience=$('experience').value.trim();
- if(!summary&&!opinion&&!experience){build();$('notice').textContent='この記事は見出ししか取得できていないため、内容を確認した文章は生成できません。出典を確認し、ご自身の感想や経験を入力してください。';return}
+ if(news&&!summary){$('result').classList.add('hidden');$('newsDetail').classList.remove('hidden');$('newsDetail').textContent='この記事は見出しのみです。内容を確認した会話文を作るには、【内容あり】のニュースを選んでください。';return}if(!summary&&!opinion&&!experience){build();$('notice').textContent='日常の話題をもとにした簡易版です。AIで文章を作る場合は、感想や経験を入力してください。';return}
  const button=$('make');button.disabled=true;button.firstChild.textContent='AIが文章を整えています… ';
  try{
   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),18000);
