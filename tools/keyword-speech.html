@@ -15,27 +15,37 @@ const block=(heading,arr,prefix)=>arr.length?'【'+heading+'】'+NL+prefix+arr.m
 function generate(){const raw=$('keywords').value.trim();if(!raw){alert('キーワードを入力してな');return}const lines=raw.split(/[\n；;]+/).map(x=>x.trim()).filter(Boolean),g=classify(lines),d=Number($('duration').value),aud=$('audience').value;if(!followShown){const missing=followQuestions.filter(q=>!g[q.key].length);$('followupFields').replaceChildren();for(const q of missing){const heading=document.createElement('h3');heading.textContent=q.title;$('followupFields').append(heading);const box=document.createElement('div');box.style.display='grid';box.style.gridTemplateColumns='repeat(auto-fit,minmax(220px,1fr))';box.style.gap='8px';for(const option of followOptions[q.key]){const label=document.createElement('label');label.style.cssText='display:flex;align-items:flex-start;gap:8px;padding:10px;border:1px solid #d7e3e7;border-radius:9px;font-weight:400;margin:0';const input=document.createElement('input');input.type='checkbox';input.name='f_'+q.key;input.value=option;input.style.cssText='width:19px;height:19px;flex-shrink:0;accent-color:#216f75';label.append(input,document.createTextNode(option));box.append(label)}$('followupFields').append(box)} if(missing.length){$('followup').classList.remove('hidden');$('followup').scrollIntoView({behavior:'smooth'});followShown=true;return}}
 let targetMatch=raw.match(/目標\s*[:：]?\s*([\d,]+)\s*(件|社|円|万円|人|台|%)/),actualMatch=raw.match(/実績\s*[:：]?\s*([\d,]+)\s*(件|社|円|万円|人|台|%)/);
 let calc='';if(targetMatch&&actualMatch&&targetMatch[2]===actualMatch[2]){let t=Number(targetMatch[1].replace(/,/g,'')),a=Number(actualMatch[1].replace(/,/g,''));if(t>0){calc='目標'+t+targetMatch[2]+'に対して実績'+a+actualMatch[2]+'で、達成率は'+(a/t*100).toFixed(1)+'％です。'+(a<t?'目標に対して'+(t-a)+targetMatch[2]+'の未達となりました。':a>t?'目標を'+(a-t)+targetMatch[2]+'上回りました。':'目標どおりの結果となりました。')}}
-const strip=x=>clean(x).replace(/^(実績|成果|活動|課題|原因|今後)[:：]\s*/,'').replace(/^(目標|実績)[:：]\s*/,'$1 ');
-const sentence=x=>{let t=strip(x);return /[。！？]$/.test(t)?t:t+'。'};
-const joinFacts=arr=>arr.map(sentence).join('');
-const prose=(arr,lead)=>arr.length?lead+joinFacts(arr):'';
-const outcome=calc?(/未達/.test(calc)?'under':/上回り|目標どおり/.test(calc)?'good':'neutral'):'neutral';
+const strip=x=>clean(x).replace(/^(実績|成果|活動|課題|原因|今後)[:：]\s*/,'');
+const all=Object.values(g).flat().map(strip);
+const has=re=>all.some(x=>re.test(x));
+const targetAchieved=has(/目標を達成した|目標達成|達成率100/),targetMissed=has(/目標に届かなかった|目標未達|目標に対して未達/);
+const conflict=targetAchieved&&targetMissed;
+const numeric=calc?(/未達/.test(calc)?'under':/上回り|目標どおり/.test(calc)?'good':'neutral'):'neutral';
+const status=numeric!=='neutral'?numeric:conflict?'unknown':targetMissed?'under':targetAchieved?'good':'unknown';
+const label=raw.match(/新規|売上|工務店|訪問|受注|採用|案件|問い合わせ/);
+const subject=label?label[0]+'の状況':'今回の取り組み';
+const full=x=>/[。！？]$/.test(x)?x:x+'。';
+const natural=x=>{const t=strip(x);if(/^(新規|既存).{0,20}\d+件獲得$/.test(t))return full(t.replace(/獲得$/,'を獲得しました'));if(/^[^。]+\d+件獲得$/.test(t))return full(t.replace(/獲得$/,'を獲得しました'));if(/^[^。]+を(増やした|強化した|実施した|見直した|行った|訪問した|フォローした)$/.test(t))return full(t.replace(/(増やした|強化した|実施した|見直した|行った|訪問した|フォローした)$/,(v)=>v.replace(/た$/,'ました')));if(/^[^。]+(あった|受けた|つながった|進んだ|完了した|不足した|遅れた|かかった|届かなかった)$/.test(t))return full(t.replace(/た$/,'ました'));if(/^[^。]+(する|進める|増やす|改善する|検討する|決める)$/.test(t))return full(t.replace(/(する|進める|増やす|改善する|検討する|決める)$/,(v)=>v==='する'?'していきます':v==='進める'?'進めます':v==='増やす'?'増やします':v==='改善する'?'改善します':v==='検討する'?'検討します':'決めます'));return full(t)};
+const combine=arr=>arr.map(natural).join('');
+const filteredNumbers=g.numbers.filter(x=>!/目標を達成した|目標に届かなかった/.test(x));
+const filteredIssues=g.issues.filter(x=>!(/目標に届かなかった/.test(x)&&(status==='good'||conflict)));
 const order=['numbers','results','actions','issues','causes','plans','requests','other'];
 let sections=[],add=(name,body)=>{if(body.trim())sections.push('【'+name+'】'+NL+body.trim())};
-add('結論','今回の業務状況についてご報告します。'+(calc?calc: '現時点で把握している状況と、今後の対応をお伝えします。')+(outcome==='under'?'今回は、未達となった点と今後の対応を中心にご説明します。':outcome==='good'?'あわせて、実施した取り組みと今後の方針をご説明します。':''));
-if(g.numbers.length&&!calc)add('実績','実績に関する情報は次のとおりです。'+joinFacts(g.numbers));
-if(g.results.length)add('成果','成果については、'+joinFacts(g.results));
-if(g.actions.length)add('取り組み','取り組みについては、'+joinFacts(g.actions));
-if(g.issues.length)add('課題','一方で、課題もあります。'+joinFacts(g.issues));
-if(g.causes.length)add('課題の背景','背景として把握している点は、'+joinFacts(g.causes.filter(x=>!/原因は確認中/.test(x)))+(g.causes.some(x=>/原因は確認中/.test(x))?'原因は引き続き確認中です。':'')+'これらの要因と結果との関係については、確認が必要です。');
-if(g.plans.length)add('今後の対応','今後は、'+joinFacts(g.plans));
-if(g.requests.length)add('相談事項','ご相談・確認したい点は、'+joinFacts(g.requests));
-if(g.other.length)add('補足事項',joinFacts(g.other));
-add('まとめ',outcome==='under'?'今回の結果を踏まえ、課題と対応の進捗を次回ご報告します。':g.plans.length?'以上が今回の結果と今後の対応です。次回は実施状況を確認し、ご報告します。':'以上が現時点でのご報告です。' );
+add('結論',subject+'についてご報告します。'+(calc?calc:status==='good'?'今回の結果は、目標を達成しました。':status==='under'?'今回の結果は、目標に届きませんでした。':'実績と取り組み、今後の対応についてご説明します。'));
+if(filteredNumbers.length&&!calc)add('実績',combine(filteredNumbers));
+if(g.results.length)add('主な成果',combine(g.results));
+if(g.actions.length)add('実施した取り組み',combine(g.actions));
+if(filteredIssues.length)add('課題',combine(filteredIssues));
+if(g.causes.length)add('背景',combine(g.causes.filter(x=>!/原因は確認中/.test(x)))+(g.causes.some(x=>/原因は確認中/.test(x))?'原因は現在確認中です。':''));
+if(g.plans.length)add('今後の対応',combine(g.plans));
+if(g.requests.length)add('確認・相談事項',combine(g.requests));
+if(g.other.length)add('補足事項',combine(g.other));
+add('まとめ',g.plans.length?'以上が今回の結果と今後の対応です。次回は実施状況をご報告します。':'以上が今回の報告です。');
+const contradictions=conflict||numeric==='good'&&targetMissed||numeric==='under'&&targetAchieved;
 const script=sections.join(BL),count=script.replace(/\s/g,'').length,target=d*300,missing=[];
 if(!g.numbers.length)missing.push('目標と実績');if(!g.results.length)missing.push('具体的な成果');if(!g.issues.length)missing.push('課題');if(!g.plans.length)missing.push('次の対応・期限');if(!g.causes.length)missing.push('背景や要因');
 $('script').textContent=script;$('stats').textContent='約'+count+'文字／読み上げ約'+Math.round(count/300*60)+'秒／希望'+d+'分';
-$('notice').textContent=count<target-250?'希望の'+d+'分には情報が不足しています。追加すると良い項目：'+missing.join('・')+'。入力されていない事実を創作して長くすることはありません。':'入力された内容をもとに構成しました。読み上げ前に内容をご確認ください。';
+$('notice').textContent=(contradictions?'【入力内容の確認】目標達成と未達の両方が選ばれています。矛盾する項目を確認してください。台本では断定を避けています。 ':'')+(count<target-250?'希望の'+d+'分には情報が不足しています。追加すると良い項目：'+missing.join('・')+'。入力されていない事実を創作して長くすることはありません。':'入力された内容をもとに構成しました。読み上げ前に内容をご確認ください。');
 $('classification').textContent=order.filter(k=>g[k].length).map(k=>'【'+names[k]+'】'+NL+g[k].join(NL)).join(BL);$('result').classList.remove('hidden');$('result').scrollIntoView({behavior:'smooth'});}
 $('rebuild').onclick=()=>{const extra=followQuestions.flatMap(q=>Array.from(document.querySelectorAll('input[name="f_'+q.key+'"]:checked')).map(el=>({numbers:'実績',results:'成果',actions:'活動',issues:'課題',causes:'原因',plans:'今後'})[q.key]+'：'+el.value));if(extra.length){$('keywords').value+='\n'+extra.join('\n')} $('followup').classList.add('hidden');followShown=true;generate()};$('keywords').addEventListener('input',()=>{followShown=false;$('followup').classList.add('hidden')});$('make').onclick=()=>{followShown=false;generate()};$('sample').onclick=()=>{followShown=false;$('keywords').value='新規獲得 目標30件 実績24件'+NL+'工務店への訪問を強化'+NL+'既存取引先から紹介あり'+NL+'課題：商談から受注につながらない'+NL+'来月：見積提出後の追客を強化';generate()};$('copy').onclick=async()=>{try{await navigator.clipboard.writeText($('script').textContent);alert('コピーしました')}catch{alert('コピーできませんでした')}};$('print').onclick=()=>window.print();
 </script></body></html>
