@@ -1,309 +1,66 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ニュースから話す｜話す準備室</title><meta name="description" content="ニュースや身近な話題から、自然な会話のきっかけを見つける無料ツール。">
+<title>話す準備室｜会話のきっかけを見つける</title>
+<meta name="description" content="今日のニュースから話しやすい話題を選び、自然な一言と会話の続け方を考える無料ツール。">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f3f6f7;color:#243440;font:16px/1.8 system-ui,-apple-system,sans-serif}
-main{max-width:760px;margin:auto;padding:22px 16px 60px}a{color:#176b71}h1{font-size:clamp(25px,5vw,34px);line-height:1.35;margin:12px 0}
-.card{background:#fff;border:1px solid #d9e3e6;border-radius:16px;padding:22px;margin:18px 0}
-label{display:block;font-weight:700;margin:15px 0 5px}select,textarea{font:inherit;width:100%;padding:12px;border:1px solid #bcced3;border-radius:9px;background:#fff}
-textarea{min-height:100px;resize:vertical}button{background:#216f75;color:#fff;border:0;border-radius:9px;padding:12px 19px;font:inherit;font-weight:700;cursor:pointer}
-button.secondary{background:#e3eff0;color:#24575b}.row{display:flex;gap:12px;flex-wrap:wrap}.row>*{flex:1;min-width:145px}
-.muted{font-size:14px;color:#5f707b}.script{white-space:pre-wrap;line-height:2.05;background:#f5f8f8;border-radius:10px;padding:20px}
-.hidden{display:none}.notice{background:#f5f8f8;padding:12px;border-radius:9px;font-size:14px}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
-@media print{.inputs,.actions,.muted,.notice,a{display:none!important}.card{border:0;padding:0}body{background:white}main{padding:0}}
-.brand{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0 25px;border-bottom:1px solid #d9e3e6;margin-bottom:22px}.brand a{font-size:22px;font-weight:850;text-decoration:none;color:#173e42;letter-spacing:-.05em}.brand span{font-size:11px;color:#6c8083}body{background:#f7f9f7;color:#1c363b}h1{letter-spacing:-.05em;color:#173e42}.card{box-shadow:0 8px 28px #173e4210}button{background:#176f66}button:hover{background:#11584f}select:focus,textarea:focus{outline:2px solid #77b7a9;outline-offset:2px}@media(max-width:500px){.brand span{display:none}.card{padding:17px}} 
-/* Editorial refresh: restrained typography, clear hierarchy, touch-first controls */
-:root{--ink:#182b2a;--paper:#f7f5ef;--line:#deded5;--accent:#315c49}
-body{background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.75}
-main{max-width:840px;padding:22px 20px 90px}
-.brand{border-color:var(--line);margin-bottom:42px;padding-bottom:18px}
-.brand a{color:var(--ink);font-size:19px;font-weight:800;letter-spacing:.02em}
-.brand span{letter-spacing:.12em}
-h1{font-size:clamp(34px,7.4vw,57px);line-height:1.24;letter-spacing:-.065em;margin:24px 0 16px;color:var(--ink);font-weight:850}
-h2{font-size:24px;letter-spacing:-.04em}
-h1+.muted{max-width:570px;font-size:16px;line-height:1.9;margin-bottom:32px}
-.card{border:1px solid var(--line);border-radius:5px;box-shadow:none;background:#fff;padding:clamp(20px,4vw,36px);margin:22px 0}
-label{font-size:14px;letter-spacing:.01em;margin:21px 0 8px}
-select,textarea{border:1px solid #c8ccc5;border-radius:4px;padding:14px 13px;background:#fff;min-height:52px;color:var(--ink)}
-select:focus,textarea:focus{outline:2px solid #819e8e;outline-offset:1px}
-button{background:var(--accent);border-radius:4px;min-height:49px;padding:12px 22px;transition:background .15s ease}
-button:hover{background:#224936}
-button.secondary{background:#e9eee8;color:#264a39}
-button.secondary:hover{background:#dce7db}
-button:disabled{opacity:.48;cursor:not-allowed}
-button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-between;align-items:center;font-size:17px}
-.script{background:#fbfaf6;border:1px solid var(--line);border-radius:3px;padding:clamp(18px,4vw,32px);font-size:17px;line-height:2.15;min-height:150px}
-.notice{background:#f4f5f0;border-left:3px solid #b0c4b1;border-radius:0;padding:13px 16px;margin:14px 0}
-.muted{color:#64706a}
-
-@media(max-width:500px){main{padding:16px 14px 60px}.card{padding:20px 16px}.brand{margin-bottom:28px}.row>*{min-width:120px}.actions button{flex:1}}
-@media print{.script{border:0}}
-</style></head><body><main><div class="brand"><a href="/">◈ 話す準備室</a><span>伝えたいことが、ちゃんと伝わる。</span></div>
-<a href="keyword-speech.html">← 会議で伝える</a>
-<h1>ニュースから、<br>自分の言葉で話そう。</h1>
-<p class="muted">ニュースや日常の話題を、誰かと話すきっかけに。事実を確かめながら、自然な話し言葉に整えます。</p>
-<section class="card inputs">
-<label for="news">1. 今日の話題を選ぶ</label><p class="muted">ニュースがなくても大丈夫。身近なテーマからも話せます。</p>
-<select id="news"><option value="">ニュースを使わない（日常の話題から作る）</option></select><label class="muted" style="font-weight:400;margin:10px 0"><input type="checkbox" id="showAllNews" style="width:auto;min-height:0;margin-right:8px">会話に向かないニュースも表示する</label>
-<p id="newsDetail" class="notice hidden"></p><p id="newsStatus" class="muted" role="status">ニュースを確認しています…</p>
-<label for="audience">2. 誰に話す？</label><select id="audience"><option value="team">友達・同僚</option><option value="manager">仕事の相手</option><option value="general">いろいろな人</option></select><label for="perspective">3. どんな話にしたい？</label><select id="perspective"><option value="insight">気軽な会話のきっかけ</option><option value="question">相手に質問して終わる</option><option value="practical">内容を少し詳しく話す</option></select><label for="topic">4. 話の切り口</label>
-<select id="topic">
-<option value="auto">日替わりの身近な話題</option>
-<option value="team">チームワーク</option><option value="safety">安全・確認</option>
-<option value="health">健康・体調管理</option><option value="communication">報連相・情報共有</option>
-<option value="improvement">業務改善・工夫</option><option value="thanks">感謝・気配り</option>
-<option value="season">季節・変化への対応</option><option value="challenge">挑戦・成長</option>
-</select>
-<div class="row"><div><label for="tone">5. 話し方</label><select id="tone">
-<option value="natural">自然で親しみやすい</option><option value="formal">丁寧・落ち着いた</option><option value="light">明るく簡潔</option></select></div></div>
-<label for="stance">自分の考え・伝えたいこと（任意）</label><textarea id="stance" maxlength="280" placeholder="例：便利になる一方で、最後の確認は人がするべきだと思う"></textarea><label for="experience">自分の経験・具体例（任意）</label>
-<textarea id="experience" maxlength="450" placeholder="例：昨日、確認の声かけでミスを防げた"></textarea>
-<button id="make" type="button" class="primary">原稿をつくる <span aria-hidden="true">→</span></button>
-</section>
-<section id="result" class="card hidden" aria-live="polite">
-<h2>話す文章</h2><div id="speechHeading" contenteditable="true" role="textbox" aria-label="原稿の見出しを編集" style="font-size:24px;font-weight:800;line-height:1.5;margin:16px 0 8px;border-bottom:1px solid var(--line);padding-bottom:10px"></div><p id="stats" class="muted"></p>
-<div id="script" class="script" contenteditable="true" role="textbox" aria-label="原稿を直接編集" aria-multiline="true" spellcheck="true"></div><p class="muted">見出しと本文はタップして編集できます。コピーには修正後の内容を使います。</p><p id="source" class="muted"></p>
-<p id="notice" class="notice"></p><div id="conversationLab" class="notice hidden" style="margin-top:22px"><h3 style="margin:0 0 6px">会話のキャッチボールを試す</h3><p class="muted" style="margin:0 0 12px">相手の反応を選ぶと、次の一言を考える練習ができます。反応は例であり、実際の相手を予測するものではありません。</p><div class="actions" id="replyChoices"><button type="button" class="secondary" data-reply="interest">興味を持った</button><button type="button" class="secondary" data-reply="unknown">詳しく知らない</button><button type="button" class="secondary" data-reply="busy">あまり乗り気じゃない</button></div><p id="nextLine" style="font-weight:650;margin:14px 0 8px" aria-live="polite"></p><div class="actions"><button id="goodConversation" type="button" class="secondary">自然だった</button><button id="badConversation" type="button" class="secondary">不自然だった</button></div><p id="feedbackState" class="muted" role="status"></p></div>
-<div class="actions"><button id="copy" type="button">原稿をコピー</button><button id="again" class="secondary" type="button">話し方を変えて作り直す</button><button id="print" class="secondary" type="button">印刷・PDF保存</button></div>
-</section>
-<p class="muted">ニュースはRSSで公開された見出しと、取得できる場合は配信元の概要を使用します。記事全文の確認・事実検証は行っていません。発表前に必ず出典をご確認ください。</p>
+:root{--ink:#1d2e29;--muted:#64736b;--paper:#f7f6f0;--card:#fff;--line:#e0e3da;--accent:#285a46;--soft:#edf2eb}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.7}main{max-width:980px;margin:auto;padding:22px 18px 90px}a{color:var(--accent)}.top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:18px}.brand{font-weight:800;text-decoration:none;font-size:19px}.top small{color:var(--muted)}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.15em;color:var(--accent);margin:42px 0 12px}h1{font-size:clamp(34px,6vw,57px);line-height:1.27;letter-spacing:-.055em;margin:0 0 14px}h2{font-size:23px;letter-spacing:-.035em;margin:0 0 10px}h3{font-size:17px;margin:0 0 8px}.lead{color:var(--muted);max-width:680px;margin:0 0 28px}.step{margin:34px 0 13px;font-size:14px;font-weight:800;color:var(--accent)}.panel{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:22px}.news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.news-card{text-align:left;background:white;color:var(--ink);border:1px solid var(--line);border-radius:11px;padding:17px;cursor:pointer;min-height:124px;font:inherit;line-height:1.55}.news-card:hover,.news-card.selected{border-color:var(--accent);background:#f2f6f0}.news-card.selected{box-shadow:inset 0 0 0 1px var(--accent)}.news-card strong{display:block;font-size:15px;line-height:1.6}.meta{font-size:12px;color:var(--muted);display:block;margin-bottom:7px}.muted{color:var(--muted);font-size:13px}.controls{display:grid;grid-template-columns:1fr 1fr;gap:15px}label{display:block;font-weight:750;font-size:14px;margin-bottom:6px}select,textarea{width:100%;font:inherit;color:var(--ink);background:#fff;border:1px solid #c9d1c8;border-radius:8px;padding:12px;min-height:48px}textarea{min-height:82px;resize:vertical}.wide{grid-column:1/-1}.primary{width:100%;margin-top:18px;background:var(--accent);color:white;border:0;border-radius:9px;padding:15px;font:inherit;font-weight:800;cursor:pointer}.primary:disabled{opacity:.5;cursor:wait}.ghost{background:var(--soft);color:var(--accent);border:0;border-radius:8px;padding:10px 13px;font:inherit;cursor:pointer}.ghost:disabled{opacity:.5}.actions{display:flex;flex-wrap:wrap;gap:8px}.output{font-size:clamp(17px,3vw,21px);line-height:1.95;white-space:pre-wrap;outline:none;min-height:100px}.reply-grid{display:flex;gap:8px;flex-wrap:wrap}.reply-grid button{flex:1;min-width:125px}.divider{border:0;border-top:1px solid var(--line);margin:22px 0}.hidden{display:none!important}.status{padding:11px 13px;background:var(--soft);border-radius:8px;color:#395648;font-size:13px;margin:12px 0}.foot{margin-top:36px;font-size:12px;color:var(--muted)}button:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #7aa18d;outline-offset:2px}@media(max-width:620px){main{padding:18px 14px 60px}.news-grid,.controls{grid-template-columns:1fr}.panel{padding:17px}.top small{display:none}.news-card{min-height:90px}.eyebrow{margin-top:30px}}@media print{.top,.step,.news-grid,.controls,.actions,.foot,.status,#practice{display:none!important}.panel{border:0}}
+</style></head><body><main>
+<header class="top"><a class="brand" href="/">◈ 話す準備室</a><small>会話のきっかけを、もっと自然に。</small></header>
+<p class="eyebrow">FIND YOUR NEXT CONVERSATION</p><h1>何を話そう？が、<br>ちょっと楽になる。</h1>
+<p class="lead">話しやすいニュースを選んで、相手に合う最初の一言を。相手の返事に合わせて、その先の会話も練習できます。</p>
+<p class="step">01　話題を見つける</p>
+<section><div class="news-grid" id="newsCards" aria-label="おすすめの話題"><p class="muted">話題を読み込んでいます…</p></div><p class="status" id="newsStatus" role="status">公開ニュースを確認しています…</p><div class="actions"><button id="moreNews" class="ghost" type="button">ほかの話題も見る</button><button id="everyday" class="ghost" type="button">ニュースを使わず話す</button></div></section>
+<p class="step">02　話す相手と目的</p>
+<section class="panel"><div class="controls"><div><label for="audience">誰と話す？</label><select id="audience"><option value="friend">友達・同僚</option><option value="work">仕事の相手</option><option value="general">初対面・幅広い相手</option></select></div><div><label for="purpose">どんな会話にしたい？</label><select id="purpose"><option value="chat">気軽に話題を振りたい</option><option value="question">相手の話を聞きたい</option><option value="explain">内容を少し伝えたい</option></select></div><div class="wide"><label for="opinion">自分の感想・経験（任意）</label><textarea id="opinion" maxlength="300" placeholder="例：最近スーパーの値段が気になってる"></textarea></div></div><button class="primary" id="make" type="button">会話のきっかけを作る →</button></section>
+<section class="panel hidden" id="result" style="margin-top:25px" aria-live="polite"><p class="step" style="margin-top:0">03　まず、この一言から</p><h2 id="resultTitle"></h2><div class="output" id="speech" contenteditable="true" role="textbox" aria-label="会話文を編集" aria-multiline="true"></div><p class="muted">文章をタップすると編集できます。</p><div class="actions"><button class="ghost" id="copy" type="button">一言をコピー</button><button class="ghost" id="retry" type="button">別の言い方にする</button><a id="source" target="_blank" rel="noopener noreferrer" class="ghost hidden" style="text-decoration:none">ニュースの出典を確認</a></div><p class="status" id="notice"></p>
+<div id="practice"><hr class="divider"><p class="step" style="margin-top:0">04　相手がこう返したら？</p><div class="reply-grid"><button class="ghost" data-reply="interest" type="button">「へえ、そうなんだ」</button><button class="ghost" data-reply="unknown" type="button">「詳しく知らない」</button><button class="ghost" data-reply="busy" type="button">「今ちょっと忙しい」</button></div><p id="nextLine" class="status" aria-live="polite">相手の反応を選んでみよう。</p><div class="actions"><button class="ghost" id="good" type="button">自然だった</button><button class="ghost" id="bad" type="button">不自然だった</button></div><p class="muted" id="feedback"></p></div></section>
+<p class="foot">ニュースはRSSの見出し・概要を参考にしています。記事全文の照合はしていません。会話例はAIによる下書きです。話題の適性判定は簡易的なもので、内容を保証するものではありません。</p>
 </main><script>
 'use strict';
-const $=id=>document.getElementById(id), BL='\n\n';
-const topics={
-team:{intro:'仕事は、一人の力だけでは進められない場面があります。',point:'ちょっとした声かけや情報共有が、周りの人の動きやすさにつながると思います。',example:'自分の担当だけでなく、次の人が困らないように一言添えることも大切です。',action:'今日は、周囲への声かけを一つ増やしてみたいと思います。'},
-safety:{intro:'普段慣れている作業でも、確認を省くと思わぬミスにつながることがあります。',point:'急いでいるときほど、基本の手順を守ることが大切だと思います。',example:'一度確認してから進めるだけでも、後からの手戻りを減らせます。',action:'今日も一つひとつ確認しながら進めていきましょう。'},
-health:{intro:'毎日の仕事を続けるには、体調を整えることも大切です。',point:'忙しいと、休憩や水分補給をつい後回しにしてしまいます。',example:'小さな体調の変化に早めに気づくことが、無理をしない働き方につながります。',action:'今日も自分と周囲の体調に気を配っていきたいと思います。'},
-communication:{intro:'仕事では、同じ情報を共有できているかどうかで進み方が変わります。',point:'分からないことや変更点を早めに伝えるだけでも、手戻りを減らせます。',example:'忙しいときこそ、短い報告や確認を意識したいところです。',action:'今日は、気づいたことをため込まずに共有していきたいと思います。'},
-improvement:{intro:'毎日の仕事には、少し工夫するだけで進めやすくなることがあります。',point:'大きな変更でなくても、やりにくいところを一つ見直すことには意味があると思います。',example:'いつもの手順を振り返ると、意外な改善点が見つかることもあります。',action:'今日も小さな改善を一つ探してみたいと思います。'},
-thanks:{intro:'普段の仕事は、見えないところで支えてくれる人がいて成り立っています。',point:'手伝ってもらったことを当たり前にせず、感謝を伝えることが大切だと思います。',example:'短い一言でも、気持ちが伝わると職場の雰囲気が変わります。',action:'今日は感謝の気持ちを言葉にして伝えていきたいと思います。'},
-season:{intro:'季節や周囲の環境が変わると、いつもの仕事にも違いが出てきます。',point:'変化に気づいて、状況に合わせて動くことが大切だと思います。',example:'昨日と同じやり方でいいか、一度考えてみることも必要です。',action:'今日も周囲の変化に目を向けて仕事を進めていきましょう。'},
-challenge:{intro:'新しいことに取り組むと、最初からうまくいかないこともあります。',point:'結果だけでなく、何を学べたかを振り返ることが次につながると思います。',example:'小さな挑戦を積み重ねることが、仕事の幅を広げるきっかけになります。',action:'今日も一つ、新しい工夫に取り組んでみたいと思います。'}
-};
-const newsAngles=[
- {re:/AI|人工知能|ロボット|自動化|生成AI|デジタル|半導体/,topic:'challenge',view:'便利な技術が増えるほど、何を任せて何を自分で判断するかが大事になると感じます。',example:'例えば、資料の下書きを早く作れても、相手に伝わるかどうかは最後に人が確認する必要があります。',question:'新しい道具を使うこと自体を目的にせず、どんな仕事を良くできるか考えてみたいです。'},
- {re:/値上げ|物価|価格|家計|節約|円安|円高|金利|賃金/,topic:'improvement',view:'価格やお金に関する話題を見ると、同じものでも受け取る側の負担は変わるのだと感じます。',example:'仕事でも、こちらが当たり前だと思う費用や手間が、相手には大きな負担かもしれません。',question:'数字だけを見るのではなく、その先にいる人の立場を想像したいと思いました。'},
- {re:/人手不足|採用|雇用|働き方|残業|人材|離職/,topic:'team',view:'人が足りないという話を聞くと、人数だけでなく、今いる人が働きやすい環境も大切だと思います。',example:'誰か一人しか分からない作業を共有するだけでも、休みやすさや引き継ぎやすさは変わります。',question:'今日できる小さな改善として、仕事の進め方を周りと共有したいです。'},
- {re:/気温|猛暑|熱中症|寒波|雪|天気|花粉|インフルエンザ|感染/,topic:'health',view:'天候や体調に関するニュースは、毎日の準備の大切さを思い出させてくれます。',example:'同じ仕事でも、その日の気温や体調によって集中しやすさは変わります。',question:'いつも通りと決めつけず、今日の状況に合わせて無理なく動きたいと思います。'},
- {re:/鉄道|交通|道路|運行|物流|配送|輸送/,topic:'communication',view:'移動や物流の話題からは、予定通りに進むことが当たり前ではないと感じます。',example:'一つの予定変更が、次の担当者やお客様の予定にも影響することがあります。',question:'遅れそうなときほど早めに伝える、という基本を意識したいです。'},
- {re:/研究|発見|宇宙|科学|医療|新薬|実験/,topic:'challenge',view:'研究のニュースを見ると、すぐに答えが出なくても試し続ける姿勢が大切だと感じます。',example:'仕事でも、一度うまくいかなかった方法を見直すことで、次のやり方が見つかることがあります。',question:'結果だけでなく、そこまでの試行錯誤にも目を向けたいです。'},
- {re:/スポーツ|優勝|選手|大会|サッカー|野球|試合|五輪/,topic:'team',view:'スポーツの話題は、目立つ結果の裏に日々の準備や支える人の存在があることを思い出させます。',example:'職場でも、成果を出す人だけでなく、準備や確認をしている人の力が欠かせません。',question:'自分ができる役割を丁寧に果たしたいと思います。'},
- {re:/教育|学校|子ども|授業|学習|学生/,topic:'communication',view:'学びに関するニュースを見て、伝え方は相手によって変える必要があると感じました。',example:'同じ説明でも、初めて聞く人と経験がある人では、必要な情報が違います。',question:'相手が理解できたかを確かめながら話すことを意識したいです。'},
- {re:/地域|観光|商店街|祭り|文化|伝統|イベント/,topic:'thanks',view:'地域の取り組みを見ると、普段は見えにくい人たちの協力があって成り立っていると感じます。',example:'仕事でも、当日の成果だけでなく、準備をしてくれた人への感謝を忘れたくありません。',question:'支えてくれる人に、きちんと一言伝えたいと思います。'},
- {re:/不正|調査|検査|品質|偽装|情報漏えい|謝罪/,topic:'safety',view:'信頼に関わるニュースを見ると、普段の小さな確認がどれほど大切か考えさせられます。',example:'目先の効率を優先して確認を省くと、後で大きな手戻りになることがあります。',question:'気になることを見過ごさず、早めに相談することを意識したいです。'},
- {re:/企業|店舗|商品|販売|サービス|市場|事業/,topic:'improvement',view:'新しい商品やサービスの話題を見ると、使う人が何を求めているかを考える大切さを感じます。',example:'自分たちが便利だと思うことと、お客様が助かることは必ずしも同じではありません。',question:'相手の立場で一度考えてから動きたいと思います。'}
-];
-function angleFor(title){return newsAngles.find(x=>x.re.test(title))||null}
-function topicFor(title){return angleFor(title)?.topic||'communication'}
-let newsItems=[],variant=0;
-const seriousNews=/戦争|墓地|戦没|死者|死亡|事故|災害|銃撃|殺害|地震|紛争|不正アクセス|情報流出|個人情報|サイバー攻撃|詐欺|逮捕|容疑|漏えい|漏洩|暴行|性犯罪|テロ|訃報|国防長官|政治対立/;
-const friendlyNews=/野球|サッカー|スポーツ|試合|優勝|選手|新商品|発売|映画|音楽|観光|旅行|料理|食べ物|食品|うどん|カフェ|値下げ|イベント|動物|ペット|季節|天気|趣味|ゲーム|便利|暮らし/;
-function newsScore(item){const t=item.title+' '+(item.summary||'');if(seriousNews.test(t))return -10;if(item.detail_level!=='rss-summary'||!String(item.summary||'').trim())return -5;return friendlyNews.test(t)?3:1}
-function renderNewsOptions(){
- const select=$('news'),previous=select.value,showAll=$('showAllNews').checked;
- select.querySelectorAll('option:not(:first-child)').forEach(el=>el.remove());
- let shown=0;for(let i=0;i<newsItems.length;i++){
-  const item=newsItems[i],score=newsScore(item);
-  if(!showAll&&score<1)continue;
-  const option=document.createElement('option');option.value=String(i);option.textContent=(score>=3?'おすすめ｜':'話題｜')+item.title;
-  select.append(option);shown++;
- }
- if([...select.options].some(x=>x.value===previous))select.value=previous;else select.value='';
- const excluded=newsItems.length-shown;
- $('newsStatus').textContent='会話向けの話題 '+shown+'件'+(excluded?'（'+excluded+'件を候補から除外）':'')+'。記事の概要があるものを優先しています。';
- showNewsDetail();
+const $=id=>document.getElementById(id);
+const serious=/戦争|墓地|戦没|死者|死亡|事故|災害|銃撃|殺害|地震|紛争|不正アクセス|情報流出|個人情報|サイバー攻撃|詐欺|逮捕|容疑|漏えい|漏洩|暴行|テロ|訃報|国防長官|政治対立/;
+const friendly=/野球|サッカー|スポーツ|試合|優勝|選手|新商品|発売|映画|音楽|観光|旅行|料理|食べ物|食品|うどん|カフェ|値下げ|イベント|動物|ペット|季節|天気|趣味|ゲーム|便利|暮らし/;
+let items=[],selected=null,showMore=false,lastSpeech='',busy=false;
+const safeText=x=>String(x||'').trim();
+function score(item){const t=item.title+' '+safeText(item.summary);if(serious.test(t))return -10;if(item.detail_level!=='rss-summary'||!safeText(item.summary))return -5;return friendly.test(t)?3:1}
+function render(){
+ const box=$('newsCards');box.replaceChildren();
+ const eligible=items.filter(x=>score(x)>=1);
+ const shown=eligible.slice(0,showMore?20:6);
+ if(!shown.length){const p=document.createElement('p');p.className='muted';p.textContent='今は会話向けのニュースがありません。日常の話題を使えます。';box.append(p)}
+ for(const item of shown){const button=document.createElement('button');button.type='button';button.className='news-card'+(selected===item?' selected':'');button.setAttribute('aria-pressed',String(selected===item));const meta=document.createElement('span');meta.className='meta';meta.textContent=(score(item)>=3?'話しやすい話題 · ':'ニュース · ')+safeText(item.source);const title=document.createElement('strong');title.textContent=item.title;button.append(meta,title);button.addEventListener('click',()=>{selected=item;render()});box.append(button)}
+ $('moreNews').textContent=showMore?'表示を減らす':'ほかの話題も見る';$('moreNews').disabled=eligible.length<=6;
+ $('newsStatus').textContent='会話向けの話題 '+eligible.length+'件 / 全'+items.length+'件。事件・事故などは候補から除外しています。'+(selected?' 選択中：'+selected.title:'');
 }
-
-async function loadNews(){
+async function load(){
  const urls=['/data/morning-news.json','https://raw.githubusercontent.com/kenyabell127-alt/sales-report-maker/main/data/morning-news.json'];
- let errorMessage='';
- for(const url of urls){
-  try{
-   const res=await fetch(url,{cache:'no-store'});
-   if(!res.ok)throw new Error('HTTP '+res.status);
-   const data=await res.json();
-   if(!Array.isArray(data.items))throw new Error('データ形式が不正');
-   const now=Date.now();
-   newsItems=data.items.filter(item=>item&&typeof item.title==='string'&&typeof item.url==='string'&&/^https:\/\//.test(item.url)&&(!item.published||!Number.isFinite(Date.parse(item.published))||Math.abs(now-Date.parse(item.published))<7*86400000)).sort((a,b)=>Number(Boolean(firstVerifiedSentence(b.summary)))-Number(Boolean(firstVerifiedSentence(a.summary))));
-   newsItems.sort((a,b)=>newsScore(b)-newsScore(a));
-   renderNewsOptions();
-   const updated=Date.parse(data.updated_at);
-   if(Number.isFinite(updated)&&now-updated>4*86400000)$('newsStatus').textContent+=' ※ニュース更新が止まっている可能性があります。';
-   if(newsItems.length)return;
-   errorMessage='ニュースデータに候補がありません';
-  }catch(error){errorMessage=String(error.message||error)}
- }
- $('newsStatus').textContent='ニュースを読み込めませんでした（'+errorMessage+'）。再読み込みするか、仕事の話題から作成してください。';
+ for(const url of urls){try{const res=await fetch(url,{cache:'no-store'});if(!res.ok)continue;const data=await res.json();if(!Array.isArray(data.items))continue;const now=Date.now();items=data.items.filter(x=>x&&typeof x.title==='string'&&typeof x.url==='string'&&/^https:\/\//.test(x.url)&&(!x.published||!Number.isFinite(Date.parse(x.published))||Math.abs(now-Date.parse(x.published))<7*86400000)).sort((a,b)=>score(b)-score(a));render();const updated=Date.parse(data.updated_at);if(Number.isFinite(updated)&&now-updated>4*86400000)$('newsStatus').textContent+=' ※ニュース更新が止まっている可能性があります。';return}catch(e){}}
+ items=[];render();$('newsStatus').textContent='ニュースを取得できませんでした。日常の話題は使えます。';
 }
-function cleanSentence(value){return String(value||'').trim().replace(/[。！？\s]+$/,'')}
-function completeSentence(value){
- const v=String(value||'').trim();
- return v ? v+(/[。！？]$/.test(v)?'':'。') : '';
-}
-function readableTitle(value){
- return String(value||'').replace(/\s+[-－]\s+[^-－]{2,35}$/,'').trim();
-}
-function firstVerifiedSentence(summary){
- const match=String(summary||'').match(/[^。！？]+[。！？]/);
- if(!match)return '';
- const sentence=match[0].trim();
- return sentence.length<=115 ? sentence : '';
-}
-function naturalOpinion(value){
- const v=String(value||'').trim().replace(/^(私は|自分は)[、\s]*/,'').trim();
- if(!v)return '';
- if(/(?:と思います|と思いました|と感じます|と感じました|です|ます|でしょう|だと思う|だと感じる)[。！？]?$/.test(v)){
-   return completeSentence(v.replace(/(?:だと思う|だと感じる)([。！？]?)$/,'と思いました$1'));
- }
- if(/(?:と思う|と感じる)$/.test(v))return completeSentence(v.replace(/(?:と思う|と感じる)$/,'と思いました'));
- if(/[。！？]/.test(v))return completeSentence(v);
- return completeSentence(v);
-}
-function naturalExperience(value){
- const v=String(value||'').trim().replace(/^(実際に|例えば|身近なところでは)[、\s]*/,'').trim();
- return completeSentence(v);
-}
-const everydayTopics=[
- {title:'朝のちょっとした習慣',intro:'朝って、出かけるまでがあっという間ですよね。',point:'最近、朝の準備を少し変えるだけでも、気持ちに余裕ができるなと感じています。',action:'皆さんは朝、欠かさずやっていることってありますか。'},
- {title:'買い物で感じた変化',intro:'この頃、買い物をするときに値段を前よりよく見るようになりました。',point:'同じものを買うにしても、何を大事にするかで選び方が変わりますよね。',action:'普段の買い物でも、ちょっとした工夫を探してみたいです。'},
- {title:'季節の変わり目',intro:'最近、朝晩の空気が変わってきましたね。',point:'服装ひとつ取っても、昨日と同じでいいとは限らないなと思います。',action:'体調を崩さないように、無理せず過ごしたいですね。'},
- {title:'便利になったと感じること',intro:'最近、以前より便利になったなと思うことはありませんか。',point:'便利なものが増える一方で、使い慣れるまでは少し戸惑うこともありますよね。',action:'皆さんが最近、使ってよかったと思うものも聞いてみたいです。'},
- {title:'休みの日の過ごし方',intro:'休みの日って、予定を詰め込む日もあれば、ゆっくりしたい日もありますよね。',point:'何もしない時間があると、意外と頭がすっきりすることもあります。',action:'今度の休みは、少し余裕のある時間も作ってみたいです。'},
- {title:'最近気づいた小さなこと',intro:'毎日同じように過ごしていても、ふと気づくことってありますよね。',point:'普段は気に留めないことでも、少し見方を変えると面白いなと思います。',action:'今日はそんな小さな発見も大事にしたいです。'}
+$('moreNews').addEventListener('click',()=>{showMore=!showMore;render()});
+$('everyday').addEventListener('click',()=>{selected=null;render();$('opinion').focus()});
+const everydayExamples=[
+ '最近、何かハマってるものある？ 自分もちょっと新しいことを始めたくて。',
+ 'そういえば、休みの日って何してることが多い？',
+ '最近、買ってよかったものってある？'
 ];
-function dailyTopic(){const d=new Date(),key=d.getFullYear()*372+(d.getMonth()+1)*31+d.getDate();return everydayTopics[key%everydayTopics.length]}
-function readingEstimate(text){return Math.round(text.replace(/\s/g,'').length/300*60)}
-function conversationQuestion(text){
- const x=String(text||'');
- if(/野球|プロ野球|大谷|メジャーリーグ|ホームラン|投手|打者|甲子園/.test(x))return 'ちなみに、野球は見ますか？ 好きなチームとかあります？';
- if(/サッカー|Jリーグ|ワールドカップ|代表戦|ゴール|ベルマーレ/.test(x))return 'サッカーって普段見ます？ 応援しているチームはありますか？';
- if(/バスケ|バスケット|Bリーグ|NBA/.test(x))return 'バスケって見ます？ 好きな選手とかいますか？';
- if(/スポーツ|優勝|試合|大会|選手/.test(x))return 'こういうスポーツのニュース、普段チェックします？';
- if(/旅行|観光|温泉|旅館|ホテル|空港/.test(x))return 'そのあたり、行ったことあります？';
- if(/Apple TV|ホームシアター|スピーカー|配信動画|テレビ|映画/.test(x))return '家で映画とか見ます？ テレビの音ってこだわります？';
- if(/新商品|発売|スマホ|アプリ|家電|サービス/.test(x))return 'こういうの、使ってみたいと思います？';
- if(/料理|食事|飲食|ラーメン|うどん|食品|グルメ/.test(x))return '皆さんは、最近食べておいしかったものってあります？';
- if(/天気|気温|猛暑|寒波|雨|雪/.test(x))return '最近、気温の変化を感じることってあります？';
- return '皆さんは、この話題って気になります？';
-}
-function conversationOpening(text){
- if(/野球|サッカー|バスケ|スポーツ|優勝|試合|選手/.test(text))return '最近のスポーツニュース、見ました？';
- if(/新商品|発売|スマホ|アプリ|家電/.test(text))return '最近、気になる新しいものってあります？';
- if(/旅行|観光|温泉/.test(text))return '最近、どこか出かけたい場所ってあります？';
- return 'ちょっと気になったニュースがあるんですけど。';
-}
-async function generateWithAI(){
- const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)];
- const summary=news&&news.detail_level==='rss-summary'?String(news.summary||'').slice(0,1200):'';
- const opinion=$('stance').value.trim(),experience=$('experience').value.trim();
- if(news&&newsScore(news)<0){$('result').classList.add('hidden');$('newsDetail').classList.remove('hidden');$('newsDetail').textContent='このニュースは会話のきっかけとしてはおすすめしていません。別の話題を選んでください。';return}
- if(news&&!summary){$('result').classList.add('hidden');$('newsDetail').classList.remove('hidden');$('newsDetail').textContent='この記事は見出しのみです。内容を確認した会話文を作るには、【内容あり】のニュースを選んでください。';return}if(!summary&&!opinion&&!experience){build();$('notice').textContent='日常の話題をもとにした簡易版です。AIで文章を作る場合は、感想や経験を入力してください。';return}
- const button=$('make');button.disabled=true;button.firstChild.textContent='AIが文章を整えています… ';
+function practiceLine(type){if(type==='busy')return 'そっか、また時間あるときに話そう。';if(type==='unknown')return '自分も詳しいわけじゃないんだけど、ちょっと気になってさ。';return selected?'そうなんだよ。ちなみに、この話題って普段から気にしてる？':'そうなんだ。もう少し聞かせて。'}
+function showResult(text){$('practice').classList.remove('hidden');lastSpeech=text;$('speech').textContent=text;$('resultTitle').textContent=selected?selected.title:'身近な話題';$('result').classList.remove('hidden');$('nextLine').textContent='相手の反応を選んでみよう。';$('feedback').textContent='';const link=$('source');if(selected){link.href=selected.url;link.classList.remove('hidden')}else{link.removeAttribute('href');link.classList.add('hidden')} $('result').scrollIntoView({behavior:'smooth',block:'start'})}
+async function generate(){
+ if(busy)return;busy=true;$('make').disabled=true;$('retry').disabled=true;$('make').textContent='会話のきっかけを考えています…';
  try{
+  if(!selected){const opinion=safeText($('opinion').value);const example=opinion?opinion.replace(/[。！？!?]+$/,'')+'。':everydayExamples[Math.floor(Math.random()*everydayExamples.length)];showResult(example);$('notice').textContent='ニュースを使わない会話例です。入力内容はAI生成していません。';return}
   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),45000);
-  let response;
-  try{response=await fetch('/api/conversation',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({title:news?.title||$('topic').selectedOptions[0].textContent,summary,opinion,experience,audience:$('audience').value==='team'?'friend':$('audience').value==='manager'?'work':'general',tone:$('tone').value,purpose:({insight:'chat',question:'question',practical:'explain'}[$('perspective').value]||'chat')}),signal:controller.signal})}
-  finally{clearTimeout(timeout)}
-  const data=await response.json();
-  if(!response.ok||!data.speech){const err=new Error(data.error||'GENERATION_FAILED');err.detail=String(data.detail||data.message||'').slice(0,220);err.status=response.status;throw err;}
-  $('script').textContent=data.speech;
-  $('speechHeading').textContent=news?readableTitle(news.title):'話す文章';
-  $('stats').textContent='読み上げの目安：約'+readingEstimate(data.speech)+'秒（話す速さにより変わります）';
-  const source=$('source');source.replaceChildren();
-  if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
-  $('notice').textContent=news?'配信元の概要をもとにAIが作成しました。記事全文の照合はしていません。事実関係は出典で確認してください。':'AIが入力内容から作った下書きです。';
-  $('result').classList.remove('hidden');
-  showConversationLab(news);
- }catch(error){
-  $('result').classList.remove('hidden');
-  $('script').textContent='AIで文章を生成できませんでした。下のエラー表示を確認してください。';
-  $('speechHeading').textContent='生成できませんでした';
-  $('stats').textContent='';
-  $('source').replaceChildren();
-  const reason=error.message==='AI_BINDING_REQUIRED'?'CloudflareのWorkers AI接続が未設定です。':error.name==='AbortError'?'AIの応答がタイムアウトしました。':error.message==='GENERATION_FAILED'?'AIモデルの呼び出しに失敗しました。':'接続またはサーバーエラー（'+String(error.message||'UNKNOWN').slice(0,90)+'）。';
-  $('notice').textContent=reason+(error.detail?' 詳細: '+error.detail:'')+(error.status?' HTTP '+error.status:'')+' AI生成は行われていません。';
- }finally{button.disabled=false;button.firstChild.textContent='AIで話す文章をつくる '}
+  let response;try{response=await fetch('/api/conversation',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({title:selected.title,summary:safeText(selected.summary).slice(0,1200),opinion:safeText($('opinion').value),experience:'',audience:$('audience').value,tone:'natural',purpose:$('purpose').value}),signal:controller.signal})}finally{clearTimeout(timeout)}
+  const data=await response.json();if(!response.ok||!data.speech)throw new Error(data.detail||data.message||data.error||'生成に失敗しました');
+  showResult(data.speech);$('notice').textContent='ニュース概要をもとにしたAIの下書きです。元記事で事実を確認してください。';
+ }catch(e){$('result').classList.remove('hidden');$('resultTitle').textContent='生成できませんでした';$('speech').textContent='';$('practice').classList.add('hidden');$('notice').textContent=e.name==='AbortError'?'応答が時間内に届きませんでした。もう一度お試しください。':String(e.message||e)}finally{busy=false;$('make').disabled=false;$('retry').disabled=false;$('make').textContent='会話のきっかけを作る →'}
 }
-function build(){
- const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)];
- const headline=news?readableTitle(news.title):'';
- const summary=news&&news.detail_level==='rss-summary'?firstVerifiedSentence(news.summary):'';
- const requested=$('topic').value,topic=requested==='auto'?topicFor(headline+' '+summary):requested;
- const daily=!news&&requested==='auto'?dailyTopic():null;
- const t=daily||topics[topic],tone=$('tone').value,perspective=$('perspective').value;
- const opinion=naturalOpinion($('stance').value),experience=naturalExperience($('experience').value);
- const context=headline+' '+summary;
- const parts=[];
- if(news){
-   parts.push(conversationOpening(context));
-   if(summary){
-     parts.push(summary);
-   }else{
-     parts.push('「'+headline+'」というニュースを見かけました。');
-   }
-   if(opinion)parts.push(opinion);
-   if(experience)parts.push(experience);
-   if(!opinion&&!experience){
-     parts.push(conversationQuestion(context));
-   }else if(perspective==='question'){
-     parts.push(conversationQuestion(context));
-   }
- }else{
-   parts.push(t.intro);
-   if(opinion)parts.push(opinion);
-   else parts.push(t.point);
-   if(experience)parts.push(experience);
-   if(perspective==='question')parts.push('皆さんはどう考えますか。');
-   else if(daily)parts.push(t.action);
-   else if(perspective==='practical')parts.push(t.action);
- }
- if(tone==='formal'&&parts.length>0&&!news)parts.unshift('少しお話ししたいことがあります。');
- const speech=parts.filter(Boolean).join('\n\n');
- $('script').textContent=speech;
- $('speechHeading').textContent=news?headline:(daily?daily.title:$('topic').selectedOptions[0].textContent);
- $('stats').textContent='読み上げの目安：約'+readingEstimate(speech)+'秒（話す速さにより変わります）';
- const source=$('source');source.replaceChildren();
- if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
- $('notice').textContent=news?(summary?'配信元の概要を参考にした下書きです。記事本文の確認や事実検証は行っていません。':'このニュースは見出しのみ取得しています。記事本文を確認してからご利用ください。'):'ご自身の状況に合わせて調整してください。';
- $('result').classList.remove('hidden');
- showConversationLab(news);
-}
-
-let feedbackCount={good:0,bad:0};
-function showConversationLab(news){
- const el=$('conversationLab');el.classList.remove('hidden');$('nextLine').textContent='相手の反応を選んでみよう。';$('feedbackState').textContent='';
- el.dataset.serious=String(Boolean(news&&seriousNews.test(news.title+' '+(news.summary||''))));
-}
-$('replyChoices').addEventListener('click',event=>{
- const reply=event.target.closest('button[data-reply]')?.dataset.reply;if(!reply)return;
- const serious=$('conversationLab').dataset.serious==='true';
- const responses={
-  interest:serious?'そうだね。詳しいことは記事を確認してから話した方がよさそうだね。':'そうなんだよ。ちなみに、この話題って普段から気にしてる？',
-  unknown:serious?'自分も概要だけ見たところだから、正確な内容は出典を確認しよう。':'自分も詳しいわけじゃないんだけど、ちょっと気になってさ。',
-  busy:'そっか、また時間あるときに話そう。'
- };
- $('nextLine').textContent='次の一言の例：'+responses[reply];
-});
-function recordConversationFeedback(good){
- feedbackCount[good?'good':'bad']++;
- try{const key='conversation-feedback-v1';const prev=JSON.parse(localStorage.getItem(key)||'{"good":0,"bad":0}');prev[good?'good':'bad']=(prev[good?'good':'bad']||0)+1;localStorage.setItem(key,JSON.stringify(prev));}catch(e){}
- $('feedbackState').textContent='評価ありがとう。端末内に記録しました（運営側には送信されません）。';
-}
-$('goodConversation').addEventListener('click',()=>recordConversationFeedback(true));
-$('badConversation').addEventListener('click',()=>recordConversationFeedback(false));
-function showNewsDetail(){
- const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)],el=$('newsDetail');
- if(!news){el.classList.add('hidden');el.textContent='';return}
- const summary=news.detail_level==='rss-summary'?String(news.summary||'').trim().slice(0,1200):'';
- el.classList.remove('hidden');
- el.textContent=summary?'配信元の概要：'+summary:'このニュースは見出しのみ取得できています。出典を開いて本文を確認してください。';
-}
-$('news').addEventListener('change',showNewsDetail);
-$('showAllNews').addEventListener('change',renderNewsOptions);
-$('make').addEventListener('click',()=>{variant=0;generateWithAI()});
-$('again').addEventListener('click',()=>{variant++;const tones=['natural','light','formal'];$('tone').value=tones[variant%tones.length];generateWithAI()});
-$('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('speechHeading').innerText+'\n\n'+$('script').innerText);alert('コピーしました')}catch{alert('コピーできませんでした。原稿を長押ししてコピーしてください。')}});
-$('print').addEventListener('click',()=>window.print());
-$('script').addEventListener('input',()=>{const content=$('script').innerText,n=content.replace(/\s/g,'').length;$('stats').textContent='読み上げの目安：約'+Math.round(n/300*60)+'秒（話す速さにより変わります）'});
-loadNews();
+$('make').addEventListener('click',generate);$('retry').addEventListener('click',generate);
+$('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('speech').innerText);$('notice').textContent='コピーしました。'}catch(e){$('notice').textContent='コピーできませんでした。文章を長押ししてコピーしてください。'}});
+document.querySelectorAll('[data-reply]').forEach(b=>b.addEventListener('click',()=>{$('nextLine').textContent='次の一言の例：'+practiceLine(b.dataset.reply)}));
+function feedback(good){try{const key='conversation-feedback-v2';const prev=JSON.parse(localStorage.getItem(key)||'{"good":0,"bad":0}');prev[good?'good':'bad']=(prev[good?'good':'bad']||0)+1;localStorage.setItem(key,JSON.stringify(prev))}catch(e){}$('feedback').textContent='評価ありがとう。端末内に保存しました（運営側には送信されません）。'}
+$('good').addEventListener('click',()=>feedback(true));$('bad').addEventListener('click',()=>feedback(false));
+load();
 </script></body></html>
