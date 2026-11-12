@@ -36,7 +36,8 @@ FEEDS = [
     ("Google ニュース", "https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja"),
     ("Google ニュース・ビジネス", "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=ja&gl=JP&ceid=JP:ja"),
 ]
-BLOCKED = re.compile(r"死亡|殺害|遺体|自殺|性的|虐待|逮捕|戦争|爆発|被害者|暴行|選挙|政党|宗教|容疑|銃撃|事故死|重体|災害|地震|津波")
+BLOCKED = re.compile(r"死亡|殺害|遺体|自殺|性的|虐待|逮捕|戦争|爆発|被害者|暴行|選挙|政党|宗教|容疑|銃撃|事故死|重体|災害|地震|津波|首相|総理|国会|議員|大統領|軍|紛争|ミサイル|不祥事|解任|辞任|疑惑|戦没|プーチン|トランプ")
+PROMOTIONAL = re.compile(r"PR TIMES|プレスリリース|広告|キャンペーン|購入すべき|ブラックフライデー|徹底解剖|特価|クーポン")
 NOW = dt.datetime.now(dt.timezone.utc)
 items = []
 for source, url in FEEDS:
@@ -55,9 +56,9 @@ for source, url in FEEDS:
             age = (NOW - published).total_seconds()
             if not (0 <= age <= 72 * 3600):
                 continue
-            if not (10 <= len(title) <= 145 and link.startswith("https://")) or BLOCKED.search(title):
+            if not (10 <= len(title) <= 145 and link.startswith("https://")) or BLOCKED.search(title) or PROMOTIONAL.search(title):
                 continue
-            summary = clean_summary(entry.findtext("description"), title)
+            summary = clean_summary(entry.findtext("description"), title) if source.startswith("NHK") else ""
             items.append({"title": title, "url": link, "source": source, "published": published.isoformat(), "summary": summary, "detail_level": "rss-summary" if summary else "headline"})
     except Exception as error:
         print(f"Feed failed: {source}: {type(error).__name__}: {error}")
