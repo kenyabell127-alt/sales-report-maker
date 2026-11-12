@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ニュースから話す｜話す準備室</title><meta name="description" content="今日のニュースから朝礼の一言を。無料で話す原稿をつくる話す準備室。">
+<title>ニュースから話す｜話す準備室</title><meta name="description" content="今日のニュースから朝礼の一言を。無料で話す話す文章をつくる話す準備室。">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f3f6f7;color:#243440;font:16px/1.8 system-ui,-apple-system,sans-serif}
 main{max-width:760px;margin:auto;padding:22px 16px 60px}a{color:#176b71}h1{font-size:clamp(25px,5vw,34px);line-height:1.35;margin:12px 0}
@@ -41,14 +41,14 @@ button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-bet
 </style></head><body><main><div class="brand"><a href="/">◈ 話す準備室</a><span>伝えたいことが、ちゃんと伝わる。</span></div>
 <a href="keyword-speech.html">← 会議で伝える</a>
 <h1>ニュースから、<br>自分の言葉で話そう。</h1>
-<p class="muted">朝礼で話すことが決まらないときに。ニュースや身近な話題から、話の下書きを作れます。</p>
+<p class="muted">ニュースや日常の話題を、誰かと話すきっかけに。事実を確かめながら、自然な話し言葉に整えます。</p>
 <section class="card inputs">
 <label for="news">1. 今日の話題を選ぶ</label><p class="muted">ニュースがなくても大丈夫。身近なテーマからも話せます。</p>
-<select id="news"><option value="">ニュースを使わない（仕事の話題から作る）</option></select>
+<select id="news"><option value="">ニュースを使わない（日常の話題から作る）</option></select>
 <p id="newsDetail" class="notice hidden"></p><p id="newsStatus" class="muted" role="status">ニュースを確認しています…</p>
-<label for="audience">2. 誰に話す？</label><select id="audience"><option value="team">同じ職場の仲間</option><option value="manager">上司・管理職</option><option value="general">幅広い年代の人</option></select><label for="perspective">3. どんな話にしたい？</label><select id="perspective"><option value="insight">気づきがある話</option><option value="question">聞く人が考えたくなる話</option><option value="practical">仕事に役立つ具体的な話</option></select><label for="topic">4. 話の切り口</label>
+<label for="audience">2. 誰に話す？</label><select id="audience"><option value="team">友達・同僚</option><option value="manager">仕事の相手</option><option value="general">いろいろな人</option></select><label for="perspective">3. どんな話にしたい？</label><select id="perspective"><option value="insight">気軽な会話のきっかけ</option><option value="question">相手に質問して終わる</option><option value="practical">内容を少し詳しく話す</option></select><label for="topic">4. 話の切り口</label>
 <select id="topic">
-<option value="auto">おすすめの話題を選ぶ</option>
+<option value="auto">日替わりの身近な話題</option>
 <option value="team">チームワーク</option><option value="safety">安全・確認</option>
 <option value="health">健康・体調管理</option><option value="communication">報連相・情報共有</option>
 <option value="improvement">業務改善・工夫</option><option value="thanks">感謝・気配り</option>
@@ -61,7 +61,7 @@ button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-bet
 <button id="make" type="button" class="primary">原稿をつくる <span aria-hidden="true">→</span></button>
 </section>
 <section id="result" class="card hidden" aria-live="polite">
-<h2>作成した原稿</h2><div id="speechHeading" contenteditable="true" role="textbox" aria-label="原稿の見出しを編集" style="font-size:24px;font-weight:800;line-height:1.5;margin:16px 0 8px;border-bottom:1px solid var(--line);padding-bottom:10px"></div><p id="stats" class="muted"></p>
+<h2>話す文章</h2><div id="speechHeading" contenteditable="true" role="textbox" aria-label="原稿の見出しを編集" style="font-size:24px;font-weight:800;line-height:1.5;margin:16px 0 8px;border-bottom:1px solid var(--line);padding-bottom:10px"></div><p id="stats" class="muted"></p>
 <div id="script" class="script" contenteditable="true" role="textbox" aria-label="原稿を直接編集" aria-multiline="true" spellcheck="true"></div><p class="muted">見出しと本文はタップして編集できます。コピーには修正後の内容を使います。</p><p id="source" class="muted"></p>
 <p id="notice" class="notice"></p>
 <div class="actions"><button id="copy" type="button">原稿をコピー</button><button id="again" class="secondary" type="button">話し方を変えて作り直す</button><button id="print" class="secondary" type="button">印刷・PDF保存</button></div>
@@ -160,6 +160,24 @@ const everydayTopics=[
 ];
 function dailyTopic(){const d=new Date(),key=d.getFullYear()*372+(d.getMonth()+1)*31+d.getDate();return everydayTopics[key%everydayTopics.length]}
 function readingEstimate(text){return Math.round(text.replace(/\s/g,'').length/300*60)}
+function conversationQuestion(text){
+ const x=String(text||'');
+ if(/野球|プロ野球|大谷|メジャーリーグ|ホームラン|投手|打者|甲子園/.test(x))return 'ちなみに、野球は見ますか？ 好きなチームとかあります？';
+ if(/サッカー|Jリーグ|ワールドカップ|代表戦|ゴール|ベルマーレ/.test(x))return 'サッカーって普段見ます？ 応援しているチームはありますか？';
+ if(/バスケ|バスケット|Bリーグ|NBA/.test(x))return 'バスケって見ます？ 好きな選手とかいますか？';
+ if(/スポーツ|優勝|試合|大会|選手/.test(x))return 'こういうスポーツのニュース、普段チェックします？';
+ if(/旅行|観光|温泉|旅館|ホテル|空港/.test(x))return 'そのあたり、行ったことあります？';
+ if(/新商品|発売|スマホ|アプリ|家電|サービス/.test(x))return 'こういうの、使ってみたいと思います？';
+ if(/料理|食事|飲食|ラーメン|うどん|食品|グルメ/.test(x))return '皆さんは、最近食べておいしかったものってあります？';
+ if(/天気|気温|猛暑|寒波|雨|雪/.test(x))return '最近、気温の変化を感じることってあります？';
+ return '皆さんは、この話題って気になります？';
+}
+function conversationOpening(text){
+ if(/野球|サッカー|バスケ|スポーツ|優勝|試合|選手/.test(text))return '最近のスポーツニュース、見ました？';
+ if(/新商品|発売|スマホ|アプリ|家電/.test(text))return '最近、気になる新しいものってあります？';
+ if(/旅行|観光|温泉/.test(text))return '最近、どこか出かけたい場所ってあります？';
+ return 'ちょっと気になったニュースがあるんですけど。';
+}
 function build(){
  const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)];
  const headline=news?readableTitle(news.title):'';
@@ -168,8 +186,10 @@ function build(){
  const daily=!news&&requested==='auto'?dailyTopic():null;
  const t=daily||topics[topic],tone=$('tone').value,perspective=$('perspective').value;
  const opinion=naturalOpinion($('stance').value),experience=naturalExperience($('experience').value);
- const parts=['おはようございます。'];
+ const context=headline+' '+summary;
+ const parts=[];
  if(news){
+   parts.push(conversationOpening(context));
    if(summary){
      parts.push(summary);
    }else{
@@ -178,9 +198,9 @@ function build(){
    if(opinion)parts.push(opinion);
    if(experience)parts.push(experience);
    if(!opinion&&!experience){
-     parts.push('皆さんは、この話題をどう感じましたか。');
+     parts.push(conversationQuestion(context));
    }else if(perspective==='question'){
-     parts.push('皆さんはどう感じますか。');
+     parts.push(conversationQuestion(context));
    }
  }else{
    parts.push(t.intro);
@@ -191,8 +211,8 @@ function build(){
    else if(daily)parts.push(t.action);
    else if(perspective==='practical')parts.push(t.action);
  }
- if(tone==='formal'&&parts.length>1)parts[0]='おはようございます。';
- const speech=parts.join('\n\n');
+ if(tone==='formal'&&parts.length>0)parts.unshift('少し気になった話題があるので、ご紹介します。');
+ const speech=parts.filter(Boolean).join('\n\n');
  $('script').textContent=speech;
  $('speechHeading').textContent=news?headline:(daily?daily.title:$('topic').selectedOptions[0].textContent);
  $('stats').textContent='読み上げの目安：約'+readingEstimate(speech)+'秒（話す速さにより変わります）';
