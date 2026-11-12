@@ -35,14 +35,13 @@ button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-bet
 .script{background:#fbfaf6;border:1px solid var(--line);border-radius:3px;padding:clamp(18px,4vw,32px);font-size:17px;line-height:2.15;min-height:150px}
 .notice{background:#f4f5f0;border-left:3px solid #b0c4b1;border-radius:0;padding:13px 16px;margin:14px 0}
 .muted{color:#64706a}
-.rehearsal{border-top:1px solid var(--line);padding-top:22px;margin-top:28px}
-.rehearsal .actions{margin:12px 0}
+
 @media(max-width:500px){main{padding:16px 14px 60px}.card{padding:20px 16px}.brand{margin-bottom:28px}.row>*{min-width:120px}.actions button{flex:1}}
-@media print{.rehearsal{display:none}.script{border:0}}
+@media print{.script{border:0}}
 </style></head><body><main><div class="brand"><a href="/">◈ 話す準備室</a><span>伝えたいことが、ちゃんと伝わる。</span></div>
 <a href="keyword-speech.html">← 会議で伝える</a>
 <h1>ニュースから、<br>自分の言葉で話そう。</h1>
-<p class="muted">明日の朝礼、何を話そう。ニュースを選び、考えを一つ添えるだけ。書く・整える・声に出すまで、ここで。</p>
+<p class="muted">明日の朝礼、何を話そう。ニュースを選び、考えを一つ添えるだけ。書く・整えるまで、ここで。</p>
 <section class="card inputs">
 <label for="news">1. ニュースを選ぶ</label>
 <select id="news"><option value="">ニュースを使わない（仕事の話題から作る）</option></select>
@@ -62,8 +61,8 @@ button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-bet
 <button id="make" type="button" class="primary">原稿をつくる <span aria-hidden="true">→</span></button>
 </section>
 <section id="result" class="card hidden" aria-live="polite">
-<h2>あなたのスピーチ</h2><p id="stats" class="muted"></p><div id="quality" class="notice" role="status"></div><div id="talkNotes" class="notice" aria-label="カンペ"></div><div class="rehearsal"><div><strong>声に出して練習</strong><p class="muted" style="margin:0">ボタンを押してから読み始め、読み終わったら停止。実際の時間を測れます。</p></div><div class="actions"><button id="startTimer" class="secondary" type="button">計測開始</button><button id="stopTimer" class="secondary" type="button" disabled>計測終了</button></div><p id="timerResult" role="status" class="muted">まだ計測していません</p></div>
-<div id="script" class="script" contenteditable="true" role="textbox" aria-label="原稿を直接編集" aria-multiline="true" spellcheck="true"></div><p class="muted">原稿をタップすると、その場で書き直せます。コピーは修正後の文章を使います。</p><p id="source" class="muted"></p>
+<h2>作成した原稿</h2><div id="speechHeading" contenteditable="true" role="textbox" aria-label="原稿の見出しを編集" style="font-size:24px;font-weight:800;line-height:1.5;margin:16px 0 8px;border-bottom:1px solid var(--line);padding-bottom:10px"></div><p id="stats" class="muted"></p><div id="quality" class="notice" role="status"></div><div id="talkNotes" class="notice" aria-label="カンペ"></div>
+<div id="script" class="script" contenteditable="true" role="textbox" aria-label="原稿を直接編集" aria-multiline="true" spellcheck="true"></div><p class="muted">見出しと本文はタップして編集できます。コピーには修正後の内容を使います。</p><p id="source" class="muted"></p>
 <p id="notice" class="notice"></p>
 <div class="actions"><button id="copy" type="button">原稿をコピー</button><button id="again" class="secondary" type="button">別の言い回しで作る</button><button id="print" class="secondary" type="button">印刷・PDF保存</button></div>
 </section>
@@ -166,6 +165,7 @@ function build(){
  const speech=parts.filter(Boolean).join(BL);
  const chars=speech.replace(/\s/g,'').length,estimate=readingEstimate(speech);
  $('script').textContent=speech;
+ $('speechHeading').textContent=news?headline:($('topic').value==='auto'?'今日の朝礼':$('topic').selectedOptions[0].textContent);
  $('stats').textContent='読み上げの目安：約'+estimate+'秒（話す速さにより変わります）';
  updateQuality(speech,null,!!news,!!summary);
  const noteBits=[headline||'今日の話題',stance||'自分の考え',experience||'身近な例'];
@@ -199,19 +199,8 @@ function showNewsDetail(){
 $('news').addEventListener('change',showNewsDetail);
 $('make').addEventListener('click',()=>{variant=0;build()});
 $('again').addEventListener('click',()=>{variant++;const tones=['natural','light','formal'];$('tone').value=tones[variant%tones.length];build()});
-$('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('script').innerText);alert('コピーしました')}catch{alert('コピーできませんでした。原稿を長押ししてコピーしてください。')}});
+$('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('speechHeading').innerText+'\n\n'+$('script').innerText);alert('コピーしました')}catch{alert('コピーできませんでした。原稿を長押ししてコピーしてください。')}});
 $('print').addEventListener('click',()=>window.print());
 $('script').addEventListener('input',()=>{const content=$('script').innerText,n=content.replace(/\s/g,'').length;$('stats').textContent='読み上げの目安：約'+Math.round(n/300*60)+'秒（話す速さにより変わります）';updateQuality(content,null,$('news').value!=='',Boolean(newsItems[Number($('news').value)]?.summary))});
-let timerStarted=0;
-$('startTimer').addEventListener('click',()=>{
- timerStarted=Date.now();$('startTimer').disabled=true;$('stopTimer').disabled=false;
- $('timerResult').textContent='計測中。原稿を声に出して読んでください。';
-});
-$('stopTimer').addEventListener('click',()=>{
- if(!timerStarted)return;
- const elapsed=Math.round((Date.now()-timerStarted)/1000),target=readingEstimate($('script').innerText),difference=elapsed-target;
- $('timerResult').textContent='実測 '+elapsed+'秒（文字数からの目安 '+target+'秒）。'+(Math.abs(difference)<=10?'ちょうどよい長さです。':difference>0?'目安より'+difference+'秒長め。少し短くすると収まります。':'目標より'+(-difference)+'秒短め。体験談を一つ加えると自然に伸ばせます。');
- timerStarted=0;$('startTimer').disabled=false;$('stopTimer').disabled=true;
-});
 loadNews();
 </script></body></html>
