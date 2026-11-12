@@ -18,7 +18,7 @@ button.secondary{background:#e3eff0;color:#24575b}.row{display:flex;gap:12px;fle
 <section class="card inputs">
 <label for="news">1. ニュースを選ぶ</label>
 <select id="news"><option value="">ニュースを使わない（仕事の話題から作る）</option></select>
-<p id="newsStatus" class="muted" role="status">ニュースを確認しています…</p>
+<p id="newsDetail" class="notice hidden"></p><p id="newsStatus" class="muted" role="status">ニュースを確認しています…</p>
 <label for="audience">2. 誰に話す？</label><select id="audience"><option value="team">同じ職場の仲間</option><option value="manager">上司・管理職</option><option value="general">幅広い年代の人</option></select><label for="perspective">3. どんな話にしたい？</label><select id="perspective"><option value="insight">気づきがある話</option><option value="question">聞く人が考えたくなる話</option><option value="practical">仕事に役立つ具体的な話</option></select><label for="topic">4. 話の切り口</label>
 <select id="topic">
 <option value="auto">ニュースに合う切り口を自動で選ぶ</option>
@@ -36,7 +36,7 @@ button.secondary{background:#e3eff0;color:#24575b}.row{display:flex;gap:12px;fle
 <button id="make" type="button">スピーチをつくる</button>
 </section>
 <section id="result" class="card hidden" aria-live="polite">
-<h2>あなたのスピーチ</h2><p id="stats" class="muted"></p>
+<h2>あなたのスピーチ</h2><p id="stats" class="muted"></p><div id="quality" class="notice" role="status"></div>
 <div id="script" class="script" contenteditable="true" role="textbox" aria-label="原稿を直接編集" aria-multiline="true" spellcheck="true"></div><p class="muted">原稿をタップすると、その場で書き直せます。コピーは修正後の文章を使います。</p><p id="source" class="muted"></p>
 <p id="notice" class="notice"></p>
 <div class="actions"><button id="copy" type="button">原稿をコピー</button><button id="again" class="secondary" type="button">別の言い回しで作る</button><button id="print" class="secondary" type="button">印刷・PDF保存</button></div>
@@ -91,11 +91,13 @@ function build(){
  const experience=$('experience').value.trim().replace(/[。！？\\s]+$/,'');
  const stance=$('stance').value.trim().replace(/[。！？\\s]+$/,'');
  const headline=news?news.title.replace(/\\s+-\\s+[^-]{2,35}$/,'').trim():'';
+ const summary=news&&news.detail_level==='rss-summary'&&typeof news.summary==='string'?news.summary.trim():'';
  const opening=tone==='formal'?'おはようございます。今日は一つ、気になった話題についてお話しします。':tone==='light'?'おはようございます。ちょっと気になった話があります。':'おはようございます。最近、少し考えたことがあります。';
  const audienceLine=audience==='manager'?'判断する側としては、目に見える結果だけでなく、そこに至る過程も知っておきたいところです。':audience==='general'?'立場が違えば、同じ出来事でも感じ方が違うかもしれません。':'自分の担当だけでなく、周りの人にも関係することだと思います。';
  const sections=[opening];
  if(news){
    sections.push('「'+headline+'」というニュースを見ました。');
+   if(summary)sections.push('配信元の概要には「'+summary.slice(0,110)+'」とあります。');
    if(stance)sections.push('これを見て、私は'+stance+'と感じました。');
    else if(angle)sections.push(perspective==='question'?'この話題で気になったのは、私たちならどうするだろう、ということです。':angle.view);
    else sections.push('見出しだけで結論を出すのは難しいので、まず何が起きたのかを確認したいと思いました。');
@@ -135,15 +137,37 @@ function build(){
  const chars=speech.replace(/\\s/g,'').length,estimate=Math.round(chars/300*60);
  $('script').textContent=speech;
  $('stats').textContent='約'+chars+'文字／読み上げ目安 '+estimate+'秒／設定 '+seconds+'秒';
+ updateQuality(speech,seconds,!!news,!!summary);
  const source=$('source');source.replaceChildren();
  if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
- $('notice').textContent=(news?'見出しに基づく意見の下書きです。記事本文の要約ではありません。内容を確認してから話してください。 ':'')+(Math.abs(estimate-seconds)>20?'設定時間との差があります。原稿を直接編集して調整できます。':'読み上げ時間は目安です。');
+ $('notice').textContent=(news?(summary?'RSS配信元の概要を使用しています。記事本文全体の要約ではありません。出典と内容を確認してください。 ':'RSSに有効な概要がないため、見出しに基づく意見の下書きです。記事本文は未確認です。 ') : '')+(Math.abs(estimate-seconds)>20?'設定時間との差があります。原稿を直接編集して調整できます。':'読み上げ時間は目安です。');
  $('result').classList.remove('hidden');
 }
+function updateQuality(speech,seconds,hasNews,hasSummary){
+ const length=speech.replace(/\\s/g,'').length,actual=Math.round(length/300*60);
+ const sentences=speech.split(/[。！？]/).filter(Boolean);
+ const long=sentences.filter(x=>x.length>85).length;
+ const duplicates=sentences.length-new Set(sentences.map(x=>x.trim())).size;
+ const flags=[];
+ if(Math.abs(actual-seconds)>20)flags.push('読み上げ時間が設定と'+Math.abs(actual-seconds)+'秒ずれています');
+ if(long)flags.push('長い一文が'+long+'件あります。短く区切ると話しやすくなります');
+ if(duplicates)flags.push('似た文の繰り返しがあります');
+ if(hasNews&&!hasSummary)flags.push('見出しのみ。ニュースの具体的な事実は未確認です');
+ if(!flags.length)flags.push('大きな形式上の問題は見つかりませんでした。声に出して最終確認してください');
+ $('quality').textContent='原稿チェック：'+flags.join(' ／ ');
+}
+function showNewsDetail(){
+ const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)],el=$('newsDetail');
+ if(!news){el.classList.add('hidden');el.textContent='';return}
+ const summary=news.detail_level==='rss-summary'&&news.summary?news.summary:'';
+ el.classList.remove('hidden');
+ el.textContent=summary?'配信元の概要：'+summary:'このニュースは見出しのみ取得できています。出典を開いて本文を確認してください。';
+}
+$('news').addEventListener('change',showNewsDetail);
 $('make').addEventListener('click',()=>{variant=0;build()});
 $('again').addEventListener('click',()=>{variant++;build()});
 $('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('script').innerText);alert('コピーしました')}catch{alert('コピーできませんでした。原稿を長押ししてコピーしてください。')}});
 $('print').addEventListener('click',()=>window.print());
-$('script').addEventListener('input',()=>{const n=$('script').innerText.replace(/\\s/g,'').length;$('stats').textContent='編集中：約'+n+'文字／読み上げ目安 '+Math.round(n/300*60)+'秒'});
+$('script').addEventListener('input',()=>{const content=$('script').innerText,n=content.replace(/\\s/g,'').length;$('stats').textContent='編集中：約'+n+'文字／読み上げ目安 '+Math.round(n/300*60)+'秒';updateQuality(content,Number($('duration').value),$('news').value!=='',Boolean(newsItems[Number($('news').value)]?.summary))});
 loadNews();
 </script></body></html>
