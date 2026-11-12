@@ -43,12 +43,12 @@ button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-bet
 <h1>ニュースから、<br>自分の言葉で話そう。</h1>
 <p class="muted">朝礼で話すことが決まらないときに。ニュースや身近な話題から、話の下書きを作れます。</p>
 <section class="card inputs">
-<label for="news">1. ニュースを選ぶ</label>
+<label for="news">1. 今日の話題を選ぶ</label><p class="muted">ニュースがなくても大丈夫。身近なテーマからも話せます。</p>
 <select id="news"><option value="">ニュースを使わない（仕事の話題から作る）</option></select>
 <p id="newsDetail" class="notice hidden"></p><p id="newsStatus" class="muted" role="status">ニュースを確認しています…</p>
 <label for="audience">2. 誰に話す？</label><select id="audience"><option value="team">同じ職場の仲間</option><option value="manager">上司・管理職</option><option value="general">幅広い年代の人</option></select><label for="perspective">3. どんな話にしたい？</label><select id="perspective"><option value="insight">気づきがある話</option><option value="question">聞く人が考えたくなる話</option><option value="practical">仕事に役立つ具体的な話</option></select><label for="topic">4. 話の切り口</label>
 <select id="topic">
-<option value="auto">ニュースに合う切り口を自動で選ぶ</option>
+<option value="auto">おすすめの話題を選ぶ</option>
 <option value="team">チームワーク</option><option value="safety">安全・確認</option>
 <option value="health">健康・体調管理</option><option value="communication">報連相・情報共有</option>
 <option value="improvement">業務改善・工夫</option><option value="thanks">感謝・気配り</option>
@@ -135,26 +135,36 @@ function naturalExperience(value){
  const v=String(value||'').trim().replace(/^(実際に|例えば|身近なところでは)[、\s]*/,'').trim();
  return completeSentence(v);
 }
+const everydayTopics=[
+ {title:'朝のちょっとした習慣',intro:'朝って、出かけるまでがあっという間ですよね。',point:'最近、朝の準備を少し変えるだけでも、気持ちに余裕ができるなと感じています。',action:'皆さんは朝、欠かさずやっていることってありますか。'},
+ {title:'買い物で感じた変化',intro:'この頃、買い物をするときに値段を前よりよく見るようになりました。',point:'同じものを買うにしても、何を大事にするかで選び方が変わりますよね。',action:'普段の買い物でも、ちょっとした工夫を探してみたいです。'},
+ {title:'季節の変わり目',intro:'最近、朝晩の空気が変わってきましたね。',point:'服装ひとつ取っても、昨日と同じでいいとは限らないなと思います。',action:'体調を崩さないように、無理せず過ごしたいですね。'},
+ {title:'便利になったと感じること',intro:'最近、以前より便利になったなと思うことはありませんか。',point:'便利なものが増える一方で、使い慣れるまでは少し戸惑うこともありますよね。',action:'皆さんが最近、使ってよかったと思うものも聞いてみたいです。'},
+ {title:'休みの日の過ごし方',intro:'休みの日って、予定を詰め込む日もあれば、ゆっくりしたい日もありますよね。',point:'何もしない時間があると、意外と頭がすっきりすることもあります。',action:'今度の休みは、少し余裕のある時間も作ってみたいです。'},
+ {title:'最近気づいた小さなこと',intro:'毎日同じように過ごしていても、ふと気づくことってありますよね。',point:'普段は気に留めないことでも、少し見方を変えると面白いなと思います。',action:'今日はそんな小さな発見も大事にしたいです。'}
+];
+function dailyTopic(){const d=new Date(),key=d.getFullYear()*372+(d.getMonth()+1)*31+d.getDate();return everydayTopics[key%everydayTopics.length]}
 function readingEstimate(text){return Math.round(text.replace(/\s/g,'').length/300*60)}
 function build(){
  const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)];
  const headline=news?readableTitle(news.title):'';
  const summary=news&&news.detail_level==='rss-summary'?firstVerifiedSentence(news.summary):'';
  const requested=$('topic').value,topic=requested==='auto'?topicFor(headline+' '+summary):requested;
- const t=topics[topic],tone=$('tone').value,perspective=$('perspective').value;
+ const daily=!news&&requested==='auto'?dailyTopic():null;
+ const t=daily||topics[topic],tone=$('tone').value,perspective=$('perspective').value;
  const opinion=naturalOpinion($('stance').value),experience=naturalExperience($('experience').value);
  const parts=['おはようございます。'];
  if(news){
    if(summary){
-     parts.push('最近、こんなニュースがありました。');
-     parts.push(summary);
+     parts.push('最近、'+summary.replace(/^[^。！？]{1,16}(?:は|が)[、]?/,'parts.push('最近、こんなニュースがありました。');
+     parts.push(summary);'));
    }else{
      parts.push('「'+headline+'」というニュースを見かけました。');
    }
    if(opinion)parts.push(opinion);
    if(experience)parts.push(experience);
    if(!opinion&&!experience){
-     parts.push('このニュースを見て、皆さんはどう感じましたか。');
+     parts.push('皆さんは、この話題をどう感じましたか。');
    }else if(perspective==='question'){
      parts.push('皆さんはどう感じますか。');
    }
@@ -164,12 +174,13 @@ function build(){
    else parts.push(t.point);
    if(experience)parts.push(experience);
    if(perspective==='question')parts.push('皆さんはどう考えますか。');
+   else if(daily)parts.push(t.action);
    else if(perspective==='practical')parts.push(t.action);
  }
  if(tone==='formal'&&parts.length>1)parts[0]='おはようございます。';
  const speech=parts.join('\n\n');
  $('script').textContent=speech;
- $('speechHeading').textContent=news?headline:($('topic').value==='auto'?'今日の朝礼':$('topic').selectedOptions[0].textContent);
+ $('speechHeading').textContent=news?headline:(daily?daily.title:$('topic').selectedOptions[0].textContent);
  $('stats').textContent='読み上げの目安：約'+readingEstimate(speech)+'秒（話す速さにより変わります）';
  const source=$('source');source.replaceChildren();
  if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
