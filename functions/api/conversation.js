@@ -42,14 +42,14 @@ export async function onRequestPost({request,env}){
  if(!summary&&!opinion&&!experience)return json({error:'SOURCE_REQUIRED',message:'確認できた記事の概要、感想、経験のいずれかが必要です。'},400);
  const instruction=[
   "日本語の雑談で、相手に話しかける最初の一言を作る。記事要約やスピーチではない。本文だけ返す。",
-  "原則2文、最大3文。自然なら短くてよい。",
-  "ニュース概要に書かれた事実を一つだけ使う。タイトルだけの情報、背景、日時、感情を勝手に足さない。",
+  "原則2〜4文。短さより中身を優先。ただしニュースの説明を長々と続けない。",
+  "ニュース概要から重要な具体的事実を最大2つ選ぶ。数字・変化・特徴など、話す価値がある情報を優先。タイトルだけの情報、背景、日時、感情を勝手に足さない。",
   "本人が入力していない感想や経験を捏造しない。",
-  "ニュースの説明だけで終わる文章、堅い前置き、無理な質問は避ける。",
+  "単なるニュース紹介で終わらせない。何が具体的に新しいか、どこが普段の生活とつながるかを、概要から言える範囲で伝える。根拠のない影響や感想は足さない。堅い前置きと無理な質問は避ける。",
   "「〜についてお話しします」「〜というニュースがあります」「注目されています」「考えさせられます」「皆さんはどう思いますか」は禁止。",
   "相手が知らなくても答えられる身近な質問だけ許可。固有名詞を知っているかと試す質問は禁止。",
   "例（カフェが新しい朝食メニューを発売）：近くのカフェで朝ごはんの新メニューが出るんだって。朝って外で食べることある？",
-  "例は文体だけの参考。入力にないカフェや朝食などの情報を混ぜない。",
+  "例は文体だけの参考。入力にないカフェや朝食などの情報を混ぜない。具体性が不足するニュースでは無理に面白くせず、確実な情報だけを伝える。",
   '相手：'+({friend:'友達・同僚の自然な口語',work:'職場の相手への柔らかい敬語',general:'初対面にも自然な口語'}[audience]),
   '目的：'+({chat:'軽く話題を振る',question:'答えやすい質問を一つ',explain:'要点を一つ伝える'}[purpose]),
   '概要：'+summary,'本人の感想：'+opinion,'本人の経験：'+experience
@@ -58,13 +58,13 @@ export async function onRequestPost({request,env}){
   // Use only verbatim sentences from the supplied summary as the factual anchor.
   // An earlier AI extraction step could silently introduce unsupported claims.
   const sentences=summary.match(/[^。！？]+[。！？]/g)||[];
-  const grounded=sentences.slice(0,2).join('').trim()||summary;
+  const grounded=sentences.slice(0,4).join('').trim()||summary;
   const topicText=title+' '+summary;
   const sensitive=/戦争|墓地|犠牲者|死者|死亡|事故|災害|銃撃|国防長官|戦没者|殺害|地震|紛争|不正アクセス|情報流出|個人情報|サイバー攻撃|詐欺|逮捕|容疑|漏えい|漏洩/.test(topicText);
   const category=/野球|サッカー|バスケ|スポーツ|試合|選手|優勝/.test(topicText)?'sports':/食料|価格|物価|税|賃金|経済|値下げ/.test(topicText)?'economy':/映画|テレビ|旅行|商品|アプリ|発売|音楽/.test(topicText)?'lifestyle':'general';
   const purposeGuidance=purpose==='question'?'相手が答えやすい質問を一つだけ最後に付ける。ただし重い話題には付けない。':purpose==='explain'?'確認できた要点を少し詳しく、しかしニュース記事の読み上げにならないよう話す。':'相手が返事しやすい自然な話題の振り方を優先。質問は必要な場合だけ。';
   const categoryGuidance=sensitive?'深刻なニュース。質問で締めず、軽い感想も付けない。':category==='sports'?'試合・選手について確認できる事実を伝える。観戦や応援チームの話は自然な場合だけ。':category==='economy'?'制度の説明を盛らず、生活への影響は根拠がある場合だけ。':category==='lifestyle'?'身近な使い方や経験への質問は自然な場合だけ。':'質問や感想を無理に付けない。';
-  const groundedInstruction=instruction+'\n概要から確認できる文：'+grounded+'\n追加方針：'+purposeGuidance+' '+categoryGuidance;
+  const groundedInstruction=instruction+'\n概要から確認できる文：'+grounded+'\n追加方針：'+purposeGuidance+' '+categoryGuidance+'\n最終確認：この話を聞いた人が「それで、何が面白いの？」と感じないよう、概要にある具体的な特徴や変化を一つ含める。事実を創作してまで面白くしない。';
   const messages=[{role:'system',content:'自然な日本語の会話編集者。事実を捏造せず、本文のみ返す。'},{role:'user',content:groundedInstruction}];
   let model=MODEL, result;
   try{result=await env.AI.run(model,{messages,max_tokens:800,temperature:0.3})}
