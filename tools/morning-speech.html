@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ニュースから話す｜話す準備室</title><meta name="description" content="今日のニュースから朝礼の一言を。無料で話す話す文章をつくる話す準備室。">
+<title>ニュースから話す｜話す準備室</title><meta name="description" content="ニュースや身近な話題から、自然な会話のきっかけを見つける無料ツール。">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f3f6f7;color:#243440;font:16px/1.8 system-ui,-apple-system,sans-serif}
 main{max-width:760px;margin:auto;padding:22px 16px 60px}a{color:#176b71}h1{font-size:clamp(25px,5vw,34px);line-height:1.35;margin:12px 0}
@@ -44,7 +44,7 @@ button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-bet
 <p class="muted">ニュースや日常の話題を、誰かと話すきっかけに。事実を確かめながら、自然な話し言葉に整えます。</p>
 <section class="card inputs">
 <label for="news">1. 今日の話題を選ぶ</label><p class="muted">ニュースがなくても大丈夫。身近なテーマからも話せます。</p>
-<select id="news"><option value="">ニュースを使わない（日常の話題から作る）</option></select>
+<select id="news"><option value="">ニュースを使わない（日常の話題から作る）</option></select><label class="muted" style="font-weight:400;margin:10px 0"><input type="checkbox" id="showAllNews" style="width:auto;min-height:0;margin-right:8px">会話に向かないニュースも表示する</label>
 <p id="newsDetail" class="notice hidden"></p><p id="newsStatus" class="muted" role="status">ニュースを確認しています…</p>
 <label for="audience">2. 誰に話す？</label><select id="audience"><option value="team">友達・同僚</option><option value="manager">仕事の相手</option><option value="general">いろいろな人</option></select><label for="perspective">3. どんな話にしたい？</label><select id="perspective"><option value="insight">気軽な会話のきっかけ</option><option value="question">相手に質問して終わる</option><option value="practical">内容を少し詳しく話す</option></select><label for="topic">4. 話の切り口</label>
 <select id="topic">
@@ -96,6 +96,24 @@ const newsAngles=[
 function angleFor(title){return newsAngles.find(x=>x.re.test(title))||null}
 function topicFor(title){return angleFor(title)?.topic||'communication'}
 let newsItems=[],variant=0;
+const seriousNews=/戦争|墓地|戦没|死者|死亡|事故|災害|銃撃|殺害|地震|紛争|不正アクセス|情報流出|個人情報|サイバー攻撃|詐欺|逮捕|容疑|漏えい|漏洩|暴行|性犯罪|テロ|訃報|国防長官|政治対立/;
+const friendlyNews=/野球|サッカー|スポーツ|試合|優勝|選手|新商品|発売|映画|音楽|観光|旅行|料理|食べ物|食品|うどん|カフェ|値下げ|イベント|動物|ペット|季節|天気|趣味|ゲーム|便利|暮らし/;
+function newsScore(item){const t=item.title+' '+(item.summary||'');if(seriousNews.test(t))return -10;if(item.detail_level!=='rss-summary'||!String(item.summary||'').trim())return -5;return friendlyNews.test(t)?3:1}
+function renderNewsOptions(){
+ const select=$('news'),previous=select.value,showAll=$('showAllNews').checked;
+ select.querySelectorAll('option:not(:first-child)').forEach(el=>el.remove());
+ let shown=0;for(let i=0;i<newsItems.length;i++){
+  const item=newsItems[i],score=newsScore(item);
+  if(!showAll&&score<1)continue;
+  const option=document.createElement('option');option.value=String(i);option.textContent=(score>=3?'おすすめ｜':'話題｜')+item.title;
+  select.append(option);shown++;
+ }
+ if([...select.options].some(x=>x.value===previous))select.value=previous;else select.value='';
+ const excluded=newsItems.length-shown;
+ $('newsStatus').textContent='会話向けの話題 '+shown+'件'+(excluded?'（'+excluded+'件を候補から除外）':'')+'。記事の概要があるものを優先しています。';
+ showNewsDetail();
+}
+
 async function loadNews(){
  const urls=['/data/morning-news.json','https://raw.githubusercontent.com/kenyabell127-alt/sales-report-maker/main/data/morning-news.json'];
  let errorMessage='';
@@ -107,15 +125,10 @@ async function loadNews(){
    if(!Array.isArray(data.items))throw new Error('データ形式が不正');
    const now=Date.now();
    newsItems=data.items.filter(item=>item&&typeof item.title==='string'&&typeof item.url==='string'&&/^https:\/\//.test(item.url)&&(!item.published||!Number.isFinite(Date.parse(item.published))||Math.abs(now-Date.parse(item.published))<7*86400000)).sort((a,b)=>Number(Boolean(firstVerifiedSentence(b.summary)))-Number(Boolean(firstVerifiedSentence(a.summary))));
-   $('news').querySelectorAll('option:not(:first-child)').forEach(el=>el.remove());
-   for(let i=0;i<newsItems.length;i++){
-    const option=document.createElement('option');option.value=String(i);
-    option.textContent=(firstVerifiedSentence(newsItems[i].summary)?'【内容あり】':'【見出しのみ】')+newsItems[i].title;
-    $('news').append(option);
-   }
+   newsItems.sort((a,b)=>newsScore(b)-newsScore(a));
+   renderNewsOptions();
    const updated=Date.parse(data.updated_at);
-   const stale=Number.isFinite(updated)&&now-updated>4*86400000;
-   $('newsStatus').textContent=newsItems.length?'ニュース '+newsItems.length+'件'+(stale?'（更新が止まっている可能性があります）':'')+(url!==urls[0]?'（予備の配信元から取得）':''):'ニュース候補がありません。';
+   if(Number.isFinite(updated)&&now-updated>4*86400000)$('newsStatus').textContent+=' ※ニュース更新が止まっている可能性があります。';
    if(newsItems.length)return;
    errorMessage='ニュースデータに候補がありません';
   }catch(error){errorMessage=String(error.message||error)}
@@ -183,6 +196,7 @@ async function generateWithAI(){
  const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)];
  const summary=news&&news.detail_level==='rss-summary'?String(news.summary||'').slice(0,1200):'';
  const opinion=$('stance').value.trim(),experience=$('experience').value.trim();
+ if(news&&newsScore(news)<0){$('result').classList.add('hidden');$('newsDetail').classList.remove('hidden');$('newsDetail').textContent='このニュースは会話のきっかけとしてはおすすめしていません。別の話題を選んでください。';return}
  if(news&&!summary){$('result').classList.add('hidden');$('newsDetail').classList.remove('hidden');$('newsDetail').textContent='この記事は見出しのみです。内容を確認した会話文を作るには、【内容あり】のニュースを選んでください。';return}if(!summary&&!opinion&&!experience){build();$('notice').textContent='日常の話題をもとにした簡易版です。AIで文章を作る場合は、感想や経験を入力してください。';return}
  const button=$('make');button.disabled=true;button.firstChild.textContent='AIが文章を整えています… ';
  try{
@@ -260,6 +274,7 @@ function showNewsDetail(){
  el.textContent=summary?'配信元の概要：'+summary:'このニュースは見出しのみ取得できています。出典を開いて本文を確認してください。';
 }
 $('news').addEventListener('change',showNewsDetail);
+$('showAllNews').addEventListener('change',renderNewsOptions);
 $('make').addEventListener('click',()=>{variant=0;generateWithAI()});
 $('again').addEventListener('click',()=>{variant++;const tones=['natural','light','formal'];$('tone').value=tones[variant%tones.length];generateWithAI()});
 $('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('speechHeading').innerText+'\n\n'+$('script').innerText);alert('コピーしました')}catch{alert('コピーできませんでした。原稿を長押ししてコピーしてください。')}});
