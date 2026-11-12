@@ -45,7 +45,7 @@ def ai_script(item):
  if not all(isinstance(result.get(k),str) and len(result[k])>60 for k in ("short","standard","long")): raise ValueError("incomplete response")
  return {k:result[k] for k in ("short","standard","long")}
 if key:
- for item in unique[:8]:
+ for item in unique[:3]:
   try:
    item["scripts"]=ai_script(item)
    print("Generated",item["title"][:35])
