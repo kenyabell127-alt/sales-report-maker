@@ -55,8 +55,8 @@ button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-bet
 <option value="improvement">業務改善・工夫</option><option value="thanks">感謝・気配り</option>
 <option value="season">季節・変化への対応</option><option value="challenge">挑戦・成長</option>
 </select>
-<div class="row"><div><label for="duration">5. 発表時間</label><select id="duration">
-<option value="30">30秒</option><option value="60" selected>1分</option><option value="120">2分</option><option value="180">3分</option></select></div>
+<div class="row"><div><label for="duration">5. 原稿の長さ</label><select id="duration">
+<option value="short">短め（要点だけ）</option><option value="normal" selected>標準（意見と具体例）</option><option value="detail">詳しめ（背景と体験）</option></select></div>
 <div><label for="tone">6. 話し方</label><select id="tone">
 <option value="natural">自然で親しみやすい</option><option value="formal">丁寧・落ち着いた</option><option value="light">明るく簡潔</option></select></div></div>
 <label for="stance">このニュースを見て、どう思った？（任意）</label><textarea id="stance" maxlength="280" placeholder="例：便利になる一方で、最後の確認は人がするべきだと思う"></textarea><label for="experience">実際にあったこと・身近な例（任意）</label>
@@ -111,43 +111,69 @@ async function loadNews(){
  }catch(error){$('newsStatus').textContent='ニュースを取得できませんでした。ニュースなしの原稿は利用できます。'}
 }
 function cleanSentence(value){return String(value||'').trim().replace(/[。！？\s]+$/,'')}
+function normalizeSpoken(value){
+ let v=cleanSentence(value);
+ return v.replace(/^(私は|私が)(、|\s)*/,'').replace(/^(〜|ということを)/,'');
+}
+function readingEstimate(text){return Math.round(text.replace(/\s/g,'').length/300*60)}
 function build(){
  const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)];
  const headline=news?news.title.replace(/\s+-\s+[^-]{2,35}$/,'').trim():'';
  const summary=news&&news.detail_level==='rss-summary'&&typeof news.summary==='string'?news.summary.trim():'';
  const angle=news?angleFor(headline+' '+summary):null;
  const requested=$('topic').value,topic=requested==='auto'?topicFor(headline+' '+summary):requested;
- const t=topics[topic],seconds=Number($('duration').value),tone=$('tone').value,audience=$('audience').value,perspective=$('perspective').value;
- const experience=cleanSentence($('experience').value),stance=cleanSentence($('stance').value);
- const open=tone==='formal'?'おはようございます。今日は、最近気になった話を一つ紹介します。':tone==='light'?'おはようございます。最近、気になった話があります。':'おはようございます。今日は、最近気になったことを一つ。';
- const factual=news?(summary?'「'+headline+'」というニュースが気になりました。配信元の概要によると、'+summary.slice(0,105).replace(/[。！？\s]+$/,'')+'ということです。':'「'+headline+'」という見出しが気になりました。記事の詳細はまだ確認できていませんが、この話題から考えたことがあります。'):'最近、'+t.intro;
- const opinion=stance?'私が思ったのは、'+stance+'ということです。':angle?angle.view:t.point;
- const example=experience?'実際に、'+experience+'ということがありました。':angle?angle.example:t.example;
- const question=perspective==='question'?'皆さんだったら、こういうとき何を大事にしますか。':perspective==='practical'?'仕事に置き換えるなら、何を一つ変えられるでしょうか。':angle?angle.question:t.action;
- const closing=perspective==='practical'?'今日は一つ、実際に試してみようと思います。':perspective==='question'?'すぐに答えが出なくても、少し考えるきっかけになればと思います。':'私も、いつものやり方を少し見直してみようと思います。';
- const parts=[open,factual,opinion];
- if(seconds>=60)parts.push(example);
- if(seconds>=120){
-  if(experience)parts.push('そのとき、当たり前だと思っていたことも、少し見方を変えると違って見えると感じました。');
-  else parts.push('例えば、仕事では一つの判断が次の担当者やお客様にも影響することがあります。');
-  if(audience==='manager')parts.push('管理する立場なら、結果だけでなく、その判断に至った背景も確かめたいところです。');
-  if(audience==='general')parts.push('同じ話題でも、立場によって受け止め方が違うかもしれません。');
+ const t=topics[topic],length=$('duration').value,tone=$('tone').value,perspective=$('perspective').value;
+ const experience=cleanSentence($('experience').value),stance=normalizeSpoken($('stance').value);
+ const opening=tone==='formal'?'おはようございます。':'おはようございます。';
+ const parts=[opening];
+ if(news){
+   parts.push('今日、気になったのは「'+headline+'」というニュースです。');
+   if(summary){
+     const sentences=summary.match(/[^。！？]+[。！？]/g)||[];
+     const first=sentences[0]||'';
+     if(first && first.length<=130)parts.push('記事の概要では、'+cleanSentence(first)+'と伝えられています。');
+   }
+ }else{
+   parts.push(t.intro);
  }
- if(seconds>=180){
-  parts.push('ニュースと仕事を無理につなげる必要はありません。ただ、普段とは違う分野の話を知ることで、自分の考え方を見直すきっかけにはなると思います。');
+ if(stance){
+   parts.push('これについて、'+stance+'と思いました。');
+ }else if(news&&angle){
+   parts.push(angle.view);
+ }else if(!news){
+   parts.push(t.point);
+ }else{
+   parts.push('この見出しを見て、まず詳しい背景を知りたいと思いました。');
  }
- parts.push(question,closing);
- let lines=parts.filter((x,i)=>x&&parts.indexOf(x)===i);
- let speech=lines.join(BL);
- const chars=speech.replace(/\s/g,'').length,estimate=Math.round(chars/300*60);
+ if(length!=='short'){
+   if(experience)parts.push('身近なところでは、'+experience+'ということがありました。');
+   else if(!news)parts.push(t.example);
+   else if(angle && perspective==='practical')parts.push(angle.example);
+ }
+ if(length==='detail'){
+   if(experience)parts.push('ニュースそのものとは違う話ですが、自分の経験と照らし合わせて考えるきっかけになりました。');
+   else if(news)parts.push('ただ、見出しだけで判断できることには限りがあります。背景も確かめてから、自分なりに考えたいと思います。');
+   else parts.push('慣れていることほど、立ち止まって考える機会は少ないものです。');
+ }
+ if(perspective==='question'){
+   parts.push('皆さんは、この話題をどう感じましたか。');
+ }else if(perspective==='practical' && !news){
+   parts.push(t.action);
+ }else if(stance){
+   parts.push('今日はこのことを少し意識して過ごしてみようと思います。');
+ }else if(!news){
+   parts.push(t.action);
+ }
+ const speech=parts.filter(Boolean).join(BL);
+ const chars=speech.replace(/\s/g,'').length,estimate=readingEstimate(speech);
  $('script').textContent=speech;
- $('stats').textContent='約'+chars+'文字／読み上げ目安 '+estimate+'秒／設定 '+seconds+'秒';
- updateQuality(speech,seconds,!!news,!!summary);
- const noteBits=[headline||'仕事の中で気づいたこと',stance||'自分の考えを一つ',experience||'身近な例を一つ',question];
+ $('stats').textContent='約'+chars+'文字／読み上げ目安 約'+estimate+'秒（話す速さで変わります）';
+ updateQuality(speech,null,!!news,!!summary);
+ const noteBits=[headline||'今日の話題',stance||'自分の考え',experience||'身近な例'];
  $('talkNotes').textContent='話すときのカンペ：'+noteBits.map((x,i)=>(i+1)+'．'+x).join(' ／ ');
  const source=$('source');source.replaceChildren();
  if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
- $('notice').textContent=(news?(summary?'RSS配信元の概要を利用。記事本文全体を確認したものではありません。':'見出しのみから作成。ニュースの詳細は未確認です。'):'')+' 事実や自分の体験を確認し、声に出してから使ってください。';
+ $('notice').textContent=(news?(summary?'RSSの概要を参考にしています。記事本文全体を確認したものではありません。':'見出しのみを参考にしています。記事の詳細は未確認です。'):'')+' 内容を確認し、声に出して調整してください。';
  $('result').classList.remove('hidden');
 }
 function updateQuality(speech,seconds,hasNews,hasSummary){
@@ -157,7 +183,7 @@ function updateQuality(speech,seconds,hasNews,hasSummary){
  const duplicates=sentences.length-new Set(sentences.map(x=>x.trim())).size;
  const flags=[];
  if(/(?:大切だと思います|意識したいと思います|見直してみたいと思います)/.test(speech)&&!speech.includes('実際に、'))flags.push('少し抽象的です。自分の体験を一つ足すと伝わりやすくなります');
- if(Math.abs(actual-seconds)>20)flags.push('読み上げ時間が設定と'+Math.abs(actual-seconds)+'秒ずれています。無理に定型文で水増しせず、具体的な体験を加えてください');
+ if(seconds!==null&&Math.abs(actual-seconds)>20)flags.push('読み上げ時間が設定と'+Math.abs(actual-seconds)+'秒ずれています');
  if(long)flags.push('長い一文が'+long+'件あります。短く区切ると話しやすくなります');
  if(duplicates)flags.push('似た文の繰り返しがあります');
  if(hasNews&&!hasSummary)flags.push('見出しのみ。ニュースの具体的な事実は未確認です');
@@ -176,7 +202,7 @@ $('make').addEventListener('click',()=>{variant=0;build()});
 $('again').addEventListener('click',()=>{variant++;const tones=['natural','light','formal'];$('tone').value=tones[variant%tones.length];build()});
 $('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('script').innerText);alert('コピーしました')}catch{alert('コピーできませんでした。原稿を長押ししてコピーしてください。')}});
 $('print').addEventListener('click',()=>window.print());
-$('script').addEventListener('input',()=>{const content=$('script').innerText,n=content.replace(/\s/g,'').length;$('stats').textContent='編集中：約'+n+'文字／読み上げ目安 '+Math.round(n/300*60)+'秒';updateQuality(content,Number($('duration').value),$('news').value!=='',Boolean(newsItems[Number($('news').value)]?.summary))});
+$('script').addEventListener('input',()=>{const content=$('script').innerText,n=content.replace(/\s/g,'').length;$('stats').textContent='編集中：約'+n+'文字／読み上げ目安 '+Math.round(n/300*60)+'秒';updateQuality(content,null,$('news').value!=='',Boolean(newsItems[Number($('news').value)]?.summary))});
 let timerStarted=0;
 $('startTimer').addEventListener('click',()=>{
  timerStarted=Date.now();$('startTimer').disabled=true;$('stopTimer').disabled=false;
@@ -184,8 +210,8 @@ $('startTimer').addEventListener('click',()=>{
 });
 $('stopTimer').addEventListener('click',()=>{
  if(!timerStarted)return;
- const elapsed=Math.round((Date.now()-timerStarted)/1000),target=Number($('duration').value),difference=elapsed-target;
- $('timerResult').textContent='実測 '+elapsed+'秒（目標 '+target+'秒）。'+(Math.abs(difference)<=10?'ちょうどよい長さです。':difference>0?'目標より'+difference+'秒長め。少し短くすると収まります。':'目標より'+(-difference)+'秒短め。体験談を一つ加えると自然に伸ばせます。');
+ const elapsed=Math.round((Date.now()-timerStarted)/1000),target=readingEstimate($('script').innerText),difference=elapsed-target;
+ $('timerResult').textContent='実測 '+elapsed+'秒（文字数からの目安 '+target+'秒）。'+(Math.abs(difference)<=10?'ちょうどよい長さです。':difference>0?'目標より'+difference+'秒長め。少し短くすると収まります。':'目標より'+(-difference)+'秒短め。体験談を一つ加えると自然に伸ばせます。');
  timerStarted=0;$('startTimer').disabled=false;$('stopTimer').disabled=true;
 });
 loadNews();
