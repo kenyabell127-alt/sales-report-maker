@@ -200,8 +200,13 @@ async function generateWithAI(){
   $('notice').textContent=news?'AIが配信元の概要から作った下書きです。記事本文を読んだものではありません。内容を確認してから使ってください。':'AIが入力内容から作った下書きです。';
   $('result').classList.remove('hidden');
  }catch(error){
-  build();
-  $('notice').textContent=(error.message==='AI_BINDING_REQUIRED'?'AI接続がまだ設定されていません。':error.name==='AbortError'?'AIの応答が遅いため、':'AIが利用できなかったため、')+'簡易版の文章を表示しています。';
+  $('result').classList.remove('hidden');
+  $('script').textContent='AIで文章を生成できませんでした。下のエラー表示を確認してください。';
+  $('speechHeading').textContent='生成できませんでした';
+  $('stats').textContent='';
+  $('source').replaceChildren();
+  const reason=error.message==='AI_BINDING_REQUIRED'?'CloudflareのWorkers AI接続が未設定です。':error.name==='AbortError'?'AIの応答がタイムアウトしました。':error.message==='GENERATION_FAILED'?'AIモデルの呼び出しに失敗しました。':'接続またはサーバーエラー（'+String(error.message||'UNKNOWN').slice(0,90)+'）。';
+  $('notice').textContent=reason+' AI生成は行われていません。';
  }finally{button.disabled=false;button.firstChild.textContent='AIで話す文章をつくる '}
 }
 function build(){
@@ -237,7 +242,7 @@ function build(){
    else if(daily)parts.push(t.action);
    else if(perspective==='practical')parts.push(t.action);
  }
- if(tone==='formal'&&parts.length>0)parts.unshift('少し気になった話題があるので、ご紹介します。');
+ if(tone==='formal'&&parts.length>0&&!news)parts.unshift('少しお話ししたいことがあります。');
  const speech=parts.filter(Boolean).join('\n\n');
  $('script').textContent=speech;
  $('speechHeading').textContent=news?headline:(daily?daily.title:$('topic').selectedOptions[0].textContent);
