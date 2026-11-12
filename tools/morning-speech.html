@@ -63,7 +63,7 @@ button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-bet
 <section id="result" class="card hidden" aria-live="polite">
 <h2>話す文章</h2><div id="speechHeading" contenteditable="true" role="textbox" aria-label="原稿の見出しを編集" style="font-size:24px;font-weight:800;line-height:1.5;margin:16px 0 8px;border-bottom:1px solid var(--line);padding-bottom:10px"></div><p id="stats" class="muted"></p>
 <div id="script" class="script" contenteditable="true" role="textbox" aria-label="原稿を直接編集" aria-multiline="true" spellcheck="true"></div><p class="muted">見出しと本文はタップして編集できます。コピーには修正後の内容を使います。</p><p id="source" class="muted"></p>
-<p id="notice" class="notice"></p>
+<p id="notice" class="notice"></p><div id="conversationLab" class="notice hidden" style="margin-top:22px"><h3 style="margin:0 0 6px">会話のキャッチボールを試す</h3><p class="muted" style="margin:0 0 12px">相手の反応を選ぶと、次の一言を考える練習ができます。反応は例であり、実際の相手を予測するものではありません。</p><div class="actions" id="replyChoices"><button type="button" class="secondary" data-reply="interest">興味を持った</button><button type="button" class="secondary" data-reply="unknown">詳しく知らない</button><button type="button" class="secondary" data-reply="busy">あまり乗り気じゃない</button></div><p id="nextLine" style="font-weight:650;margin:14px 0 8px" aria-live="polite"></p><div class="actions"><button id="goodConversation" type="button" class="secondary">自然だった</button><button id="badConversation" type="button" class="secondary">不自然だった</button></div><p id="feedbackState" class="muted" role="status"></p></div>
 <div class="actions"><button id="copy" type="button">原稿をコピー</button><button id="again" class="secondary" type="button">話し方を変えて作り直す</button><button id="print" class="secondary" type="button">印刷・PDF保存</button></div>
 </section>
 <p class="muted">ニュースはRSSで公開された見出しと、取得できる場合は配信元の概要を使用します。記事全文の確認・事実検証は行っていません。発表前に必ず出典をご確認ください。</p>
@@ -213,6 +213,7 @@ async function generateWithAI(){
   if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
   $('notice').textContent=news?'配信元の概要をもとにAIが作成しました。記事全文の照合はしていません。事実関係は出典で確認してください。':'AIが入力内容から作った下書きです。';
   $('result').classList.remove('hidden');
+  showConversationLab(news);
  }catch(error){
   $('result').classList.remove('hidden');
   $('script').textContent='AIで文章を生成できませんでした。下のエラー表示を確認してください。';
@@ -265,7 +266,31 @@ function build(){
  if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
  $('notice').textContent=news?(summary?'配信元の概要を参考にした下書きです。記事本文の確認や事実検証は行っていません。':'このニュースは見出しのみ取得しています。記事本文を確認してからご利用ください。'):'ご自身の状況に合わせて調整してください。';
  $('result').classList.remove('hidden');
+ showConversationLab(news);
 }
+
+let feedbackCount={good:0,bad:0};
+function showConversationLab(news){
+ const el=$('conversationLab');el.classList.remove('hidden');$('nextLine').textContent='相手の反応を選んでみよう。';$('feedbackState').textContent='';
+ el.dataset.serious=String(Boolean(news&&seriousNews.test(news.title+' '+(news.summary||''))));
+}
+$('replyChoices').addEventListener('click',event=>{
+ const reply=event.target.closest('button[data-reply]')?.dataset.reply;if(!reply)return;
+ const serious=$('conversationLab').dataset.serious==='true';
+ const responses={
+  interest:serious?'そうだね。詳しいことは記事を確認してから話した方がよさそうだね。':'そうなんだよ。ちなみに、この話題って普段から気にしてる？',
+  unknown:serious?'自分も概要だけ見たところだから、正確な内容は出典を確認しよう。':'自分も詳しいわけじゃないんだけど、ちょっと気になってさ。',
+  busy:'そっか、また時間あるときに話そう。'
+ };
+ $('nextLine').textContent='次の一言の例：'+responses[reply];
+});
+function recordConversationFeedback(good){
+ feedbackCount[good?'good':'bad']++;
+ try{const key='conversation-feedback-v1';const prev=JSON.parse(localStorage.getItem(key)||'{"good":0,"bad":0}');prev[good?'good':'bad']=(prev[good?'good':'bad']||0)+1;localStorage.setItem(key,JSON.stringify(prev));}catch(e){}
+ $('feedbackState').textContent='評価ありがとう。端末内に記録しました（運営側には送信されません）。';
+}
+$('goodConversation').addEventListener('click',()=>recordConversationFeedback(true));
+$('badConversation').addEventListener('click',()=>recordConversationFeedback(false));
 function showNewsDetail(){
  const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)],el=$('newsDetail');
  if(!news){el.classList.add('hidden');el.textContent='';return}
