@@ -50,7 +50,7 @@ function showResult(text){$('practice').classList.remove('hidden');lastSpeech=te
 async function generate(){
  if(busy)return;busy=true;$('make').disabled=true;$('retry').disabled=true;$('make').textContent='会話のきっかけを考えています…';
  try{
-  if(!selected){const opinion=safeText($('opinion').value);const example=opinion?opinion.replace(/[。！？!?]+$/,'')+'。':everydayExamples[Math.floor(Math.random()*everydayExamples.length)];showResult(example);$('notice').textContent='ニュースを使わない会話例です。入力内容はAI生成していません。';return}
+  if(!selected){const opinion=safeText($('opinion').value);if(opinion){const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),30000);try{const response=await fetch('/api/conversation',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({title:'日常の話題',summary:'',opinion,experience:'',audience:$('audience').value,tone:'natural',purpose:$('purpose').value}),signal:controller.signal});const data=await response.json();if(!response.ok||!data.speech)throw new Error(data.message||data.error||'生成エラー');showResult(data.speech);$('notice').textContent='入力された感想をもとにAIが作成した会話の下書きです。';return}finally{clearTimeout(timeout)}}const example=everydayExamples[Math.floor(Math.random()*everydayExamples.length)];showResult(example);$('notice').textContent='ニュースを使わない会話例です。AI生成ではありません。';return}
   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),45000);
   let response;try{response=await fetch('/api/conversation',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({title:selected.title,summary:safeText(selected.summary).slice(0,1200),opinion:safeText($('opinion').value),experience:'',audience:$('audience').value,tone:'natural',purpose:$('purpose').value}),signal:controller.signal})}finally{clearTimeout(timeout)}
   const data=await response.json();if(!response.ok||!data.speech)throw new Error(data.detail||data.message||data.error||'生成に失敗しました');
@@ -71,7 +71,7 @@ document.querySelectorAll('[data-reply]').forEach(b=>b.addEventListener('click',
   $('nextLine').textContent='次の一言：'+data.speech;
  }catch(e){$('nextLine').textContent='続きの生成に失敗しました。別の反応を選んでお試しください。'}finally{buttons.forEach(x=>x.disabled=false)}
 }));
-function feedback(good){try{const key='conversation-feedback-v2';const prev=JSON.parse(localStorage.getItem(key)||'{"good":0,"bad":0}');prev[good?'good':'bad']=(prev[good?'good':'bad']||0)+1;localStorage.setItem(key,JSON.stringify(prev))}catch(e){}$('feedback').textContent='評価ありがとう。端末内に保存しました（運営側には送信されません）。'}
+function feedback(good){try{const key='conversation-feedback-v2';const prev=JSON.parse(localStorage.getItem(key)||'{"good":0,"bad":0}');prev[good?'good':'bad']=(prev[good?'good':'bad']||0)+1;localStorage.setItem(key,JSON.stringify(prev));$('feedback').textContent='この端末での評価：自然 '+prev.good+'件 / 不自然 '+prev.bad+'件。運営側には送信されません。';return}catch(e){}$('feedback').textContent='評価を受け付けました。保存はできませんでした。'}
 $('good').addEventListener('click',()=>feedback(true));$('bad').addEventListener('click',()=>feedback(false));
 load();
 </script></body></html>
