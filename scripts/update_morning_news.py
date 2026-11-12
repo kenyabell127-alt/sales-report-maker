@@ -9,9 +9,9 @@ from email.utils import parsedate_to_datetime
 
 OUTPUT = pathlib.Path("data/morning-news.json")
 FEEDS = [
-    ("NHK 主要", "https://www3.nhk.or.jp/rss/news/cat0.xml"),
-    ("NHK 経済", "https://www3.nhk.or.jp/rss/news/cat5.xml"),
-    ("NHK 科学・文化", "https://www3.nhk.or.jp/rss/news/cat3.xml"),
+    ("NHK 主要", "https://www.nhk.or.jp/rss/news/cat0.xml"),
+    ("NHK 経済", "https://www.nhk.or.jp/rss/news/cat5.xml"),
+    ("NHK 科学・文化", "https://www.nhk.or.jp/rss/news/cat3.xml"),
 ]
 BLOCKED = re.compile(r"死亡|殺害|遺体|自殺|性的|虐待|逮捕|戦争|爆発|被害者|暴行|選挙|政党|宗教|容疑|銃撃|事故死|重体|災害|地震|津波")
 NOW = dt.datetime.now(dt.timezone.utc)
@@ -46,4 +46,4 @@ for item in sorted(items, key=lambda row: row["published"], reverse=True):
 OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 # Empty results should not silently preserve stale headlines as fresh news.
 OUTPUT.write_text(json.dumps({"updated_at": NOW.isoformat(), "generation": "free-headline", "items": unique[:30]}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-print(f"Saved {len(unique[:30])} fresh topics; no paid AI used")
+print(f"Saved {len(unique[:30])} fresh topics; no paid AI used")\nif not unique:\n    raise SystemExit("No fresh news items found; check feed URLs and logs")
