@@ -41,7 +41,7 @@ export async function onRequestPost({request,env}){
  try{
   const messages=[{role:'system',content:'自然な日本語の会話編集者。事実を捏造せず、本文のみ返す。'},{role:'user',content:instruction}];
   let model=MODEL, result;
-  try{result=await env.AI.run(model,{messages,max_tokens:450,temperature:0.3})}
+  try{result=await env.AI.run(model,{messages,max_tokens:800,temperature:0.3})}
   catch(primaryError){
    model=FALLBACK_MODEL;
    result=await env.AI.run(model,{messages,max_tokens:450,temperature:0.3});
@@ -55,6 +55,7 @@ export async function onRequestPost({request,env}){
    return issues;
   };
   const issues=problems(speech);
+  if(speech.length>0&&!/[。！？?!」』]$/.test(speech))issues.push('incomplete_ending');
   if(issues.length&&speech.length>=35){
    try{
     const review=await env.AI.run(model,{messages:[
@@ -62,10 +63,10 @@ export async function onRequestPost({request,env}){
      {role:'user',content:'この文章の不自然さを修正してください。無理な質問は削除し、同じ内容を繰り返さず、70〜180字程度。元記事概要：'+summary+'\n原稿：'+speech}
     ],max_tokens:330,temperature:0.2});
     const revised=String(review?.response||'').trim();
-    if(revised.length>=35&&revised.length<=LIMIT&&problems(revised).length<issues.length)speech=revised;
+    if(revised.length>=35&&revised.length<=LIMIT&&/[。！？?!」』]$/.test(revised)&&problems(revised).length<=issues.length)speech=revised;
    }catch(reviewError){}
   }
-  if(speech.length<35||speech.length>LIMIT)return json({error:'INVALID_GENERATION'},502);
+  if(speech.length<35||speech.length>LIMIT||!/[。！？?!」』]$/.test(speech))return json({error:'INCOMPLETE_GENERATION',detail:'文章が最後まで生成されませんでした。再度お試しください。'},502);
   return json({speech,source_scope:summary?'provided_summary':'user_input',model,fallback_used:model!==MODEL,quality_warning:problems(speech).join(',')||null});
  }catch(e){return json({error:'GENERATION_FAILED',message:'AIモデルの呼び出しに失敗しました。',detail:String(e?.message||'unknown').slice(0,180)},502)}
 }
