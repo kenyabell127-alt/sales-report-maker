@@ -48,4 +48,6 @@ for item in sorted(items, key=lambda row: row["published"], reverse=True):
 OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 # Empty results should not silently preserve stale headlines as fresh news.
 OUTPUT.write_text(json.dumps({"updated_at": NOW.isoformat(), "generation": "free-headline", "items": unique[:30]}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-print(f"Saved {len(unique[:30])} fresh topics; no paid AI used")\nif not unique:\n    raise SystemExit("No fresh news items found; check feed URLs and logs")
+print(f"Saved {len(unique[:30])} fresh topics; no paid AI used")
+if not unique:
+    raise SystemExit("No fresh news items found; check feed URLs and logs")
