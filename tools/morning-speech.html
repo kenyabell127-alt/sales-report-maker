@@ -55,16 +55,21 @@ thanks:{intro:'普段の仕事は、見えないところで支えてくれる�
 season:{intro:'季節や周囲の環境が変わると、いつもの仕事にも違いが出てきます。',point:'変化に気づいて、状況に合わせて動くことが大切だと思います。',example:'昨日と同じやり方でいいか、一度考えてみることも必要です。',action:'今日も周囲の変化に目を向けて仕事を進めていきましょう。'},
 challenge:{intro:'新しいことに取り組むと、最初からうまくいかないこともあります。',point:'結果だけでなく、何を学べたかを振り返ることが次につながると思います。',example:'小さな挑戦を積み重ねることが、仕事の幅を広げるきっかけになります。',action:'今日も一つ、新しい工夫に取り組んでみたいと思います。'}
 };
-const patterns=[
-[/気温|暑|寒|熱中症|気象|天気|猛暑|雪|花粉/, 'health'],
-[/交通|鉄道|道路|運行|安全|点検|事故防止|防災/, 'safety'],
-[/研究|開発|技術|AI|ロボット|デジタル|新製品|発明/, 'challenge'],
-[/働き方|人手|雇用|労働|賃金|企業|生産性/, 'improvement'],
-[/連携|協力|地域|支援|共同|チーム/, 'team'],
-[/情報|通信|発表|調査|データ/, 'communication'],
-[/季節|春|夏|秋|冬|紅葉|桜/, 'season']
+const newsAngles=[
+ {re:/AI|人工知能|ロボット|自動化|生成AI|デジタル|半導体/,topic:'challenge',view:'便利な技術が増えるほど、何を任せて何を自分で判断するかが大事になると感じます。',example:'例えば、資料の下書きを早く作れても、相手に伝わるかどうかは最後に人が確認する必要があります。',question:'新しい道具を使うこと自体を目的にせず、どんな仕事を良くできるか考えてみたいです。'},
+ {re:/値上げ|物価|価格|家計|節約|円安|円高|金利|賃金/,topic:'improvement',view:'価格やお金に関する話題を見ると、同じものでも受け取る側の負担は変わるのだと感じます。',example:'仕事でも、こちらが当たり前だと思う費用や手間が、相手には大きな負担かもしれません。',question:'数字だけを見るのではなく、その先にいる人の立場を想像したいと思いました。'},
+ {re:/人手不足|採用|雇用|働き方|残業|人材|離職/,topic:'team',view:'人が足りないという話を聞くと、人数だけでなく、今いる人が働きやすい環境も大切だと思います。',example:'誰か一人しか分からない作業を共有するだけでも、休みやすさや引き継ぎやすさは変わります。',question:'今日できる小さな改善として、仕事の進め方を周りと共有したいです。'},
+ {re:/気温|猛暑|熱中症|寒波|雪|天気|花粉|インフルエンザ|感染/,topic:'health',view:'天候や体調に関するニュースは、毎日の準備の大切さを思い出させてくれます。',example:'同じ仕事でも、その日の気温や体調によって集中しやすさは変わります。',question:'いつも通りと決めつけず、今日の状況に合わせて無理なく動きたいと思います。'},
+ {re:/鉄道|交通|道路|運行|物流|配送|輸送/,topic:'communication',view:'移動や物流の話題からは、予定通りに進むことが当たり前ではないと感じます。',example:'一つの予定変更が、次の担当者やお客様の予定にも影響することがあります。',question:'遅れそうなときほど早めに伝える、という基本を意識したいです。'},
+ {re:/研究|発見|宇宙|科学|医療|新薬|実験/,topic:'challenge',view:'研究のニュースを見ると、すぐに答えが出なくても試し続ける姿勢が大切だと感じます。',example:'仕事でも、一度うまくいかなかった方法を見直すことで、次のやり方が見つかることがあります。',question:'結果だけでなく、そこまでの試行錯誤にも目を向けたいです。'},
+ {re:/スポーツ|優勝|選手|大会|サッカー|野球|試合|五輪/,topic:'team',view:'スポーツの話題は、目立つ結果の裏に日々の準備や支える人の存在があることを思い出させます。',example:'職場でも、成果を出す人だけでなく、準備や確認をしている人の力が欠かせません。',question:'自分ができる役割を丁寧に果たしたいと思います。'},
+ {re:/教育|学校|子ども|授業|学習|学生/,topic:'communication',view:'学びに関するニュースを見て、伝え方は相手によって変える必要があると感じました。',example:'同じ説明でも、初めて聞く人と経験がある人では、必要な情報が違います。',question:'相手が理解できたかを確かめながら話すことを意識したいです。'},
+ {re:/地域|観光|商店街|祭り|文化|伝統|イベント/,topic:'thanks',view:'地域の取り組みを見ると、普段は見えにくい人たちの協力があって成り立っていると感じます。',example:'仕事でも、当日の成果だけでなく、準備をしてくれた人への感謝を忘れたくありません。',question:'支えてくれる人に、きちんと一言伝えたいと思います。'},
+ {re:/不正|調査|検査|品質|偽装|情報漏えい|謝罪/,topic:'safety',view:'信頼に関わるニュースを見ると、普段の小さな確認がどれほど大切か考えさせられます。',example:'目先の効率を優先して確認を省くと、後で大きな手戻りになることがあります。',question:'気になることを見過ごさず、早めに相談することを意識したいです。'},
+ {re:/企業|店舗|商品|販売|サービス|市場|事業/,topic:'improvement',view:'新しい商品やサービスの話題を見ると、使う人が何を求めているかを考える大切さを感じます。',example:'自分たちが便利だと思うことと、お客様が助かることは必ずしも同じではありません。',question:'相手の立場で一度考えてから動きたいと思います。'}
 ];
-function topicFor(title){for(const [regex,topic] of patterns){if(regex.test(title))return topic}return 'communication'}
+function angleFor(title){return newsAngles.find(x=>x.re.test(title))||null}
+function topicFor(title){return angleFor(title)?.topic||'communication'}
 let newsItems=[],variant=0;
 async function loadNews(){
  try{
@@ -79,26 +84,37 @@ async function loadNews(){
 }
 function build(){
  const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)];
+ const angle=news?angleFor(news.title):null;
  const requested=$('topic').value,topic=requested==='auto'?topicFor(news?.title||''):requested;
  const t=topics[topic],seconds=Number($('duration').value),tone=$('tone').value;
- const experience=$('experience').value.trim().replace(/[。！？\s]+$/,'');
- const start=tone==='formal'?'おはようございます。本日は一つ、仕事の中で意識したいことをお話しします。':tone==='light'?'おはようございます。今日は身近な話を一つさせてください。':'おはようございます。今日は、仕事の中で感じたことを一つお話しします。';
+ const experience=$('experience').value.trim().replace(/[。！？\\s]+$/,'');
+ const start=tone==='formal'?'おはようございます。本日は、気になった話題を一つお話しします。':tone==='light'?'おはようございます。今日は最近気になったことを一つ。':'おはようございます。今日は一つ、最近考えたことをお話しします。';
  let sections=[start];
  if(news){
-  sections.push('最近、'+news.source+'で「'+news.title+'」というニュースが紹介されていました。');
-  sections.push(variant%2===0?'この見出しを見て、日々の仕事にも通じることがあると感じました。':'このニュースの見出しをきっかけに、普段の仕事を少し振り返ってみました。');
+  const headline=news.title.replace(/\\s+-\\s+[^-]{2,35}$/,'').trim();
+  sections.push('最近、「'+headline+'」というニュースを見かけました。');
+  if(angle)sections.push(variant%2===0?angle.view:angle.question);
+  else sections.push('見出しだけでは詳しい事情は分かりませんが、何が起きているのか自分で確かめることが大切だと感じました。');
  }else sections.push(variant%2===0?t.intro:t.point);
- if(seconds>=60)sections.push(news?t.intro:t.point);
  if(experience)sections.push('私自身、'+experience+'。');
- if(seconds>=120){sections.push(t.point);sections.push(t.example)}
- if(seconds>=180){sections.push('こうしたことは、忙しいときほど後回しになりがちです。だからこそ、無理に大きく変えようとせず、まずは自分ができることから始めたいと思います。');sections.push('一人ひとりの小さな行動が積み重なることで、日々の仕事も少しずつ進めやすくなるのではないでしょうか。')}
- sections.push(t.action+'以上です。');
- const speech=sections.join(BL),chars=speech.replace(/\s/g,'').length,estimate=Math.round(chars/300*60);
+ if(seconds>=60)sections.push(angle?(variant%2===0?angle.example:angle.view):t.example);
+ if(seconds>=120){
+  sections.push(angle?angle.question:t.point);
+  sections.push('例えば、普段の仕事でも、慣れているからこそ見落としてしまうことがあります。相手の立場やその日の状況を一度考えるだけでも、対応が変わると思います。');
+ }
+ if(seconds>=180){
+  sections.push('すぐに大きく変えるのは難しくても、まずは今日一つだけ試してみることならできそうです。');
+  sections.push('明日振り返ったときに、昨日より少しでも仕事が進めやすくなっていれば、それも立派な前進だと思います。');
+ }
+ sections.push((angle&&requested==='auto'&&seconds<=60?angle.question:t.action)+'以上です。');
+ // Prevent repeated sentences when the selected variant already uses the same angle.
+ const deduped=sections.filter((line,i)=>sections.indexOf(line)===i);
+ const speech=deduped.join(BL),chars=speech.replace(/\\s/g,'').length,estimate=Math.round(chars/300*60);
  $('script').textContent=speech;
  $('stats').textContent='約'+chars+'文字／読み上げ目安 '+estimate+'秒／設定 '+seconds+'秒';
  const source=$('source');source.replaceChildren();
  if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
- $('notice').textContent=(news?'ニュースの見出しのみを利用しています。事実関係は出典を確認してください。 ':'')+(Math.abs(estimate-seconds)>20?'設定時間と読み上げ目安に差があります。話す速さに合わせて調整してください。':'読み上げ時間は目安です。');
+ $('notice').textContent=(news?'見出しから話題を推定した意見文です。ニュース本文を要約したものではありません。出典を確認してください。 ':'')+(Math.abs(estimate-seconds)>20?'設定時間と読み上げ目安に差があります。必要に応じて調整してください。':'読み上げ時間は目安です。');
  $('result').classList.remove('hidden');
 }
 $('make').addEventListener('click',()=>{variant=0;build()});
