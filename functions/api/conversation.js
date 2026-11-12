@@ -1,4 +1,5 @@
-const MODEL='@cf/meta/llama-3.1-8b-instruct-fp8-fast';
+const MODEL='@cf/meta/llama-3.3-70b-instruct-fp8-fast';
+const FALLBACK_MODEL='@cf/meta/llama-3.1-8b-instruct-fp8-fast';
 const LIMIT=2600;
 function json(data,status=200){return new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff'}})}
 export async function onRequestPost({request,env}){
@@ -38,9 +39,33 @@ export async function onRequestPost({request,env}){
  '本人の経験:'+experience
  ].join('\n');
  try{
-  const result=await env.AI.run(MODEL,{messages:[{role:'system',content:'与えられた事実の範囲で自然な日本語の会話文だけを作成する。'},{role:'user',content:instruction}],max_tokens:450,temperature:0.35});
-  const speech=String(result?.response||'').trim().replace(/^\`\`\`[\s\S]*?\n/,'').replace(/\`\`\`$/,'').trim();
-  if(speech.length<40||speech.length>LIMIT)return json({error:'INVALID_GENERATION'},502);
-  return json({speech,source_scope:summary?'provided_summary':'user_input',model:MODEL});
+  const messages=[{role:'system',content:'自然な日本語の会話編集者。事実を捏造せず、本文のみ返す。'},{role:'user',content:instruction}];
+  let model=MODEL, result;
+  try{result=await env.AI.run(model,{messages,max_tokens:450,temperature:0.3})}
+  catch(primaryError){
+   model=FALLBACK_MODEL;
+   result=await env.AI.run(model,{messages,max_tokens:450,temperature:0.3});
+  }
+  let speech=String(result?.response||'').trim();
+  const problems=text=>{
+   const issues=[];
+   if(/あなたも.{0,30}か[？?]|皆さんは.{0,30}思いますか|ご紹介します|詳しくは分かりませんが|仕事に活か/.test(text))issues.push('translation_like');
+   if((text.match(/[？?]/g)||[]).length>1)issues.push('multiple_questions');
+   if(/戦争|墓地|犠牲者|死者|死亡|事故|災害|銃撃|国防長官|戦没者/.test(title+' '+summary)&&/[？?]/.test(text))issues.push('sensitive_question');
+   return issues;
+  };
+  const issues=problems(speech);
+  if(issues.length&&speech.length>=35){
+   try{
+    const review=await env.AI.run(model,{messages:[
+     {role:'system',content:'自然な日本語の会話文に校正。ニュースの事実を追加しない。文章のみ出力。'},
+     {role:'user',content:'この文章の不自然さを修正してください。無理な質問は削除し、同じ内容を繰り返さず、70〜180字程度。元記事概要：'+summary+'\n原稿：'+speech}
+    ],max_tokens:330,temperature:0.2});
+    const revised=String(review?.response||'').trim();
+    if(revised.length>=35&&revised.length<=LIMIT&&problems(revised).length<issues.length)speech=revised;
+   }catch(reviewError){}
+  }
+  if(speech.length<35||speech.length>LIMIT)return json({error:'INVALID_GENERATION'},502);
+  return json({speech,source_scope:summary?'provided_summary':'user_input',model,fallback_used:model!==MODEL,quality_warning:problems(speech).join(',')||null});
  }catch(e){return json({error:'GENERATION_FAILED',message:'AIモデルの呼び出しに失敗しました。',detail:String(e?.message||'unknown').slice(0,180)},502)}
 }
