@@ -171,8 +171,7 @@ function build(){
  const parts=['おはようございます。'];
  if(news){
    if(summary){
-     parts.push('最近、'+summary.replace(/^[^。！？]{1,16}(?:は|が)[、]?/,'parts.push('最近、こんなニュースがありました。');
-     parts.push(summary);'));
+     parts.push(summary);
    }else{
      parts.push('「'+headline+'」というニュースを見かけました。');
    }
