@@ -61,7 +61,7 @@ button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-bet
 <button id="make" type="button" class="primary">原稿をつくる <span aria-hidden="true">→</span></button>
 </section>
 <section id="result" class="card hidden" aria-live="polite">
-<h2>作成した原稿</h2><div id="speechHeading" contenteditable="true" role="textbox" aria-label="原稿の見出しを編集" style="font-size:24px;font-weight:800;line-height:1.5;margin:16px 0 8px;border-bottom:1px solid var(--line);padding-bottom:10px"></div><p id="stats" class="muted"></p><div id="quality" class="notice" role="status"></div><div id="talkNotes" class="notice" aria-label="カンペ"></div>
+<h2>作成した原稿</h2><div id="speechHeading" contenteditable="true" role="textbox" aria-label="原稿の見出しを編集" style="font-size:24px;font-weight:800;line-height:1.5;margin:16px 0 8px;border-bottom:1px solid var(--line);padding-bottom:10px"></div><p id="stats" class="muted"></p>
 <div id="script" class="script" contenteditable="true" role="textbox" aria-label="原稿を直接編集" aria-multiline="true" spellcheck="true"></div><p class="muted">見出しと本文はタップして編集できます。コピーには修正後の内容を使います。</p><p id="source" class="muted"></p>
 <p id="notice" class="notice"></p>
 <div class="actions"><button id="copy" type="button">原稿をコピー</button><button id="again" class="secondary" type="button">別の言い回しで作る</button><button id="print" class="secondary" type="button">印刷・PDF保存</button></div>
@@ -167,27 +167,10 @@ function build(){
  $('script').textContent=speech;
  $('speechHeading').textContent=news?headline:($('topic').value==='auto'?'今日の朝礼':$('topic').selectedOptions[0].textContent);
  $('stats').textContent='読み上げの目安：約'+estimate+'秒（話す速さにより変わります）';
- updateQuality(speech,null,!!news,!!summary);
- const noteBits=[headline||'今日の話題',stance||'自分の考え',experience||'身近な例'];
- $('talkNotes').textContent='話すときのカンペ：'+noteBits.map((x,i)=>(i+1)+'．'+x).join(' ／ ');
  const source=$('source');source.replaceChildren();
  if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
  $('notice').textContent=(news?(summary?'RSSの概要を参考にしています。記事本文全体を確認したものではありません。':'見出しのみを参考にしています。記事の詳細は未確認です。'):'')+' 内容を確認し、声に出して調整してください。';
  $('result').classList.remove('hidden');
-}
-function updateQuality(speech,seconds,hasNews,hasSummary){
- const length=speech.replace(/\s/g,'').length,actual=Math.round(length/300*60);
- const sentences=speech.split(/[。！？]/).filter(Boolean);
- const long=sentences.filter(x=>x.length>85).length;
- const duplicates=sentences.length-new Set(sentences.map(x=>x.trim())).size;
- const flags=[];
- if(/(?:大切だと思います|意識したいと思います|見直してみたいと思います)/.test(speech)&&!speech.includes('実際に、'))flags.push('少し抽象的です。自分の体験を一つ足すと伝わりやすくなります');
- if(seconds!==null&&Math.abs(actual-seconds)>15)flags.push('希望の'+seconds+'秒に対して、原稿の目安は'+actual+'秒です。長さを合わせるには具体的な体験や背景を追加してください');
- if(long)flags.push('長い一文が'+long+'件あります。短く区切ると話しやすくなります');
- if(duplicates)flags.push('似た文の繰り返しがあります');
- if(hasNews&&!hasSummary)flags.push('見出しのみ。ニュースの具体的な事実は未確認です');
- if(!flags.length)flags.push('大きな形式上の問題は見つかりませんでした。声に出して最終確認してください');
- $('quality').textContent='原稿チェック：'+flags.join(' ／ ');
 }
 function showNewsDetail(){
  const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)],el=$('newsDetail');
@@ -201,6 +184,6 @@ $('make').addEventListener('click',()=>{variant=0;build()});
 $('again').addEventListener('click',()=>{variant++;const tones=['natural','light','formal'];$('tone').value=tones[variant%tones.length];build()});
 $('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('speechHeading').innerText+'\n\n'+$('script').innerText);alert('コピーしました')}catch{alert('コピーできませんでした。原稿を長押ししてコピーしてください。')}});
 $('print').addEventListener('click',()=>window.print());
-$('script').addEventListener('input',()=>{const content=$('script').innerText,n=content.replace(/\s/g,'').length;$('stats').textContent='読み上げの目安：約'+Math.round(n/300*60)+'秒（話す速さにより変わります）';updateQuality(content,null,$('news').value!=='',Boolean(newsItems[Number($('news').value)]?.summary))});
+$('script').addEventListener('input',()=>{const content=$('script').innerText,n=content.replace(/\s/g,'').length;$('stats').textContent='読み上げの目安：約'+Math.round(n/300*60)+'秒（話す速さにより変わります）'});
 loadNews();
 </script></body></html>
