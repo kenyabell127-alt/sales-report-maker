@@ -102,9 +102,9 @@ async function loadNews(){
   if(!res.ok)throw new Error('not found');
   const data=await res.json(),updated=Date.parse(data.updated_at);
   if(!Number.isFinite(updated)||Date.now()-updated>4*86400000)throw new Error('stale');
-  newsItems=(data.items||[]).filter(item=>item&&typeof item.title==='string'&&/^https:\/\//.test(item.url)&&Date.now()-Date.parse(item.published)<4*86400000);
+  newsItems=(data.items||[]).filter(item=>item&&typeof item.title==='string'&&/^https:\/\//.test(item.url)&&Date.now()-Date.parse(item.published)<4*86400000&&item.detail_level==='rss-summary'&&firstVerifiedSentence(item.summary));
   for(let i=0;i<newsItems.length;i++){const option=document.createElement('option');option.value=String(i);option.textContent=newsItems[i].title;$('news').append(option)}
-  $('newsStatus').textContent=newsItems.length?'最近のニュース '+newsItems.length+'件（更新 '+new Date(updated).toLocaleString('ja-JP')+'）':'現在、朝礼向けのニュース候補がありません。';
+  $('newsStatus').textContent=newsItems.length?'概要を確認できるニュース '+newsItems.length+'件（更新 '+new Date(updated).toLocaleString('ja-JP')+'）':'現在、朝礼向けのニュース候補がありません。';
  }catch(error){$('newsStatus').textContent='ニュースを取得できませんでした。ニュースなしの原稿は利用できます。'}
 }
 function cleanSentence(value){return String(value||'').trim().replace(/[。！？\s]+$/,'')}
@@ -122,17 +122,17 @@ function firstVerifiedSentence(summary){
  return sentence.length<=115 ? sentence : '';
 }
 function naturalOpinion(value){
- const v=cleanSentence(value).replace(/^(私は|自分は)[、\s]*/,'').trim();
+ const v=String(value||'').trim().replace(/^(私は|自分は)[、\s]*/,'').trim();
  if(!v)return '';
- if(/(?:と思います|と思いました|と感じます|と感じました|です|ます|でしょう|だと思う|だと感じる)$/.test(v)){
-   return completeSentence(v.replace(/(?:だと思う|だと感じる)$/,'と思いました'));
+ if(/(?:と思います|と思いました|と感じます|と感じました|です|ます|でしょう|だと思う|だと感じる)[。！？]?$/.test(v)){
+   return completeSentence(v.replace(/(?:だと思う|だと感じる)([。！？]?)$/,'と思いました$1'));
  }
  if(/(?:と思う|と感じる)$/.test(v))return completeSentence(v.replace(/(?:と思う|と感じる)$/,'と思いました'));
  if(/[。！？]/.test(v))return completeSentence(v);
  return completeSentence(v);
 }
 function naturalExperience(value){
- const v=cleanSentence(value).replace(/^(実際に|例えば|身近なところでは)[、\s]*/,'').trim();
+ const v=String(value||'').trim().replace(/^(実際に|例えば|身近なところでは)[、\s]*/,'').trim();
  return completeSentence(v);
 }
 function readingEstimate(text){return Math.round(text.replace(/\s/g,'').length/300*60)}
@@ -146,15 +146,15 @@ function build(){
  const parts=['おはようございます。'];
  if(news){
    if(summary){
-     parts.push('今日は「'+headline+'」というニュースを取り上げます。');
+     parts.push('最近、こんなニュースがありました。');
      parts.push(summary);
    }else{
-     parts.push('今日は「'+headline+'」というニュースの見出しが気になりました。');
+     parts.push('「'+headline+'」というニュースを見かけました。');
    }
    if(opinion)parts.push(opinion);
    if(experience)parts.push(experience);
    if(!opinion&&!experience){
-     parts.push('詳しい内容を確認したうえで、改めて考えてみたい話題です。');
+     parts.push('このニュースを見て、皆さんはどう感じましたか。');
    }else if(perspective==='question'){
      parts.push('皆さんはどう感じますか。');
    }
@@ -166,22 +166,20 @@ function build(){
    if(perspective==='question')parts.push('皆さんはどう考えますか。');
    else if(perspective==='practical')parts.push(t.action);
  }
- if(tone==='formal'&&parts.length>1){
-   parts[0]='おはようございます。本日は一つ、お話しさせていただきます。';
- }
+ if(tone==='formal'&&parts.length>1)parts[0]='おはようございます。';
  const speech=parts.join('\n\n');
  $('script').textContent=speech;
  $('speechHeading').textContent=news?headline:($('topic').value==='auto'?'今日の朝礼':$('topic').selectedOptions[0].textContent);
  $('stats').textContent='読み上げの目安：約'+readingEstimate(speech)+'秒（話す速さにより変わります）';
  const source=$('source');source.replaceChildren();
  if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
- $('notice').textContent=news?(summary?'配信元の概要を参考にしています。記事本文全体は確認していません。':'見出しのみを参考にしています。詳細を確認してからご利用ください。'):'ご自身の状況に合わせて調整してください。';
+ $('notice').textContent=news?'配信元の概要を参考にした下書きです。記事本文の確認や事実検証は行っていません。':'ご自身の状況に合わせて調整してください。';
  $('result').classList.remove('hidden');
 }
 function showNewsDetail(){
  const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)],el=$('newsDetail');
  if(!news){el.classList.add('hidden');el.textContent='';return}
- const summary=news.detail_level==='rss-summary'&&news.summary?news.summary:'';
+ const summary=news.detail_level==='rss-summary'?firstVerifiedSentence(news.summary):'';
  el.classList.remove('hidden');
  el.textContent=summary?'配信元の概要：'+summary:'このニュースは見出しのみ取得できています。出典を開いて本文を確認してください。';
 }
