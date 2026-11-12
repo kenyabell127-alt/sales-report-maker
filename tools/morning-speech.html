@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ニュースから話す｜ハナシル</title><meta name="description" content="今日のニュースから朝礼の一言を。無料で話す原稿をつくるハナシル。">
+<title>ニュースから話す｜話す準備室</title><meta name="description" content="今日のニュースから朝礼の一言を。無料で話す原稿をつくる話す準備室。">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f3f6f7;color:#243440;font:16px/1.8 system-ui,-apple-system,sans-serif}
 main{max-width:760px;margin:auto;padding:22px 16px 60px}a{color:#176b71}h1{font-size:clamp(25px,5vw,34px);line-height:1.35;margin:12px 0}
@@ -11,7 +11,7 @@ button.secondary{background:#e3eff0;color:#24575b}.row{display:flex;gap:12px;fle
 .muted{font-size:14px;color:#5f707b}.script{white-space:pre-wrap;line-height:2.05;background:#f5f8f8;border-radius:10px;padding:20px}
 .hidden{display:none}.notice{background:#f5f8f8;padding:12px;border-radius:9px;font-size:14px}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
 @media print{.inputs,.actions,.muted,.notice,a{display:none!important}.card{border:0;padding:0}body{background:white}main{padding:0}}
-.brand{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0 25px;border-bottom:1px solid #d9e3e6;margin-bottom:22px}.brand a{font-size:22px;font-weight:850;text-decoration:none;color:#173e42;letter-spacing:-.05em}.brand span{font-size:11px;color:#6c8083}body{background:#f7f9f7;color:#1c363b}h1{letter-spacing:-.05em;color:#173e42}.card{box-shadow:0 8px 28px #173e4210}button{background:#176f66}button:hover{background:#11584f}select:focus,textarea:focus{outline:2px solid #77b7a9;outline-offset:2px}@media(max-width:500px){.brand span{display:none}.card{padding:17px}} </style></head><body><main><div class="brand"><a href="/">◈ ハナシル</a><span>伝えたいことが、ちゃんと伝わる。</span></div>
+.brand{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0 25px;border-bottom:1px solid #d9e3e6;margin-bottom:22px}.brand a{font-size:22px;font-weight:850;text-decoration:none;color:#173e42;letter-spacing:-.05em}.brand span{font-size:11px;color:#6c8083}body{background:#f7f9f7;color:#1c363b}h1{letter-spacing:-.05em;color:#173e42}.card{box-shadow:0 8px 28px #173e4210}button{background:#176f66}button:hover{background:#11584f}select:focus,textarea:focus{outline:2px solid #77b7a9;outline-offset:2px}@media(max-width:500px){.brand span{display:none}.card{padding:17px}} </style></head><body><main><div class="brand"><a href="/">◈ 話す準備室</a><span>伝えたいことが、ちゃんと伝わる。</span></div>
 <a href="keyword-speech.html">← 会議で伝える</a>
 <h1>ニュースから、<br>自分の言葉で話そう。</h1>
 <p class="muted">ニュースを選んで、朝礼で話せる原稿を無料作成。会員登録・APIキー・文章入力は不要です。</p>
@@ -19,7 +19,7 @@ button.secondary{background:#e3eff0;color:#24575b}.row{display:flex;gap:12px;fle
 <label for="news">1. ニュースを選ぶ</label>
 <select id="news"><option value="">ニュースを使わない（仕事の話題から作る）</option></select>
 <p id="newsStatus" class="muted" role="status">ニュースを確認しています…</p>
-<label for="topic">2. 話の切り口</label>
+<label for="audience">2. 誰に話す？</label><select id="audience"><option value="team">同じ職場の仲間</option><option value="manager">上司・管理職</option><option value="general">幅広い年代の人</option></select><label for="topic">3. 話の切り口</label>
 <select id="topic">
 <option value="auto">ニュースに合う切り口を自動で選ぶ</option>
 <option value="team">チームワーク</option><option value="safety">安全・確認</option>
@@ -27,9 +27,9 @@ button.secondary{background:#e3eff0;color:#24575b}.row{display:flex;gap:12px;fle
 <option value="improvement">業務改善・工夫</option><option value="thanks">感謝・気配り</option>
 <option value="season">季節・変化への対応</option><option value="challenge">挑戦・成長</option>
 </select>
-<div class="row"><div><label for="duration">3. 発表時間</label><select id="duration">
+<div class="row"><div><label for="duration">4. 発表時間</label><select id="duration">
 <option value="30">30秒</option><option value="60" selected>1分</option><option value="120">2分</option><option value="180">3分</option></select></div>
-<div><label for="tone">4. 話し方</label><select id="tone">
+<div><label for="tone">5. 話し方</label><select id="tone">
 <option value="natural">自然で親しみやすい</option><option value="formal">丁寧・落ち着いた</option><option value="light">明るく簡潔</option></select></div></div>
 <label for="stance">このニュースを見て、どう思った？（任意）</label><textarea id="stance" maxlength="280" placeholder="例：便利になる一方で、最後の確認は人がするべきだと思う"></textarea><label for="experience">実際にあったこと・身近な例（任意）</label>
 <textarea id="experience" maxlength="450" placeholder="例：昨日、確認の声かけでミスを防げた"></textarea>
@@ -86,7 +86,7 @@ function build(){
  const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)];
  const angle=news?angleFor(news.title):null;
  const requested=$('topic').value,topic=requested==='auto'?topicFor(news?.title||''):requested;
- const t=topics[topic],seconds=Number($('duration').value),tone=$('tone').value;
+ const t=topics[topic],seconds=Number($('duration').value),tone=$('tone').value,audience=$('audience').value;
  const experience=$('experience').value.trim().replace(/[。！？\\s]+$/,'');
  const stance=$('stance').value.trim().replace(/[。！？\\s]+$/,'');
  const start=tone==='formal'?'おはようございます。本日は、気になった話題を一つお話しします。':tone==='light'?'おはようございます。今日は最近気になったことを一つ。':'おはようございます。今日は一つ、最近考えたことをお話しします。';
@@ -103,11 +103,11 @@ function build(){
  if(seconds>=60)sections.push(angle?(variant%2===0?angle.example:angle.view):t.example);
  if(seconds>=120){
   sections.push(angle?angle.question:t.point);
-  sections.push('例えば、普段の仕事でも、慣れているからこそ見落としてしまうことがあります。相手の立場やその日の状況を一度考えるだけでも、対応が変わると思います。');
+  sections.push(audience==='manager'?'管理する立場では、結果だけを見て判断せず、そこに至るまでの進め方も確認したいところです。':audience==='general'?'立場が違えば、同じ出来事でも受け止め方は変わると思います。自分と違う見方にも耳を傾けたいです。':'自分一人で完結する仕事は少ないので、周りの人と一緒に考えることにも意味があると思います。');
  }
  if(seconds>=180){
-  sections.push('すぐに大きく変えるのは難しくても、まずは今日一つだけ試してみることならできそうです。');
-  sections.push('明日振り返ったときに、昨日より少しでも仕事が進めやすくなっていれば、それも立派な前進だと思います。');
+  sections.push(angle?angle.example:t.example);
+  sections.push('ここで大切なのは、ニュースの出来事と自分たちの仕事を無理に同じものとして考えないことです。違う場面でも参考になる考え方がないか、という視点で見てみたいです。');
  }
  sections.push((angle&&requested==='auto'&&seconds<=60?angle.question:t.action)+'以上です。');
  // Prevent repeated sentences when the selected variant already uses the same angle.
@@ -117,7 +117,7 @@ function build(){
  $('stats').textContent='約'+chars+'文字／読み上げ目安 '+estimate+'秒／設定 '+seconds+'秒';
  const source=$('source');source.replaceChildren();
  if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
- $('notice').textContent=(news?'見出しから話題を推定した意見文です。ニュース本文を要約したものではありません。出典を確認してください。 ':'')+(Math.abs(estimate-seconds)>20?'設定時間と読み上げ目安に差があります。必要に応じて調整してください。':'読み上げ時間は目安です。');
+ $('notice').textContent=(news?'ニュース本文は未確認です。見出しに基づく意見の例なので、事実を確認し、ご自身の考えに直してから使ってください。 ':'')+(Math.abs(estimate-seconds)>20?'設定時間と読み上げ目安に差があります。必要に応じて調整してください。':'読み上げ時間は目安です。');
  $('result').classList.remove('hidden');
 }
 $('make').addEventListener('click',()=>{variant=0;build()});
