@@ -1,5 +1,10 @@
 name: Update morning news topics
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/update_morning_news.py'
+      - '.github/workflows/update-morning-news.yml'
   schedule:
     - cron: '10 21 * * *'
   workflow_dispatch:
