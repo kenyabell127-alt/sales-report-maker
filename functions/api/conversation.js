@@ -34,6 +34,8 @@ export async function onRequestPost({request,env}){
  const audience=['friend','work','general'].includes(data.audience)?data.audience:'friend';
  const tone=['natural','formal','light'].includes(data.tone)?data.tone:'natural';
  const purpose=['chat','question','explain'].includes(data.purpose)?data.purpose:'chat';
+ const unsafe=/戦争|墓地|戦没|死者|死亡|事故|災害|銃撃|殺害|地震|紛争|不正アクセス|情報流出|個人情報|サイバー攻撃|詐欺|逮捕|容疑|漏えい|漏洩|暴行|テロ|訃報|国防長官/;
+ if(unsafe.test(title+' '+summary))return json({error:'NOT_SUITABLE_FOR_CASUAL_CONVERSATION',message:'このニュースは気軽な会話の話題には向いていません。別の話題を選んでください。'},422);
  if(!summary&&!opinion&&!experience)return json({error:'SOURCE_REQUIRED',message:'確認できた記事の概要、感想、経験のいずれかが必要です。'},400);
  const instruction=[
  'あなたは日本語ネイティブの会話編集者。これはスピーチ原稿でもニュース解説でもなく、誰かに実際に話しかける短い会話の下書き。',
@@ -68,7 +70,7 @@ export async function onRequestPost({request,env}){
   const category=/野球|サッカー|バスケ|スポーツ|試合|選手|優勝/.test(topicText)?'sports':/食料|価格|物価|税|賃金|経済|値下げ/.test(topicText)?'economy':/映画|テレビ|旅行|商品|アプリ|発売|音楽/.test(topicText)?'lifestyle':'general';
   const purposeGuidance=purpose==='question'?'相手が答えやすい質問を一つだけ最後に付ける。ただし重い話題には付けない。':purpose==='explain'?'確認できた要点を少し詳しく、しかしニュース記事の読み上げにならないよう話す。':'相手が返事しやすい自然な話題の振り方を優先。質問は必要な場合だけ。';
   const categoryGuidance=sensitive?'深刻なニュース。質問で締めず、軽い感想も付けない。':category==='sports'?'試合・選手について確認できる事実を伝える。観戦や応援チームの話は自然な場合だけ。':category==='economy'?'制度の説明を盛らず、生活への影響は根拠がある場合だけ。':category==='lifestyle'?'身近な使い方や経験への質問は自然な場合だけ。':'質問や感想を無理に付けない。';
-  const groundedInstruction=instruction+'\n重要：ニュースを一文に圧縮しただけの説明文は不合格。単なる報道文体（「〜と言っています」「〜と発表しました」だけで終わる）は避ける。会話の自然な導入を選ぶ。ただし深刻なニュースは無理に質問・感想を加えない。\n「セキュリティーサービスを扱っている会社」のような不自然な名詞の連結を避ける。誰が何をしたかを明確にする。'+'\n最重要：企業・団体・人物名を知っているかと尋ねる導入（「〜って知ってる？」「〜をご存じですか？」）は禁止。事件・情報漏えい・事故などでは質問を一切入れず、まず何が起きたかを伝える。固有名詞が長ければ「首都圏のスーパーを運営する会社」など概要で確認できる自然な説明を優先する。'+'\\n会話の目的：'+purposeGuidance+'\\n追加条件：'+categoryGuidance+'\\n概要の原文から抜き出した事実：'+grounded+'\\n事実は元の概要で確認できる範囲のみ。会話は短く。長さを無理に増やさない。相手が途中で返事できる言葉にする。';
+  const groundedInstruction=instruction+'\n重要：ニュースを一文に圧縮しただけの説明文は不合格。単なる報道文体（「〜と言っています」「〜と発表しました」だけで終わる）は避ける。会話の自然な導入を選ぶ。ただし深刻なニュースは無理に質問・感想を加えない。\n「セキュリティーサービスを扱っている会社」のような不自然な名詞の連結を避ける。誰が何をしたかを明確にする。'+'\n最重要：企業・団体・人物名を知っているかと尋ねる導入（「〜って知ってる？」「〜をご存じですか？」）は禁止。事件・情報漏えい・事故などでは質問を一切入れず、まず何が起きたかを伝える。固有名詞が長ければ「首都圏のスーパーを運営する会社」など概要で確認できる自然な説明を優先する。'+'\n会話の目的：'+purposeGuidance+'\n追加条件：'+categoryGuidance+'\\n概要の原文から抜き出した事実：'+grounded+'\\n事実は元の概要で確認できる範囲のみ。会話は短く。長さを無理に増やさない。相手が途中で返事できる言葉にする。';
   const messages=[{role:'system',content:'自然な日本語の会話編集者。事実を捏造せず、本文のみ返す。'},{role:'user',content:groundedInstruction}];
   let model=MODEL, result;
   try{result=await env.AI.run(model,{messages,max_tokens:800,temperature:0.3})}
