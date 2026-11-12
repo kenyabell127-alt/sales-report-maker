@@ -102,9 +102,9 @@ async function loadNews(){
   if(!res.ok)throw new Error('not found');
   const data=await res.json(),updated=Date.parse(data.updated_at);
   if(!Number.isFinite(updated)||Date.now()-updated>4*86400000)throw new Error('stale');
-  newsItems=(data.items||[]).filter(item=>item&&typeof item.title==='string'&&/^https:\/\//.test(item.url)&&Date.now()-Date.parse(item.published)<4*86400000&&item.detail_level==='rss-summary'&&firstVerifiedSentence(item.summary));
-  for(let i=0;i<newsItems.length;i++){const option=document.createElement('option');option.value=String(i);option.textContent=newsItems[i].title;$('news').append(option)}
-  $('newsStatus').textContent=newsItems.length?'概要を確認できるニュース '+newsItems.length+'件（更新 '+new Date(updated).toLocaleString('ja-JP')+'）':'現在、朝礼向けのニュース候補がありません。';
+  newsItems=(data.items||[]).filter(item=>item&&typeof item.title==='string'&&/^https:\/\//.test(item.url)&&Date.now()-Date.parse(item.published)<4*86400000);
+  for(let i=0;i<newsItems.length;i++){const option=document.createElement('option');option.value=String(i);option.textContent=newsItems[i].title+(firstVerifiedSentence(newsItems[i].summary)?'':'［見出しのみ］');$('news').append(option)}
+  $('newsStatus').textContent=newsItems.length?'最近のニュース '+newsItems.length+'件（更新 '+new Date(updated).toLocaleString('ja-JP')+'）':'現在、朝礼向けのニュース候補がありません。';
  }catch(error){$('newsStatus').textContent='ニュースを取得できませんでした。ニュースなしの原稿は利用できます。'}
 }
 function cleanSentence(value){return String(value||'').trim().replace(/[。！？\s]+$/,'')}
@@ -184,7 +184,7 @@ function build(){
  $('stats').textContent='読み上げの目安：約'+readingEstimate(speech)+'秒（話す速さにより変わります）';
  const source=$('source');source.replaceChildren();
  if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
- $('notice').textContent=news?'配信元の概要を参考にした下書きです。記事本文の確認や事実検証は行っていません。':'ご自身の状況に合わせて調整してください。';
+ $('notice').textContent=news?(summary?'配信元の概要を参考にした下書きです。記事本文の確認や事実検証は行っていません。':'このニュースは見出しのみ取得しています。記事本文を確認してからご利用ください。'):'ご自身の状況に合わせて調整してください。';
  $('result').classList.remove('hidden');
 }
 function showNewsDetail(){
