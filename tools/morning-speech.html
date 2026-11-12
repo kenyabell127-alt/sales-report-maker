@@ -41,7 +41,7 @@ button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-bet
 </style></head><body><main><div class="brand"><a href="/">◈ 話す準備室</a><span>伝えたいことが、ちゃんと伝わる。</span></div>
 <a href="keyword-speech.html">← 会議で伝える</a>
 <h1>ニュースから、<br>自分の言葉で話そう。</h1>
-<p class="muted">明日の朝礼、何を話そう。ニュースを選び、考えを一つ添えるだけ。書く・整えるまで、ここで。</p>
+<p class="muted">朝礼で話すことが決まらないときに。ニュースや身近な話題から、話の下書きを作れます。</p>
 <section class="card inputs">
 <label for="news">1. ニュースを選ぶ</label>
 <select id="news"><option value="">ニュースを使わない（仕事の話題から作る）</option></select>
@@ -56,7 +56,7 @@ button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-bet
 </select>
 <div class="row"><div><label for="tone">5. 話し方</label><select id="tone">
 <option value="natural">自然で親しみやすい</option><option value="formal">丁寧・落ち着いた</option><option value="light">明るく簡潔</option></select></div></div>
-<label for="stance">このニュースを見て、どう思った？（任意）</label><textarea id="stance" maxlength="280" placeholder="例：便利になる一方で、最後の確認は人がするべきだと思う"></textarea><label for="experience">実際にあったこと・身近な例（任意）</label>
+<label for="stance">自分の考え・伝えたいこと（任意）</label><textarea id="stance" maxlength="280" placeholder="例：便利になる一方で、最後の確認は人がするべきだと思う"></textarea><label for="experience">自分の経験・具体例（任意）</label>
 <textarea id="experience" maxlength="450" placeholder="例：昨日、確認の声かけでミスを防げた"></textarea>
 <button id="make" type="button" class="primary">原稿をつくる <span aria-hidden="true">→</span></button>
 </section>
@@ -64,7 +64,7 @@ button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-bet
 <h2>作成した原稿</h2><div id="speechHeading" contenteditable="true" role="textbox" aria-label="原稿の見出しを編集" style="font-size:24px;font-weight:800;line-height:1.5;margin:16px 0 8px;border-bottom:1px solid var(--line);padding-bottom:10px"></div><p id="stats" class="muted"></p>
 <div id="script" class="script" contenteditable="true" role="textbox" aria-label="原稿を直接編集" aria-multiline="true" spellcheck="true"></div><p class="muted">見出しと本文はタップして編集できます。コピーには修正後の内容を使います。</p><p id="source" class="muted"></p>
 <p id="notice" class="notice"></p>
-<div class="actions"><button id="copy" type="button">原稿をコピー</button><button id="again" class="secondary" type="button">別の言い回しで作る</button><button id="print" class="secondary" type="button">印刷・PDF保存</button></div>
+<div class="actions"><button id="copy" type="button">原稿をコピー</button><button id="again" class="secondary" type="button">話し方を変えて作り直す</button><button id="print" class="secondary" type="button">印刷・PDF保存</button></div>
 </section>
 <p class="muted">ニュースはRSSで公開された見出しと、取得できる場合は配信元の概要を使用します。記事全文の確認・事実検証は行っていません。発表前に必ず出典をご確認ください。</p>
 </main><script>
@@ -108,68 +108,74 @@ async function loadNews(){
  }catch(error){$('newsStatus').textContent='ニュースを取得できませんでした。ニュースなしの原稿は利用できます。'}
 }
 function cleanSentence(value){return String(value||'').trim().replace(/[。！？\s]+$/,'')}
-function normalizeSpoken(value){
- let v=cleanSentence(value);
- return v.replace(/^(私は|私が)(、|\s)*/,'').replace(/^(〜|ということを)/,'');
+function completeSentence(value){
+ const v=String(value||'').trim();
+ return v ? v+(/[。！？]$/.test(v)?'':'。') : '';
+}
+function readableTitle(value){
+ return String(value||'').replace(/\s+[-－]\s+[^-－]{2,35}$/,'').trim();
+}
+function firstVerifiedSentence(summary){
+ const match=String(summary||'').match(/[^。！？]+[。！？]/);
+ if(!match)return '';
+ const sentence=match[0].trim();
+ return sentence.length<=115 ? sentence : '';
+}
+function naturalOpinion(value){
+ const v=cleanSentence(value).replace(/^(私は|自分は)[、\s]*/,'').trim();
+ if(!v)return '';
+ if(/(?:と思います|と思いました|と感じます|と感じました|です|ます|でしょう|だと思う|だと感じる)$/.test(v)){
+   return completeSentence(v.replace(/(?:だと思う|だと感じる)$/,'と思いました'));
+ }
+ if(/(?:と思う|と感じる)$/.test(v))return completeSentence(v.replace(/(?:と思う|と感じる)$/,'と思いました'));
+ if(/[。！？]/.test(v))return completeSentence(v);
+ return completeSentence(v);
+}
+function naturalExperience(value){
+ const v=cleanSentence(value).replace(/^(実際に|例えば|身近なところでは)[、\s]*/,'').trim();
+ return completeSentence(v);
 }
 function readingEstimate(text){return Math.round(text.replace(/\s/g,'').length/300*60)}
 function build(){
  const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)];
- const headline=news?news.title.replace(/\s+-\s+[^-]{2,35}$/,'').trim():'';
- const summary=news&&news.detail_level==='rss-summary'&&typeof news.summary==='string'?news.summary.trim():'';
- const angle=news?angleFor(headline+' '+summary):null;
+ const headline=news?readableTitle(news.title):'';
+ const summary=news&&news.detail_level==='rss-summary'?firstVerifiedSentence(news.summary):'';
  const requested=$('topic').value,topic=requested==='auto'?topicFor(headline+' '+summary):requested;
  const t=topics[topic],tone=$('tone').value,perspective=$('perspective').value;
- const experience=cleanSentence($('experience').value),stance=normalizeSpoken($('stance').value);
- const opening=tone==='formal'?'おはようございます。':'おはようございます。';
- const parts=[opening];
+ const opinion=naturalOpinion($('stance').value),experience=naturalExperience($('experience').value);
+ const parts=['おはようございます。'];
  if(news){
-   parts.push('今日、気になったのは「'+headline+'」というニュースです。');
    if(summary){
-     const sentences=summary.match(/[^。！？]+[。！？]/g)||[];
-     const first=sentences[0]||'';
-     if(first && first.length<=130)parts.push('記事の概要では、'+cleanSentence(first)+'と伝えられています。');
+     parts.push('今日は「'+headline+'」というニュースを取り上げます。');
+     parts.push(summary);
+   }else{
+     parts.push('今日は「'+headline+'」というニュースの見出しが気になりました。');
+   }
+   if(opinion)parts.push(opinion);
+   if(experience)parts.push(experience);
+   if(!opinion&&!experience){
+     parts.push('詳しい内容を確認したうえで、改めて考えてみたい話題です。');
+   }else if(perspective==='question'){
+     parts.push('皆さんはどう感じますか。');
    }
  }else{
    parts.push(t.intro);
+   if(opinion)parts.push(opinion);
+   else parts.push(t.point);
+   if(experience)parts.push(experience);
+   if(perspective==='question')parts.push('皆さんはどう考えますか。');
+   else if(perspective==='practical')parts.push(t.action);
  }
- if(stance){
-   parts.push('これについて、'+stance+'と思いました。');
- }else if(news&&angle){
-   parts.push(angle.view);
- }else if(!news){
-   parts.push(t.point);
- }else{
-   parts.push('この見出しを見て、まず詳しい背景を知りたいと思いました。');
+ if(tone==='formal'&&parts.length>1){
+   parts[0]='おはようございます。本日は一つ、お話しさせていただきます。';
  }
- {
-   if(experience)parts.push('身近なところでは、'+experience+'ということがありました。');
-   else if(!news)parts.push(t.example);
-   else if(angle && perspective==='practical')parts.push(angle.example);
- }
- if(experience && stance){
-   if(experience)parts.push('ニュースそのものとは違う話ですが、自分の経験と照らし合わせて考えるきっかけになりました。');
-   else if(news)parts.push('ただ、見出しだけで判断できることには限りがあります。背景も確かめてから、自分なりに考えたいと思います。');
-   else parts.push('慣れていることほど、立ち止まって考える機会は少ないものです。');
- }
- if(perspective==='question'){
-   parts.push('皆さんは、この話題をどう感じましたか。');
- }else if(perspective==='practical' && !news){
-   parts.push(t.action);
- }else if(stance){
-   parts.push('今日はこのことを少し意識して過ごしてみようと思います。');
- }else if(!news){
-   parts.push(t.action);
- }
- 
- const speech=parts.filter(Boolean).join(BL);
- const chars=speech.replace(/\s/g,'').length,estimate=readingEstimate(speech);
+ const speech=parts.join('\n\n');
  $('script').textContent=speech;
  $('speechHeading').textContent=news?headline:($('topic').value==='auto'?'今日の朝礼':$('topic').selectedOptions[0].textContent);
- $('stats').textContent='読み上げの目安：約'+estimate+'秒（話す速さにより変わります）';
+ $('stats').textContent='読み上げの目安：約'+readingEstimate(speech)+'秒（話す速さにより変わります）';
  const source=$('source');source.replaceChildren();
  if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
- $('notice').textContent=(news?(summary?'RSSの概要を参考にしています。記事本文全体を確認したものではありません。':'見出しのみを参考にしています。記事の詳細は未確認です。'):'')+' 内容を確認し、声に出して調整してください。';
+ $('notice').textContent=news?(summary?'配信元の概要を参考にしています。記事本文全体は確認していません。':'見出しのみを参考にしています。詳細を確認してからご利用ください。'):'ご自身の状況に合わせて調整してください。';
  $('result').classList.remove('hidden');
 }
 function showNewsDetail(){
