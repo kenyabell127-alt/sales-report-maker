@@ -22,7 +22,7 @@ def clean_summary(raw, title):
     value = re.sub(r"\\s+", " ", html.unescape(" ".join(parser.parts))).strip()
     value = re.sub(r"https?://\\S+", "", value).strip()
     # Google News RSS often repeats headlines and embeds a list of linked articles.
-    if len(value) < 45 or value == title or title in value[:len(title)+15]:
+    if len(value) < 45 or value == title or title in value[:len(title)+15] or "Google ニュース" in value:
         return ""
     if len(value) > 450:
         value = value[:450].rsplit("。", 1)[0] or value[:300]
