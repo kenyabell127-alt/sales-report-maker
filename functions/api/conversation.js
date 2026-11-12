@@ -47,7 +47,7 @@ export async function onRequestPost({request,env}){
   const sensitive=/戦争|墓地|犠牲者|死者|死亡|事故|災害|銃撃|国防長官|戦没者|殺害|地震|紛争|不正アクセス|情報流出|個人情報|サイバー攻撃|詐欺|逮捕|容疑|漏えい|漏洩/.test(topicText);
   const category=/野球|サッカー|バスケ|スポーツ|試合|選手|優勝/.test(topicText)?'sports':/食料|価格|物価|税|賃金|経済|値下げ/.test(topicText)?'economy':/映画|テレビ|旅行|商品|アプリ|発売|音楽/.test(topicText)?'lifestyle':'general';
   const categoryGuidance=sensitive?'深刻なニュース。質問で締めず、軽い感想も付けない。':category==='sports'?'試合・選手について確認できる事実を伝える。観戦や応援チームの話は自然な場合だけ。':category==='economy'?'制度の説明を盛らず、生活への影響は根拠がある場合だけ。':category==='lifestyle'?'身近な使い方や経験への質問は自然な場合だけ。':'質問や感想を無理に付けない。';
-  const groundedInstruction=instruction+'\n最重要：企業・団体・人物名を知っているかと尋ねる導入（「〜って知ってる？」「〜をご存じですか？」）は禁止。事件・情報漏えい・事故などでは質問を一切入れず、まず何が起きたかを伝える。固有名詞が長ければ「首都圏のスーパーを運営する会社」など概要で確認できる自然な説明を優先する。'+'\\n追加条件：'+categoryGuidance+'\\n概要の原文から抜き出した事実：'+grounded+'\\n事実は元の概要で確認できる範囲のみ。会話は短く。長さを無理に増やさない。相手が途中で返事できる言葉にする。';
+  const groundedInstruction=instruction+'\n重要：ニュースを一文に圧縮しただけの説明文は不合格。単なる報道文体（「〜と言っています」「〜と発表しました」だけで終わる）は避ける。会話の自然な導入を選ぶ。ただし深刻なニュースは無理に質問・感想を加えない。\n「セキュリティーサービスを扱っている会社」のような不自然な名詞の連結を避ける。誰が何をしたかを明確にする。'+'\n最重要：企業・団体・人物名を知っているかと尋ねる導入（「〜って知ってる？」「〜をご存じですか？」）は禁止。事件・情報漏えい・事故などでは質問を一切入れず、まず何が起きたかを伝える。固有名詞が長ければ「首都圏のスーパーを運営する会社」など概要で確認できる自然な説明を優先する。'+'\\n追加条件：'+categoryGuidance+'\\n概要の原文から抜き出した事実：'+grounded+'\\n事実は元の概要で確認できる範囲のみ。会話は短く。長さを無理に増やさない。相手が途中で返事できる言葉にする。';
   const messages=[{role:'system',content:'自然な日本語の会話編集者。事実を捏造せず、本文のみ返す。'},{role:'user',content:groundedInstruction}];
   let model=MODEL, result;
   try{result=await env.AI.run(model,{messages,max_tokens:800,temperature:0.3})}
@@ -62,6 +62,7 @@ export async function onRequestPost({request,env}){
    if((text.match(/[？?]/g)||[]).length>1)issues.push('multiple_questions');
    if(text.length>260)issues.push('too_long');
    if(/気になったニュースがあるんですけど|皆さんはこの話題|って知ってる[？?]|をご存じですか[？?]|知っていますか[？?]/.test(text))issues.push('canned_intro');
+   if(/^(?:.{0,80})(?:と言っています|と発表しました|と報じられています)。$/.test(text))issues.push('news_summary_not_conversation');
    if(/戦争|墓地|犠牲者|死者|死亡|事故|災害|銃撃|国防長官|戦没者/.test(title+' '+summary)&&/[？?]/.test(text))issues.push('sensitive_question');
    return issues;
   };
@@ -75,7 +76,7 @@ export async function onRequestPost({request,env}){
      {role:'user',content:'この文章を会話として自然に修正してください。相手が途中で返事できる短い言葉にする。無理な質問は削除。字数を埋めない。元記事概要：'+summary+'\n原稿：'+speech}
     ],max_tokens:330,temperature:0.2});
     const revised=String(review?.response||'').trim();
-    if(revised.length>=15&&revised.length<=260&&/[。！？?!」』]$/.test(revised)&&problems(revised).length<=issues.length&&(!sensitive||!/[？?]/.test(revised)))speech=revised;
+    if(revised.length>=15&&revised.length<=260&&/[。！？?!」』]$/.test(revised)&&problems(revised).length<issues.length&&(!sensitive||!/[？?]/.test(revised)))speech=revised;
    }catch(reviewError){}
   }
   if(speech.length<15||speech.length>260||!/[。！？?!」』]$/.test(speech)||(sensitive&&/[？?]/.test(speech)))return json({error:'INCOMPLETE_GENERATION',detail:'文章が最後まで生成されませんでした。再度お試しください。'},502);
