@@ -191,7 +191,7 @@ async function generateWithAI(){
   try{response=await fetch('/api/conversation',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({title:news?.title||$('topic').selectedOptions[0].textContent,summary,opinion,experience,audience:$('audience').value==='team'?'friend':$('audience').value==='manager'?'work':'general',tone:$('tone').value}),signal:controller.signal})}
   finally{clearTimeout(timeout)}
   const data=await response.json();
-  if(!response.ok||!data.speech)throw new Error(data.error||'GENERATION_FAILED');
+  if(!response.ok||!data.speech){const err=new Error(data.error||'GENERATION_FAILED');err.detail=String(data.detail||data.message||'').slice(0,220);err.status=response.status;throw err;}
   $('script').textContent=data.speech;
   $('speechHeading').textContent=news?readableTitle(news.title):'話す文章';
   $('stats').textContent='読み上げの目安：約'+readingEstimate(data.speech)+'秒（話す速さにより変わります）';
@@ -206,7 +206,7 @@ async function generateWithAI(){
   $('stats').textContent='';
   $('source').replaceChildren();
   const reason=error.message==='AI_BINDING_REQUIRED'?'CloudflareのWorkers AI接続が未設定です。':error.name==='AbortError'?'AIの応答がタイムアウトしました。':error.message==='GENERATION_FAILED'?'AIモデルの呼び出しに失敗しました。':'接続またはサーバーエラー（'+String(error.message||'UNKNOWN').slice(0,90)+'）。';
-  $('notice').textContent=reason+' AI生成は行われていません。';
+  $('notice').textContent=reason+(error.detail?' 詳細: '+error.detail:'')+(error.status?' HTTP '+error.status:'')+' AI生成は行われていません。';
  }finally{button.disabled=false;button.firstChild.textContent='AIで話す文章をつくる '}
 }
 function build(){
