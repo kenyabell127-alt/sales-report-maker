@@ -1,6 +1,9 @@
 const MODEL='@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const FALLBACK_MODEL='@cf/meta/llama-3.1-8b-instruct-fp8-fast';
 const LIMIT=2600;
+const BAD_STYLE=/あなたも.{0,30}か[？?]|皆さんは.{0,30}思いますか|ご紹介します|詳しくは分かりませんが|仕事に活か|って知ってる[？?]|をご存じですか[？?]|知っていますか[？?]/;
+function quality(text,{followup=false}={}){const issues=[];if(BAD_STYLE.test(text))issues.push('unnatural_phrase');if((text.match(/[？?]/g)||[]).length>1)issues.push('too_many_questions');if(text.length>(followup?110:260))issues.push('too_long');if(!/[。！？?!」』]$/.test(text))issues.push('incomplete');if(/^.{0,90}(?:と発表しました|と報じられています)。$/.test(text))issues.push('news_readout');return issues}
+
 function json(data,status=200){return new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff'}})}
 export async function onRequestPost({request,env}){
  if(!env.AI)return json({error:'AI_BINDING_REQUIRED',message:'AIの接続設定が必要です。'},503);
@@ -17,13 +20,13 @@ export async function onRequestPost({request,env}){
   if(!original||!['interest','unknown','busy'].includes(reaction))return json({error:'INVALID_FOLLOWUP'},400);
   if(reaction==='busy')return json({speech:audience==='friend'?'そっか、また時間あるときに話そう。':'承知しました。またお時間のあるときに。',source_scope:'conversation_only'});
   const sensitive=/戦争|墓地|戦没|死者|死亡|事故|災害|銃撃|殺害|地震|紛争|不正アクセス|情報流出|個人情報|サイバー攻撃|詐欺|逮捕|容疑|漏えい|漏洩|暴行|テロ|訃報/.test(original+' '+summary);
-  const instruction=['あなたは自然な日本語で話す会話相手。以下の最初の一言に対する返事を受けて、次の一言だけを書いてください。','説明文、見出し、箇条書きは禁止。最大2文、100文字以内。','元記事概要にない事実・自分の経験・感想を創作しない。','元の一言を繰り返さない。','反応：'+(reaction==='interest'?'相手は「へえ、そうなんだ」と興味を示した':'相手は「あまり詳しく知らない」と言った'),'話す相手：'+(audience==='work'?'仕事の相手（自然な敬語）':'友達・同僚（自然な口語）'),sensitive?'深刻な話題。軽い質問や冗談は避け、知らないことは断言しない。':'自然に会話が続くなら、相手自身の経験を一つだけ尋ねてもよい。','最初の一言：'+original,'確認できる記事概要：'+summary].join('\\n');
+  const instruction=['あなたは自然な日本語で話す会話相手。以下の最初の一言に対する返事を受けて、次の一言だけを書いてください。','説明文、見出し、箇条書きは禁止。最大2文、100文字以内。','元記事概要にない事実・自分の経験・感想を創作しない。','元の一言を繰り返さない。','反応：'+(reaction==='interest'?'相手は「へえ、そうなんだ」と興味を示した':'相手は「あまり詳しく知らない」と言った'),'話す相手：'+(audience==='work'?'仕事の相手（自然な敬語）':'友達・同僚（自然な口語）'),sensitive?'深刻な話題。軽い質問や冗談は避け、知らないことは断言しない。':'自然に会話が続くなら、相手自身の経験を一つだけ尋ねてもよい。','最初の一言：'+original,'確認できる記事概要：'+summary].join('\n');
   try{
    let model=MODEL,result;
    try{result=await env.AI.run(model,{messages:[{role:'user',content:instruction}],max_tokens:180,temperature:0.35})}
    catch(e){model=FALLBACK_MODEL;result=await env.AI.run(model,{messages:[{role:'user',content:instruction}],max_tokens:180,temperature:0.3})}
    const speech=String(result?.response||'').trim();
-   if(!speech||speech.length>110||/あなたも.{0,30}か[？?]|皆さんはどう思|ご紹介します/.test(speech))return json({error:'UNNATURAL_FOLLOWUP',message:'自然な続きが作れませんでした。'},502);
+   if(!speech||quality(speech,{followup:true}).length)return json({error:'UNNATURAL_FOLLOWUP',message:'自然な続きが作れませんでした。'},502);
    return json({speech,model,source_scope:'provided_summary'});
   }catch(e){return json({error:'FOLLOWUP_FAILED',message:'続きの生成に失敗しました。'},502)}
  }
@@ -102,7 +105,7 @@ export async function onRequestPost({request,env}){
     if(revised.length>=15&&revised.length<=260&&/[。！？?!」』]$/.test(revised)&&problems(revised).length<issues.length&&(!sensitive||!/[？?]/.test(revised)))speech=revised;
    }catch(reviewError){}
   }
-  if(speech.length<15||speech.length>260||!/[。！？?!」』]$/.test(speech)||(sensitive&&/[？?]/.test(speech)))return json({error:'INCOMPLETE_GENERATION',detail:'文章が最後まで生成されませんでした。再度お試しください。'},502);
-  return json({speech,source_scope:summary?'provided_summary':'user_input',model,fallback_used:model!==MODEL,quality_warning:problems(speech).join(',')||null});
+  if(speech.length<15||quality(speech).length||(sensitive&&/[？?]/.test(speech)))return json({error:'INCOMPLETE_GENERATION',detail:'文章が最後まで生成されませんでした。再度お試しください。'},502);
+  return json({speech,source_scope:summary?'provided_summary':'user_input',model,fallback_used:model!==MODEL,quality_warning:null});
  }catch(e){return json({error:'GENERATION_FAILED',message:'AIモデルの呼び出しに失敗しました。',detail:String(e?.message||'unknown').slice(0,180)},502)}
 }
