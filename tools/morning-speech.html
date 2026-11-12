@@ -197,7 +197,7 @@ async function generateWithAI(){
   $('stats').textContent='読み上げの目安：約'+readingEstimate(data.speech)+'秒（話す速さにより変わります）';
   const source=$('source');source.replaceChildren();
   if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
-  $('notice').textContent=news?'AIが配信元の概要から作った下書きです。記事本文を読んだものではありません。内容を確認してから使ってください。':'AIが入力内容から作った下書きです。';
+  $('notice').textContent=news?'配信元の概要をもとにAIが作成しました。記事全文の照合はしていません。事実関係は出典で確認してください。':'AIが入力内容から作った下書きです。';
   $('result').classList.remove('hidden');
  }catch(error){
   $('result').classList.remove('hidden');
@@ -255,7 +255,7 @@ function build(){
 function showNewsDetail(){
  const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)],el=$('newsDetail');
  if(!news){el.classList.add('hidden');el.textContent='';return}
- const summary=news.detail_level==='rss-summary'?firstVerifiedSentence(news.summary):'';
+ const summary=news.detail_level==='rss-summary'?String(news.summary||'').trim().slice(0,1200):'';
  el.classList.remove('hidden');
  el.textContent=summary?'配信元の概要：'+summary:'このニュースは見出しのみ取得できています。出典を開いて本文を確認してください。';
 }
