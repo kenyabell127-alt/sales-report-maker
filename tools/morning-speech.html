@@ -1,13 +1,109 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>朝礼の一言スピーチメーカー</title><style>*{box-sizing:border-box}body{margin:0;background:#f4f7f9;color:#243442;font:16px/1.8 system-ui,-apple-system,sans-serif}main{max-width:760px;margin:auto;padding:20px 16px}h1{font-size:30px;line-height:1.3}a{color:#216f75}.card{background:#fff;border:1px solid #dbe5e8;border-radius:17px;padding:20px;margin:18px 0}label{display:block;font-weight:700;margin:13px 0 5px}select,textarea{width:100%;font:inherit;border:1px solid #c4d5da;border-radius:9px;padding:11px;background:#fff}textarea{min-height:90px}button{border:0;border-radius:10px;background:#216f75;color:#fff;font:inherit;font-weight:700;padding:12px 18px;margin-top:14px;cursor:pointer}.muted{font-size:14px;color:#617681}.script{white-space:pre-wrap;line-height:2;background:#f5f8f9;padding:18px;border-radius:10px}.hidden{display:none}.warning{padding:12px;background:#fff6e7;border:1px solid #eed7a8;border-radius:9px}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}@media print{.inputs,a,button,.muted,.warning{display:none}.card{border:0}body{background:#fff}}</style></head><body><main><a href="keyword-speech.html">← 会議台本メーカーへ</a><h1>朝礼の一言スピーチ</h1><p class="muted">テーマを選ぶだけで、朝礼で話す短い文章の下書きを作れます。実際の体験を入れると、より自分らしい内容になります。</p><div class="card inputs"><label for="news">最近のニュースから選ぶ（任意）</label><select id="news"><option value="">ニュースを使わずに作る</option></select><p id="newsStatus" class="muted">ニュースを読み込んでいます…</p><p class="muted">ニュース原稿は毎朝更新を試みます。見出しのみの原稿と、AIが作成した原稿を区別して表示します。</p><label for="topic">話すテーマ</label><select id="topic"><option value="team">チームワーク</option><option value="safety">安全・確認</option><option value="health">健康・体調管理</option><option value="communication">報連相・コミュニケーション</option><option value="improvement">仕事の工夫・改善</option><option value="thanks">感謝・気配り</option><option value="season">季節・日々の変化</option><option value="challenge">挑戦・成長</option></select><div class="row"><div><label for="duration">長さ</label><select id="duration"><option value="30">30秒</option><option value="60" selected>1分</option><option value="120">2分</option><option value="180">3分</option></select></div><div><label for="tone">雰囲気</label><select id="tone"><option value="natural">親しみやすい</option><option value="formal">真面目・丁寧</option><option value="light">少し明るく</option></select></div></div><label for="ending">締め方</label><select id="ending"><option value="action">今日の行動につなげる</option><option value="positive">前向きに締める</option><option value="care">注意・確認を促す</option></select><label for="experience">自分の体験・話したいこと（任意）</label><textarea id="experience" placeholder="例：昨日、同僚に助けてもらった。小さな声かけが大事だと思った。"></textarea><button id="make">朝礼スピーチを作る</button></div><div id="result" class="card hidden"><h2>スピーチ原稿</h2><p id="stats" class="muted"></p><div id="warning" class="warning"></div><div id="script" class="script"></div><p id="source" class="muted"></p><button id="copy">文章をコピー</button> <button id="print">印刷・PDF保存</button></div><p class="muted">ニュースの見出しと出典を表示します。AI原稿はサーバー側で事前生成された場合のみ利用でき、記事本文を読んだ要約ではありません。</p></main><script>
-const $=id=>document.getElementById(id),NL=String.fromCharCode(10),BL=NL+NL;
-let newsItems=[];async function loadNews(){try{const res=await fetch('/data/morning-news.json',{cache:'no-store'});if(!res.ok)throw Error('not ready');const data=await res.json();newsItems=(data.items||[]).filter(x=>/^https:\/\//.test(x.url)&&x.title);for(let i=0;i<newsItems.length;i++){const opt=document.createElement('option');opt.value=String(i);opt.textContent=newsItems[i].title;$('news').append(opt)}$('newsStatus').textContent=newsItems.length?'最終取得：'+new Date(data.updated_at).toLocaleString('ja-JP')+' ／ '+newsItems.length+'件から選択できます。':'現在、ニュースの候補がありません。';}catch{$('newsStatus').textContent='ニュースの自動取得は準備中、または一時的に利用できません。通常の朝礼スピーチは作成できます。'}}loadNews();const topics={
-team:['仕事は一人で完結するものばかりではありません。','自分が気づいたことを周りに共有するだけでも、次の人が動きやすくなります。','今日は、自分の仕事だけでなく、周囲の状況にも少し目を向けていきたいと思います。'],
-safety:['慣れた作業ほど、確認を省略してしまいがちです。','いつもどおりの作業でも、一度立ち止まって確認することが、ミスの予防につながります。','今日も基本の確認を大切にして、落ち着いて作業を進めましょう。'],
-health:['仕事を続けるうえで、体調管理は大切な土台になります。','忙しい日ほど、休憩や水分補給など、基本的なことを後回しにしがちです。','無理を重ねず、体調の変化に気を配りながら一日を過ごしたいと思います。'],
-communication:['仕事の中では、小さな確認不足が後から大きな手戻りにつながることがあります。','分からないことを早めに相談し、進捗を共有することで、周囲も対応しやすくなります。','今日は、気になることをため込まず、早めに声をかけることを意識します。'],
-improvement:['毎日の仕事には、少し工夫するだけで進めやすくなる場面があります。','一度に大きく変えようとするのではなく、手間がかかっているところを一つ見直すことも大切です。','今日も小さな改善を一つ見つけるつもりで取り組みたいと思います。'],
-thanks:['普段の仕事は、見えないところで支えてくれる人がいて成り立っています。','当たり前だと思っている協力にも、言葉にして感謝を伝えることが大切だと感じます。','今日は、助けてもらったときに、きちんと感謝を伝えることを意識したいと思います。'],
-season:['季節が変わると、体調や日々の過ごし方にも変化が出てきます。','いつもと同じつもりでも、気温や生活のリズムによって集中しにくい日もあります。','その日の状況に合わせて、無理なく丁寧に仕事を進めていきたいと思います。'],
-challenge:['新しいことを始めるときは、最初からうまくいかないこともあります。','大切なのは、一度の結果だけで判断せず、できたことと改善点を振り返ることだと思います。','今日も一つずつ経験を積み重ねていきたいと思います。']};
-$('make').onclick=()=>{const parts=topics[$('topic').value],experience=$('experience').value.trim(),duration=Number($('duration').value),tone=$('tone').value,ending=$('ending').value;let speech=(tone==='formal'?'おはようございます。本日は、少し仕事への向き合い方についてお話しします。':tone==='light'?'おはようございます。今日は少し身近な話をさせてください。':'おはようございます。今日は、仕事の中で意識したいことを一つお話しします。')+BL+parts[0]+parts[1];if(experience)speech+=BL+'私自身の話になりますが、'+experience.replace(/[。\s]+$/,'')+'。';if(duration>=120)speech+=BL+'忙しいときほど、目の前のことに集中して、周囲のことまで気が回らなくなることがあります。そんなときこそ、一度確認したり、短く声をかけたりすることを意識したいものです。';if(duration>=180)speech+=BL+'特別なことをしなくても、今日できることを一つ決めて続けていくことが、少しずつ仕事の進め方を変えるきっかけになると思います。';const chosen=$('news').value===''?null:newsItems[Number($('news').value)];if(chosen){speech='おはようございます。今日は最近のニュースを一つご紹介します。'+BL+'「'+chosen.title+'」というニュースが、'+chosen.source+'で紹介されています。'+BL+'この見出しをきっかけに、私たちの仕事でも情報を正確に確認し、状況に応じて行動することの大切さを考えました。'+BL+'ニュースの詳しい内容については、元の記事をご確認ください。'+BL+parts[2]+'以上です。';if(chosen.scripts){const variant=duration<=30?'short':duration<=60?'standard':duration<=120?'long':'extra';if(typeof chosen.scripts[variant]==='string')speech=chosen.scripts[variant];}}else {speech+=BL+(ending==='positive'?'今日も前向きに、一つずつ取り組んでいきましょう。':ending==='care'?'慌てずに確認することを忘れず、今日も一日よろしくお願いします。':parts[2])+'以上です。';}const count=speech.replace(/\s/g,'').length;$('script').textContent=speech;const source=$('source');source.replaceChildren();if(chosen){const mode=document.createElement('span');mode.textContent=chosen.scripts?'AI作成原稿（見出しに基づく） ／ ':'見出しベースの簡易原稿 ／ ';source.append(mode);const link=document.createElement('a');link.href=chosen.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='ニュースの出典を確認：'+chosen.source;source.append(link)}$('stats').textContent='約'+count+'文字／読み上げ目安 約'+Math.round(count/300*60)+'秒／希望'+duration+'秒';$('warning').textContent=(chosen?'ニュースの見出しを元にした原稿です。記事本文を読んだ要約ではありません。元記事で事実を確認してください。 ':'')+(Math.abs(count/300*60-duration)>20?'希望時間と文章量に差があります。体験談を追加するか、話す速さに合わせて調整してください。':'読み上げ時間は目安です。');$('result').classList.remove('hidden')};$('copy').onclick=async()=>{try{await navigator.clipboard.writeText($('script').textContent);alert('コピーしました')}catch{alert('コピーできませんでした')}};$('print').onclick=()=>window.print();
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>朝礼スピーチメーカー｜ニュースから無料で原稿作成</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f6f7;color:#243440;font:16px/1.8 system-ui,-apple-system,sans-serif}
+main{max-width:760px;margin:auto;padding:22px 16px 60px}a{color:#176b71}h1{font-size:clamp(25px,5vw,34px);line-height:1.35;margin:12px 0}
+.card{background:#fff;border:1px solid #d9e3e6;border-radius:16px;padding:22px;margin:18px 0}
+label{display:block;font-weight:700;margin:15px 0 5px}select,textarea{font:inherit;width:100%;padding:12px;border:1px solid #bcced3;border-radius:9px;background:#fff}
+textarea{min-height:100px;resize:vertical}button{background:#216f75;color:#fff;border:0;border-radius:9px;padding:12px 19px;font:inherit;font-weight:700;cursor:pointer}
+button.secondary{background:#e3eff0;color:#24575b}.row{display:flex;gap:12px;flex-wrap:wrap}.row>*{flex:1;min-width:145px}
+.muted{font-size:14px;color:#5f707b}.script{white-space:pre-wrap;line-height:2.05;background:#f5f8f8;border-radius:10px;padding:20px}
+.hidden{display:none}.notice{background:#f5f8f8;padding:12px;border-radius:9px;font-size:14px}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+@media print{.inputs,.actions,.muted,.notice,a{display:none!important}.card{border:0;padding:0}body{background:white}main{padding:0}}
+</style></head><body><main>
+<a href="keyword-speech.html">← 会議台本メーカーへ</a>
+<h1>朝礼の一言スピーチ</h1>
+<p class="muted">ニュースを選んで、朝礼で話せる原稿を無料作成。会員登録・APIキー・文章入力は不要です。</p>
+<section class="card inputs">
+<label for="news">1. ニュースを選ぶ</label>
+<select id="news"><option value="">ニュースを使わない（仕事の話題から作る）</option></select>
+<p id="newsStatus" class="muted" role="status">ニュースを確認しています…</p>
+<label for="topic">2. 話の切り口</label>
+<select id="topic">
+<option value="auto">ニュースに合う切り口を自動で選ぶ</option>
+<option value="team">チームワーク</option><option value="safety">安全・確認</option>
+<option value="health">健康・体調管理</option><option value="communication">報連相・情報共有</option>
+<option value="improvement">業務改善・工夫</option><option value="thanks">感謝・気配り</option>
+<option value="season">季節・変化への対応</option><option value="challenge">挑戦・成長</option>
+</select>
+<div class="row"><div><label for="duration">3. 発表時間</label><select id="duration">
+<option value="30">30秒</option><option value="60" selected>1分</option><option value="120">2分</option><option value="180">3分</option></select></div>
+<div><label for="tone">4. 話し方</label><select id="tone">
+<option value="natural">自然で親しみやすい</option><option value="formal">丁寧・落ち着いた</option><option value="light">明るく簡潔</option></select></div></div>
+<label for="experience">自分の体験・補足（任意）</label>
+<textarea id="experience" maxlength="450" placeholder="例：昨日、確認の声かけでミスを防げた"></textarea>
+<button id="make" type="button">朝礼原稿を作る</button>
+</section>
+<section id="result" class="card hidden" aria-live="polite">
+<h2>完成した朝礼原稿</h2><p id="stats" class="muted"></p>
+<div id="script" class="script"></div><p id="source" class="muted"></p>
+<p id="notice" class="notice"></p>
+<div class="actions"><button id="copy" type="button">原稿をコピー</button><button id="again" class="secondary" type="button">別の言い回しで作る</button><button id="print" class="secondary" type="button">印刷・PDF保存</button></div>
+</section>
+<p class="muted">ニュースの見出しだけを使用します。記事の本文・背景を読んだ要約ではありません。利用前に必ず出典を確認してください。自動取得に失敗した場合は、ニュースなしの原稿を作れます。</p>
+</main><script>
+'use strict';
+const $=id=>document.getElementById(id), BL='\n\n';
+const topics={
+team:{intro:'仕事は、一人の力だけでは進められない場面があります。',point:'ちょっとした声かけや情報共有が、周りの人の動きやすさにつながると思います。',example:'自分の担当だけでなく、次の人が困らないように一言添えることも大切です。',action:'今日は、周囲への声かけを一つ増やしてみたいと思います。'},
+safety:{intro:'普段慣れている作業でも、確認を省くと思わぬミスにつながることがあります。',point:'急いでいるときほど、基本の手順を守ることが大切だと思います。',example:'一度確認してから進めるだけでも、後からの手戻りを減らせます。',action:'今日も一つひとつ確認しながら進めていきましょう。'},
+health:{intro:'毎日の仕事を続けるには、体調を整えることも大切です。',point:'忙しいと、休憩や水分補給をつい後回しにしてしまいます。',example:'小さな体調の変化に早めに気づくことが、無理をしない働き方につながります。',action:'今日も自分と周囲の体調に気を配っていきたいと思います。'},
+communication:{intro:'仕事では、同じ情報を共有できているかどうかで進み方が変わります。',point:'分からないことや変更点を早めに伝えるだけでも、手戻りを減らせます。',example:'忙しいときこそ、短い報告や確認を意識したいところです。',action:'今日は、気づいたことをため込まずに共有していきたいと思います。'},
+improvement:{intro:'毎日の仕事には、少し工夫するだけで進めやすくなることがあります。',point:'大きな変更でなくても、やりにくいところを一つ見直すことには意味があると思います。',example:'いつもの手順を振り返ると、意外な改善点が見つかることもあります。',action:'今日も小さな改善を一つ探してみたいと思います。'},
+thanks:{intro:'普段の仕事は、見えないところで支えてくれる人がいて成り立っています。',point:'手伝ってもらったことを当たり前にせず、感謝を伝えることが大切だと思います。',example:'短い一言でも、気持ちが伝わると職場の雰囲気が変わります。',action:'今日は感謝の気持ちを言葉にして伝えていきたいと思います。'},
+season:{intro:'季節や周囲の環境が変わると、いつもの仕事にも違いが出てきます。',point:'変化に気づいて、状況に合わせて動くことが大切だと思います。',example:'昨日と同じやり方でいいか、一度考えてみることも必要です。',action:'今日も周囲の変化に目を向けて仕事を進めていきましょう。'},
+challenge:{intro:'新しいことに取り組むと、最初からうまくいかないこともあります。',point:'結果だけでなく、何を学べたかを振り返ることが次につながると思います。',example:'小さな挑戦を積み重ねることが、仕事の幅を広げるきっかけになります。',action:'今日も一つ、新しい工夫に取り組んでみたいと思います。'}
+};
+const patterns=[
+[/気温|暑|寒|熱中症|気象|天気|猛暑|雪|花粉/, 'health'],
+[/交通|鉄道|道路|運行|安全|点検|事故防止|防災/, 'safety'],
+[/研究|開発|技術|AI|ロボット|デジタル|新製品|発明/, 'challenge'],
+[/働き方|人手|雇用|労働|賃金|企業|生産性/, 'improvement'],
+[/連携|協力|地域|支援|共同|チーム/, 'team'],
+[/情報|通信|発表|調査|データ/, 'communication'],
+[/季節|春|夏|秋|冬|紅葉|桜/, 'season']
+];
+function topicFor(title){for(const [regex,topic] of patterns){if(regex.test(title))return topic}return 'communication'}
+let newsItems=[],variant=0;
+async function loadNews(){
+ try{
+  const res=await fetch('/data/morning-news.json',{cache:'no-store'});
+  if(!res.ok)throw new Error('not found');
+  const data=await res.json(),updated=Date.parse(data.updated_at);
+  if(!Number.isFinite(updated)||Date.now()-updated>4*86400000)throw new Error('stale');
+  newsItems=(data.items||[]).filter(item=>item&&typeof item.title==='string'&&/^https:\/\//.test(item.url)&&Date.now()-Date.parse(item.published)<4*86400000);
+  for(let i=0;i<newsItems.length;i++){const option=document.createElement('option');option.value=String(i);option.textContent=newsItems[i].title;$('news').append(option)}
+  $('newsStatus').textContent=newsItems.length?'最近のニュース '+newsItems.length+'件（更新 '+new Date(updated).toLocaleString('ja-JP')+'）':'現在、朝礼向けのニュース候補がありません。';
+ }catch(error){$('newsStatus').textContent='ニュースを取得できませんでした。ニュースなしの原稿は利用できます。'}
+}
+function build(){
+ const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)];
+ const requested=$('topic').value,topic=requested==='auto'?topicFor(news?.title||''):requested;
+ const t=topics[topic],seconds=Number($('duration').value),tone=$('tone').value;
+ const experience=$('experience').value.trim().replace(/[。！？\s]+$/,'');
+ const start=tone==='formal'?'おはようございます。本日は一つ、仕事の中で意識したいことをお話しします。':tone==='light'?'おはようございます。今日は身近な話を一つさせてください。':'おはようございます。今日は、仕事の中で感じたことを一つお話しします。';
+ let sections=[start];
+ if(news){
+  sections.push('最近、'+news.source+'で「'+news.title+'」というニュースが紹介されていました。');
+  sections.push(variant%2===0?'この見出しを見て、日々の仕事にも通じることがあると感じました。':'このニュースの見出しをきっかけに、普段の仕事を少し振り返ってみました。');
+ }else sections.push(variant%2===0?t.intro:t.point);
+ if(seconds>=60)sections.push(news?t.intro:t.point);
+ if(experience)sections.push('私自身、'+experience+'。');
+ if(seconds>=120){sections.push(t.point);sections.push(t.example)}
+ if(seconds>=180){sections.push('こうしたことは、忙しいときほど後回しになりがちです。だからこそ、無理に大きく変えようとせず、まずは自分ができることから始めたいと思います。');sections.push('一人ひとりの小さな行動が積み重なることで、日々の仕事も少しずつ進めやすくなるのではないでしょうか。')}
+ sections.push(t.action+'以上です。');
+ const speech=sections.join(BL),chars=speech.replace(/\s/g,'').length,estimate=Math.round(chars/300*60);
+ $('script').textContent=speech;
+ $('stats').textContent='約'+chars+'文字／読み上げ目安 '+estimate+'秒／設定 '+seconds+'秒';
+ const source=$('source');source.replaceChildren();
+ if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
+ $('notice').textContent=(news?'ニュースの見出しのみを利用しています。事実関係は出典を確認してください。 ':'')+(Math.abs(estimate-seconds)>20?'設定時間と読み上げ目安に差があります。話す速さに合わせて調整してください。':'読み上げ時間は目安です。');
+ $('result').classList.remove('hidden');
+}
+$('make').addEventListener('click',()=>{variant=0;build()});
+$('again').addEventListener('click',()=>{variant++;build()});
+$('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('script').textContent);alert('コピーしました')}catch{alert('コピーできませんでした。原稿を長押ししてコピーしてください。')}});
+$('print').addEventListener('click',()=>window.print());
+loadNews();
 </script></body></html>
