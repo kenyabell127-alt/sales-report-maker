@@ -31,13 +31,13 @@ button.secondary{background:#e3eff0;color:#24575b}.row{display:flex;gap:12px;fle
 <option value="30">30秒</option><option value="60" selected>1分</option><option value="120">2分</option><option value="180">3分</option></select></div>
 <div><label for="tone">4. 話し方</label><select id="tone">
 <option value="natural">自然で親しみやすい</option><option value="formal">丁寧・落ち着いた</option><option value="light">明るく簡潔</option></select></div></div>
-<label for="experience">自分の体験・補足（任意）</label>
+<label for="stance">このニュースを見て、どう思った？（任意）</label><textarea id="stance" maxlength="280" placeholder="例：便利になる一方で、最後の確認は人がするべきだと思う"></textarea><label for="experience">実際にあったこと・身近な例（任意）</label>
 <textarea id="experience" maxlength="450" placeholder="例：昨日、確認の声かけでミスを防げた"></textarea>
 <button id="make" type="button">スピーチをつくる</button>
 </section>
 <section id="result" class="card hidden" aria-live="polite">
 <h2>あなたのスピーチ</h2><p id="stats" class="muted"></p>
-<div id="script" class="script"></div><p id="source" class="muted"></p>
+<div id="script" class="script" contenteditable="true" role="textbox" aria-label="原稿を直接編集" aria-multiline="true" spellcheck="true"></div><p class="muted">原稿をタップすると、その場で書き直せます。コピーは修正後の文章を使います。</p><p id="source" class="muted"></p>
 <p id="notice" class="notice"></p>
 <div class="actions"><button id="copy" type="button">原稿をコピー</button><button id="again" class="secondary" type="button">別の言い回しで作る</button><button id="print" class="secondary" type="button">印刷・PDF保存</button></div>
 </section>
@@ -88,15 +88,18 @@ function build(){
  const requested=$('topic').value,topic=requested==='auto'?topicFor(news?.title||''):requested;
  const t=topics[topic],seconds=Number($('duration').value),tone=$('tone').value;
  const experience=$('experience').value.trim().replace(/[。！？\\s]+$/,'');
+ const stance=$('stance').value.trim().replace(/[。！？\\s]+$/,'');
  const start=tone==='formal'?'おはようございます。本日は、気になった話題を一つお話しします。':tone==='light'?'おはようございます。今日は最近気になったことを一つ。':'おはようございます。今日は一つ、最近考えたことをお話しします。';
  let sections=[start];
  if(news){
   const headline=news.title.replace(/\\s+-\\s+[^-]{2,35}$/,'').trim();
   sections.push('最近、「'+headline+'」というニュースを見かけました。');
-  if(angle)sections.push(variant%2===0?angle.view:angle.question);
+  if(stance)sections.push('この話題について、私は'+stance+'と思いました。');
+  else if(angle)sections.push(variant%2===0?angle.view:angle.question);
   else sections.push('見出しだけでは詳しい事情は分かりませんが、何が起きているのか自分で確かめることが大切だと感じました。');
  }else sections.push(variant%2===0?t.intro:t.point);
- if(experience)sections.push('私自身、'+experience+'。');
+ if(!news&&stance)sections.push('私が考えているのは、'+stance+'ということです。');
+ if(experience)sections.push('身近なところでは、'+experience+'ということがありました。');
  if(seconds>=60)sections.push(angle?(variant%2===0?angle.example:angle.view):t.example);
  if(seconds>=120){
   sections.push(angle?angle.question:t.point);
@@ -119,7 +122,8 @@ function build(){
 }
 $('make').addEventListener('click',()=>{variant=0;build()});
 $('again').addEventListener('click',()=>{variant++;build()});
-$('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('script').textContent);alert('コピーしました')}catch{alert('コピーできませんでした。原稿を長押ししてコピーしてください。')}});
+$('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('script').innerText);alert('コピーしました')}catch{alert('コピーできませんでした。原稿を長押ししてコピーしてください。')}});
 $('print').addEventListener('click',()=>window.print());
+$('script').addEventListener('input',()=>{const n=$('script').innerText.replace(/\\s/g,'').length;$('stats').textContent='編集中：約'+n+'文字／読み上げ目安 '+Math.round(n/300*60)+'秒'});
 loadNews();
 </script></body></html>
