@@ -39,7 +39,20 @@ export async function onRequestPost({request,env}){
  '本人の経験:'+experience
  ].join('\n');
  try{
-  const messages=[{role:'system',content:'自然な日本語の会話編集者。事実を捏造せず、本文のみ返す。'},{role:'user',content:instruction}];
+  // Phase 1: extract grounded facts before writing conversational text.
+  let grounded=summary;
+  if(summary){
+   try{
+    const factResult=await env.AI.run(FALLBACK_MODEL,{messages:[
+     {role:'system',content:'与えられた概要に明記された事実だけを抽出。推測禁止。'},
+     {role:'user',content:'次のニュース概要から、明記された事実を1〜2文で簡潔に抜き出す。意見や感想は不要。概要：'+summary}
+    ],max_tokens:240,temperature:0.1});
+    const extracted=String(factResult?.response||'').trim();
+    if(extracted.length>=20&&extracted.length<=summary.length+50&&/[。]$/.test(extracted))grounded=extracted;
+   }catch(factError){}
+  }
+  const groundedInstruction=instruction+'\\n追加条件：まず次の確認済みの要点を理解して会話文にする。要点：'+grounded+'\\n記事の概要から確認できない情報は書かない。文章は60〜160字。ニュースを丸読みせず要点を一つ話す。';
+  const messages=[{role:'system',content:'自然な日本語の会話編集者。事実を捏造せず、本文のみ返す。'},{role:'user',content:groundedInstruction}];
   let model=MODEL, result;
   try{result=await env.AI.run(model,{messages,max_tokens:800,temperature:0.3})}
   catch(primaryError){
@@ -51,6 +64,8 @@ export async function onRequestPost({request,env}){
    const issues=[];
    if(/あなたも.{0,30}か[？?]|皆さんは.{0,30}思いますか|ご紹介します|詳しくは分かりませんが|仕事に活か/.test(text))issues.push('translation_like');
    if((text.match(/[？?]/g)||[]).length>1)issues.push('multiple_questions');
+   if(text.length>400)issues.push('too_long');
+   if(/気になったニュースがあるんですけど|皆さんはこの話題/.test(text))issues.push('canned_intro');
    if(/戦争|墓地|犠牲者|死者|死亡|事故|災害|銃撃|国防長官|戦没者/.test(title+' '+summary)&&/[？?]/.test(text))issues.push('sensitive_question');
    return issues;
   };
@@ -66,7 +81,7 @@ export async function onRequestPost({request,env}){
     if(revised.length>=35&&revised.length<=LIMIT&&/[。！？?!」』]$/.test(revised)&&problems(revised).length<=issues.length)speech=revised;
    }catch(reviewError){}
   }
-  if(speech.length<35||speech.length>LIMIT||!/[。！？?!」』]$/.test(speech))return json({error:'INCOMPLETE_GENERATION',detail:'文章が最後まで生成されませんでした。再度お試しください。'},502);
+  if(speech.length<35||speech.length>400||!/[。！？?!」』]$/.test(speech))return json({error:'INCOMPLETE_GENERATION',detail:'文章が最後まで生成されませんでした。再度お試しください。'},502);
   return json({speech,source_scope:summary?'provided_summary':'user_input',model,fallback_used:model!==MODEL,quality_warning:problems(speech).join(',')||null});
  }catch(e){return json({error:'GENERATION_FAILED',message:'AIモデルの呼び出しに失敗しました。',detail:String(e?.message||'unknown').slice(0,180)},502)}
 }
