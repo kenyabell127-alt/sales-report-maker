@@ -14,21 +14,52 @@ let step=0;const data=steps.map(()=>({selected:[],memo:''}));const storageKey='s
 function render(){const s=steps[step],d=data[step];$('counter').textContent='質問 '+(step+1)+' / 8';$('bar').style.width=(step+1)*12.5+'%';$('question').textContent=s.title;$('help').textContent=s.help;$('choices').replaceChildren();s.items.forEach(item=>{let l=document.createElement('label');l.className='option';let i=document.createElement('input');i.type='checkbox';i.checked=d.selected.includes(item);i.onchange=()=>{if(s.multi){d.selected=i.checked?[...d.selected,item]:d.selected.filter(x=>x!==item)}else{d.selected=i.checked?[item]:[];render()}};l.append(i,document.createTextNode(item));$('choices').append(l)});$('memo').value=d.memo;$('prev').style.visibility=step===0?'hidden':'visible';$('next').textContent=step===7?'台本を作る →':'次へ →'}
 $('memo').oninput=e=>data[step].memo=e.target.value;$('prev').onclick=()=>{data[step].memo=$('memo').value;step--;render()};$('next').onclick=()=>{data[step].memo=$('memo').value;if(step===7){$('wizard').classList.add('hidden');$('output').classList.remove('hidden');generate();window.scrollTo(0,0)}else{step++;render()}};
 const selected=i=>data[i].selected,notes=i=>data[i].memo.trim(),sentence=(arr)=>arr.map(x=>x.replace(/[。！!]+$/,'')).join('、'),paragraph=(title,body)=>title+NL+body;
-function generate(){const d=Number($('duration').value),aud=$('audience').value,theme=selected(0)[0]||'業務の状況',outcome=selected(1)[0]||'結果は確認中',result=selected(2),activity=selected(3),issues=selected(4),causes=selected(5),plans=selected(6),requests=selected(7);let p=[],missing=[];
-p.push(paragraph('【結論】','本日は、'+theme+'についてご報告します。現時点では「'+outcome+'」という状況です。'+(plans.length?'今後は、'+sentence(plans)+'方針です。':'今後の対応についてもあわせてご説明します。')));
-p.push(paragraph('【結果と現状】','まず、結果についてです。現時点の状況は「'+outcome+'」です。'+(notes(1)?'具体的な数値や状況は、'+notes(1)+'。':'')+(notes(0)?'今回の報告対象について補足すると、'+notes(0)+'。':'')));if(!notes(1))missing.push('目標・実績・前月比などの数字');
-if(result.length||notes(2)){p.push(paragraph('【主な成果】',(result.length?'成果として確認できたのは、'+sentence(result)+'という点です。':'')+(notes(2)?'具体的には、'+notes(2)+'。':'')))}else missing.push('成果の具体例');
-if(activity.length||notes(3)){p.push(paragraph('【実施した取り組み】',(activity.length?'今回の活動では、'+sentence(activity)+'といった取り組みを行いました。':'')+(notes(3)?'取り組みの内容を補足すると、'+notes(3)+'。':'')))}else missing.push('実施した活動の具体例');
-if(issues.length||notes(4)){p.push(paragraph('【課題と現在の認識】',(issues.length?'課題として挙げられるのは、'+sentence(issues)+'という点です。':'')+(notes(4)?'実際の状況としては、'+notes(4)+'。':'')))}else missing.push('課題の有無');
-if(causes.length||notes(5)){const known=causes.filter(x=>x!=='原因はまだ確認中');p.push(paragraph('【背景・要因】',(known.length?'背景として考えているのは、'+sentence(known)+'という点です。ただし、成果への影響については引き続き確認が必要です。':'')+(causes.includes('原因はまだ確認中')?'現時点で原因を断定できておらず、状況を確認中です。':'')+(notes(5)?'確認している事情として、'+notes(5)+'。':'')))}else missing.push('原因や背景');
-if(plans.length||notes(6)){p.push(paragraph('【今後の対応】',(plans.length?'今後は、'+sentence(plans)+'ことを進めていきます。':'')+(notes(6)?'具体的な予定として、'+notes(6)+'。':'')))}else missing.push('次に行うこと・期限');
-if(requests.length||notes(7)){p.push(paragraph('【共有・相談事項】',(requests.length?'今回共有したいことは、'+sentence(requests)+'という点です。':'')+(notes(7)?'補足として、'+notes(7)+'。':'')))}else missing.push('上司への相談・判断事項');
-if(d>=5){if(notes(1)||notes(2))p.push(paragraph('【実績の補足】','ここまでの結果を踏まえ、数字だけでなく個別の案件や活動内容もあわせて確認していきます。次回は、今回ご報告した内容からどのような進展があったかを整理してお伝えします。'));if(notes(4)||notes(5))p.push(paragraph('【課題への向き合い方】','課題については、現状の把握と対応の実施を分けて進めます。確認できた事実と、まだ検証が必要な点を整理したうえで、対応の優先順位を決めていきます。'))}
-if(d===8&&notes(6)){p.push(paragraph('【次回報告に向けて】','次回は、実施した対応と、その結果を分けて報告できるように準備します。取り組みの進捗に加えて、当初の想定との違いがあれば、その理由も整理して共有します。'))}
-p.push('以上で報告を終わります。');
-let script=p.join(BL),count=script.replace(/\s/g,'').length,target=d*300,seconds=Math.round(count/300*60);
-$('script').textContent=script;$('stats').textContent='約'+count+'文字／読み上げ目安 約'+Math.max(1,Math.round(seconds/10)*10)+'秒（毎分300文字換算）／目標 '+d+'分（約'+target+'文字）';
-let gap=target-count;let missingText=missing.length?'特に「'+missing.slice(0,3).join('・')+'」を補足してな。':'各質問の補足メモに数字・事例・期限を追加してな。';$('warning').textContent=gap>250?'⚠ '+d+'分の発表には、あと約'+gap+'文字分の具体的な事実が必要です。'+missingText+'事実を作って文章を水増しすることはしません。':'入力された内容をもとに台本を作りました。実際の状況に合っているか確認してな。';
-let qa=[['なぜこの結果になったのですか？',notes(5)||'現時点で確認できた背景は「'+(causes.join('、')||'確認中')+'」です。原因の断定には追加確認が必要です。'],['具体的にどんな活動をしましたか？',notes(3)||('実施した活動は「'+(activity.join('、')||'未入力')+'」です。件数などは確認して補足します。')],['次回までに何をしますか？',notes(6)||('今後の予定は「'+(plans.join('、')||'検討中')+'」です。担当者と期限は確認して報告します。')],['上司に判断してほしいことはありますか？',notes(7)||requests.join('、')||'現時点では特にありません。']];$('qa').textContent=qa.map((x,i)=>'Q'+(i+1)+'：'+x[0]+NL+'回答案：'+x[1]).join(BL)}
+function generate(){
+const d=Number($('duration').value),aud=$('audience').value,theme=selected(0)[0]||'業務',outcome=selected(1)[0]||'確認中',results=selected(2),activities=selected(3),issues=selected(4),causes=selected(5),plans=selected(6),requests=selected(7);
+const isNone=x=>/特に目立った成果はなかった|特に大きな課題はない|今回は報告のみ/.test(x);
+const real=a=>a.filter(x=>!isNone(x));
+const clean=x=>x.replace(/[。！？!？]+$/,'').trim();
+const line=a=>a.map(clean).join('、');
+const detail=(i,prefix)=>notes(i)?prefix+clean(notes(i))+'。':'';
+const sections=[];
+const add=(name,body)=>{if(body.trim())sections.push('【'+name+'】'+NL+body.trim())};
+let conclusion='今回の'+theme+'について、結論からご報告します。現時点の結果は「'+outcome+'」です。';
+if(real(plans).length)conclusion+='次の対応としては、'+line(real(plans))+'ことを予定しています。';
+else conclusion+='今後の対応については、状況を整理したうえでご報告します。';
+add('1．結論',conclusion);
+let performance='まず、結果の状況についてです。'+detail(1,'具体的には、')+detail(0,'報告対象は、');
+if(!notes(1))performance+='具体的な数値はこの台本に入力されていないため、目標と実績の比較は別途確認が必要です。';
+add('2．実績と成果',performance+(real(results).length?'成果としては、'+line(real(results))+'ことが挙げられます。':'')+detail(2,'個別の事例として、'));
+if(real(activities).length||notes(3))add('3．実施した取り組み',(real(activities).length?'結果に向けて実施した活動は、'+line(real(activities))+'ことです。':'')+detail(3,'取り組みの具体例は、')+'これらの活動が結果にどの程度つながったかは、案件ごとの進捗を確認して整理します。');
+const issueList=real(issues),causeList=causes.filter(x=>x!=='原因はまだ確認中');
+if(issueList.length||notes(4)||causeList.length||notes(5)||causes.includes('原因はまだ確認中')){
+let problem=issueList.length?'一方で、課題としては'+line(issueList)+'点があります。':'';
+problem+=detail(4,'具体的な状況として、');
+if(causeList.length)problem+='背景としては、'+line(causeList)+'可能性があると考えています。ただし、原因と断定するには確認が必要です。';
+if(causes.includes('原因はまだ確認中'))problem+='原因は現在確認中です。';
+problem+=detail(5,'確認できている背景は、');
+add('4．課題と背景',problem);
+}else add('4．課題と背景','現時点では、課題や背景についての具体的な情報が入力されていません。今後の判断に必要な点として確認していきます。');
+if(real(plans).length||notes(6)){
+let planText='次に、今後の対応についてです。';
+if(real(plans).length)planText+='具体的には、'+line(real(plans))+'ことを進める予定です。';
+planText+=detail(6,'実施予定や期限は、');
+if(!notes(6))planText+='担当者と期限については、決まり次第整理します。';
+add('5．今後の対応',planText);
+}else add('5．今後の対応','今後の具体策については、現時点で決定した内容が入力されていません。対応の優先順位と実施時期を整理します。');
+if(real(requests).length||notes(7))add('6．相談・確認事項',(real(requests).length?'最後に、確認・相談したい事項は、'+line(real(requests))+'ことです。':'')+detail(7,'補足すると、'));
+add('まとめ','以上が今回の報告です。次回は、今回の対応の進捗と結果を確認し、変化した点を中心にご報告します。');
+let script=sections.join(BL),count=script.replace(/\s/g,'').length,target=d*300,missing=[];
+if(!notes(1))missing.push('目標・実績などの具体的な数字');
+if(!notes(2))missing.push('成果が分かる案件の実例');
+if(!notes(3))missing.push('実施した活動の件数・頻度');
+if(!notes(4)&&!notes(5))missing.push('課題の具体例や背景');
+if(!notes(6))missing.push('次回までの担当者・期限');
+$('script').textContent=script;
+$('stats').textContent='約'+count+'文字／読み上げ目安 約'+Math.round(count/300*60)+'秒（毎分300文字換算）／希望 '+d+'分（約'+target+'文字）';
+$('warning').textContent=count<target-250?'希望する'+d+'分に対して、あと約'+(target-count)+'文字分の材料が不足しています。追加すると良い情報：'+missing.slice(0,4).join('・')+'。文章の水増しや架空の事実は入れていません。':'入力内容をもとに構成しました。事実や表現を確認してからご利用ください。';
+let qa=[['今回の結果をどう評価していますか？','結果は「'+outcome+'」です。'+(notes(1)?'数字の根拠は、'+clean(notes(1))+'。':'具体的な数値は確認して補足します。')],['課題の原因は何ですか？',notes(5)|| (causeList.length?'背景として考えているのは'+line(causeList)+'ことです。因果関係は確認中です。':'現時点では原因を断定できません。')],['どのような活動を行いましたか？',notes(3)||('実施した活動は'+(activities.length?line(activities):'確認中')+'です。具体的な件数は別途確認します。')],['次回までに何をする予定ですか？',notes(6)||('予定している対応は'+(plans.length?line(plans):'検討中')+'です。担当者と期限は整理します。')]];
+$('qa').textContent=qa.map((x,i)=>'Q'+(i+1)+'：'+x[0]+NL+'回答案：'+x[1]).join(BL);
+}
 $('load').onclick=loadData;$('save').onclick=saveData;$('saveResult').onclick=()=>{try{localStorage.setItem(storageKey,JSON.stringify({version:1,savedAt:new Date().toISOString(),data:data.map(x=>({selected:[...x.selected],memo:x.memo}))}));alert('この端末に保存しました。次回は「前回の回答を読み込む」から使えます。')}catch(e){alert('保存できませんでした。')}};$('refresh').onclick=generate;$('duration').onchange=generate;$('audience').onchange=generate;$('edit').onclick=()=>{$('output').classList.add('hidden');$('wizard').classList.remove('hidden');step=0;render();window.scrollTo(0,0)};$('copy').onclick=async()=>{try{await navigator.clipboard.writeText($('script').textContent);alert('コピーしました')}catch{alert('コピーできませんでした')}};$('print').onclick=()=>window.print();render();
 </script></body></html>
