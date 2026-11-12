@@ -1,4 +1,4 @@
-const MODEL='@cf/meta/llama-3.1-8b-instruct';
+const MODEL='@cf/meta/llama-3.1-8b-instruct-fp8-fast';
 const LIMIT=2600;
 function json(data,status=200){return new Response(JSON.stringify(data),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff'}})}
 export async function onRequestPost({request,env}){
@@ -35,5 +35,5 @@ export async function onRequestPost({request,env}){
   const speech=String(result?.response||'').trim().replace(/^\`\`\`[\s\S]*?\n/,'').replace(/\`\`\`$/,'').trim();
   if(speech.length<40||speech.length>LIMIT)return json({error:'INVALID_GENERATION'},502);
   return json({speech,source_scope:summary?'provided_summary':'user_input',model:MODEL});
- }catch(e){return json({error:'GENERATION_FAILED',message:'AIでの生成に失敗しました。しばらくしてからお試しください。'},502)}
+ }catch(e){return json({error:'GENERATION_FAILED',message:'AIモデルの呼び出しに失敗しました。',detail:String(e?.message||'unknown').slice(0,180)},502)}
 }
