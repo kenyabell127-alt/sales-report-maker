@@ -8,6 +8,25 @@ export async function onRequestPost({request,env}){
  if(length>10000)return json({error:'TOO_LARGE'},413);
  let data;
  try{data=await request.json()}catch{return json({error:'INVALID_JSON'},400)}
+ const mode=String(data.mode||'');
+ if(mode==='followup'){
+  const original=String(data.speech||'').slice(0,500);
+  const summary=String(data.summary||'').slice(0,1200);
+  const reaction=String(data.reaction||'');
+  const audience=['friend','work','general'].includes(data.audience)?data.audience:'friend';
+  if(!original||!['interest','unknown','busy'].includes(reaction))return json({error:'INVALID_FOLLOWUP'},400);
+  if(reaction==='busy')return json({speech:audience==='friend'?'そっか、また時間あるときに話そう。':'承知しました。またお時間のあるときに。',source_scope:'conversation_only'});
+  const sensitive=/戦争|墓地|戦没|死者|死亡|事故|災害|銃撃|殺害|地震|紛争|不正アクセス|情報流出|個人情報|サイバー攻撃|詐欺|逮捕|容疑|漏えい|漏洩|暴行|テロ|訃報/.test(original+' '+summary);
+  const instruction=['あなたは自然な日本語で話す会話相手。以下の最初の一言に対する返事を受けて、次の一言だけを書いてください。','説明文、見出し、箇条書きは禁止。最大2文、100文字以内。','元記事概要にない事実・自分の経験・感想を創作しない。','元の一言を繰り返さない。','反応：'+(reaction==='interest'?'相手は「へえ、そうなんだ」と興味を示した':'相手は「あまり詳しく知らない」と言った'),'話す相手：'+(audience==='work'?'仕事の相手（自然な敬語）':'友達・同僚（自然な口語）'),sensitive?'深刻な話題。軽い質問や冗談は避け、知らないことは断言しない。':'自然に会話が続くなら、相手自身の経験を一つだけ尋ねてもよい。','最初の一言：'+original,'確認できる記事概要：'+summary].join('\\n');
+  try{
+   let model=MODEL,result;
+   try{result=await env.AI.run(model,{messages:[{role:'user',content:instruction}],max_tokens:180,temperature:0.35})}
+   catch(e){model=FALLBACK_MODEL;result=await env.AI.run(model,{messages:[{role:'user',content:instruction}],max_tokens:180,temperature:0.3})}
+   const speech=String(result?.response||'').trim();
+   if(!speech||speech.length>110||/あなたも.{0,30}か[？?]|皆さんはどう思|ご紹介します/.test(speech))return json({error:'UNNATURAL_FOLLOWUP',message:'自然な続きが作れませんでした。'},502);
+   return json({speech,model,source_scope:'provided_summary'});
+  }catch(e){return json({error:'FOLLOWUP_FAILED',message:'続きの生成に失敗しました。'},502)}
+ }
  const title=String(data.title||'').slice(0,180);
  const summary=String(data.summary||'').slice(0,1200);
  const opinion=String(data.opinion||'').slice(0,300);
