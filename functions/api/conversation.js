@@ -39,19 +39,15 @@ export async function onRequestPost({request,env}){
  '本人の経験:'+experience
  ].join('\n');
  try{
-  // Phase 1: extract grounded facts before writing conversational text.
-  let grounded=summary;
-  if(summary){
-   try{
-    const factResult=await env.AI.run(FALLBACK_MODEL,{messages:[
-     {role:'system',content:'与えられた概要に明記された事実だけを抽出。推測禁止。'},
-     {role:'user',content:'次のニュース概要から、明記された事実を1〜2文で簡潔に抜き出す。意見や感想は不要。概要：'+summary}
-    ],max_tokens:240,temperature:0.1});
-    const extracted=String(factResult?.response||'').trim();
-    if(extracted.length>=20&&extracted.length<=summary.length+50&&/[。]$/.test(extracted))grounded=extracted;
-   }catch(factError){}
-  }
-  const groundedInstruction=instruction+'\\n追加条件：まず次の確認済みの要点を理解して会話文にする。要点：'+grounded+'\\n記事の概要から確認できない情報は書かない。文章は60〜160字。ニュースを丸読みせず要点を一つ話す。';
+  // Use only verbatim sentences from the supplied summary as the factual anchor.
+  // An earlier AI extraction step could silently introduce unsupported claims.
+  const sentences=summary.match(/[^。！？]+[。！？]/g)||[];
+  const grounded=sentences.slice(0,2).join('').trim()||summary;
+  const topicText=title+' '+summary;
+  const sensitive=/戦争|墓地|犠牲者|死者|死亡|事故|災害|銃撃|国防長官|戦没者|殺害|地震|紛争/.test(topicText);
+  const category=/野球|サッカー|バスケ|スポーツ|試合|選手|優勝/.test(topicText)?'sports':/食料|価格|物価|税|賃金|経済|値下げ/.test(topicText)?'economy':/映画|テレビ|旅行|商品|アプリ|発売|音楽/.test(topicText)?'lifestyle':'general';
+  const categoryGuidance=sensitive?'深刻なニュース。質問で締めず、軽い感想も付けない。':category==='sports'?'試合・選手について確認できる事実を伝える。観戦や応援チームの話は自然な場合だけ。':category==='economy'?'制度の説明を盛らず、生活への影響は根拠がある場合だけ。':category==='lifestyle'?'身近な使い方や経験への質問は自然な場合だけ。':'質問や感想を無理に付けない。';
+  const groundedInstruction=instruction+'\\n追加条件：'+categoryGuidance+'\\n概要の原文から抜き出した事実：'+grounded+'\\n事実は元の概要で確認できる範囲のみ。60〜160字。話し言葉として簡潔に。';
   const messages=[{role:'system',content:'自然な日本語の会話編集者。事実を捏造せず、本文のみ返す。'},{role:'user',content:groundedInstruction}];
   let model=MODEL, result;
   try{result=await env.AI.run(model,{messages,max_tokens:800,temperature:0.3})}
@@ -70,6 +66,7 @@ export async function onRequestPost({request,env}){
    return issues;
   };
   const issues=problems(speech);
+  if(sensitive&&/[？?]/.test(speech))issues.push('sensitive_question');
   if(speech.length>0&&!/[。！？?!」』]$/.test(speech))issues.push('incomplete_ending');
   if(issues.length&&speech.length>=35){
    try{
@@ -78,10 +75,10 @@ export async function onRequestPost({request,env}){
      {role:'user',content:'この文章の不自然さを修正してください。無理な質問は削除し、同じ内容を繰り返さず、70〜180字程度。元記事概要：'+summary+'\n原稿：'+speech}
     ],max_tokens:330,temperature:0.2});
     const revised=String(review?.response||'').trim();
-    if(revised.length>=35&&revised.length<=LIMIT&&/[。！？?!」』]$/.test(revised)&&problems(revised).length<=issues.length)speech=revised;
+    if(revised.length>=35&&revised.length<=400&&/[。！？?!」』]$/.test(revised)&&problems(revised).length<=issues.length&&(!sensitive||!/[？?]/.test(revised)))speech=revised;
    }catch(reviewError){}
   }
-  if(speech.length<35||speech.length>400||!/[。！？?!」』]$/.test(speech))return json({error:'INCOMPLETE_GENERATION',detail:'文章が最後まで生成されませんでした。再度お試しください。'},502);
+  if(speech.length<35||speech.length>400||!/[。！？?!」』]$/.test(speech)||(sensitive&&/[？?]/.test(speech)))return json({error:'INCOMPLETE_GENERATION',detail:'文章が最後まで生成されませんでした。再度お試しください。'},502);
   return json({speech,source_scope:summary?'provided_summary':'user_input',model,fallback_used:model!==MODEL,quality_warning:problems(speech).join(',')||null});
  }catch(e){return json({error:'GENERATION_FAILED',message:'AIモデルの呼び出しに失敗しました。',detail:String(e?.message||'unknown').slice(0,180)},502)}
 }
