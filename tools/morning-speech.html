@@ -186,7 +186,7 @@ async function generateWithAI(){
  if(news&&!summary){$('result').classList.add('hidden');$('newsDetail').classList.remove('hidden');$('newsDetail').textContent='この記事は見出しのみです。内容を確認した会話文を作るには、【内容あり】のニュースを選んでください。';return}if(!summary&&!opinion&&!experience){build();$('notice').textContent='日常の話題をもとにした簡易版です。AIで文章を作る場合は、感想や経験を入力してください。';return}
  const button=$('make');button.disabled=true;button.firstChild.textContent='AIが文章を整えています… ';
  try{
-  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),18000);
+  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),45000);
   let response;
   try{response=await fetch('/api/conversation',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({title:news?.title||$('topic').selectedOptions[0].textContent,summary,opinion,experience,audience:$('audience').value==='team'?'friend':$('audience').value==='manager'?'work':'general',tone:$('tone').value}),signal:controller.signal})}
   finally{clearTimeout(timeout)}
