@@ -202,7 +202,7 @@ async function generateWithAI(){
  try{
   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),45000);
   let response;
-  try{response=await fetch('/api/conversation',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({title:news?.title||$('topic').selectedOptions[0].textContent,summary,opinion,experience,audience:$('audience').value==='team'?'friend':$('audience').value==='manager'?'work':'general',tone:$('tone').value}),signal:controller.signal})}
+  try{response=await fetch('/api/conversation',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({title:news?.title||$('topic').selectedOptions[0].textContent,summary,opinion,experience,audience:$('audience').value==='team'?'friend':$('audience').value==='manager'?'work':'general',tone:$('tone').value,purpose:({insight:'chat',question:'question',practical:'explain'}[$('perspective').value]||'chat')}),signal:controller.signal})}
   finally{clearTimeout(timeout)}
   const data=await response.json();
   if(!response.ok||!data.speech){const err=new Error(data.error||'GENERATION_FAILED');err.detail=String(data.detail||data.message||'').slice(0,220);err.status=response.status;throw err;}
