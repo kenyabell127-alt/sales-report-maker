@@ -59,7 +59,18 @@ async function generate(){
 }
 $('make').addEventListener('click',generate);$('retry').addEventListener('click',generate);
 $('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('speech').innerText);$('notice').textContent='コピーしました。'}catch(e){$('notice').textContent='コピーできませんでした。文章を長押ししてコピーしてください。'}});
-document.querySelectorAll('[data-reply]').forEach(b=>b.addEventListener('click',()=>{$('nextLine').textContent='次の一言の例：'+practiceLine(b.dataset.reply)}));
+document.querySelectorAll('[data-reply]').forEach(b=>b.addEventListener('click',async()=>{
+ const reaction=b.dataset.reply;
+ if(reaction==='busy'||!selected){$('nextLine').textContent='次の一言の例：'+practiceLine(reaction);return}
+ const buttons=[...document.querySelectorAll('[data-reply]')];buttons.forEach(x=>x.disabled=true);
+ $('nextLine').textContent='会話の続きを考えています…';
+ try{
+  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),30000);
+  let response;try{response=await fetch('/api/conversation',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({mode:'followup',speech:$('speech').innerText,summary:safeText(selected.summary),reaction,audience:$('audience').value}),signal:controller.signal})}finally{clearTimeout(timeout)}
+  const data=await response.json();if(!response.ok||!data.speech)throw new Error(data.message||data.error||'生成エラー');
+  $('nextLine').textContent='次の一言：'+data.speech;
+ }catch(e){$('nextLine').textContent='続きの生成に失敗しました。別の反応を選んでお試しください。'}finally{buttons.forEach(x=>x.disabled=false)}
+}));
 function feedback(good){try{const key='conversation-feedback-v2';const prev=JSON.parse(localStorage.getItem(key)||'{"good":0,"bad":0}');prev[good?'good':'bad']=(prev[good?'good':'bad']||0)+1;localStorage.setItem(key,JSON.stringify(prev))}catch(e){}$('feedback').textContent='評価ありがとう。端末内に保存しました（運営側には送信されません）。'}
 $('good').addEventListener('click',()=>feedback(true));$('bad').addEventListener('click',()=>feedback(false));
 load();
