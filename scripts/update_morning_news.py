@@ -37,12 +37,12 @@ def ai_script(item):
 出典名を明示し、事実と個人的な気づきを区別すること。
 政治的主張や過度な煽りを避けること。自然で、押しつけがましくない朝礼原稿を作る。
 テーマを仕事の一般的な心がけに結びつける。ニュース本文を読んだような表現は禁止。
-返答はJSONオブジェクトのみで keys: short (約140文字), standard (約280文字), long (約450文字)。それぞれ冒頭挨拶と締めを含む完成原稿。"""
+返答はJSONオブジェクトのみで keys: short (約140文字), standard (約280文字), long (約560文字), extra (約840文字)。それぞれ冒頭挨拶と締めを含む完成原稿。"""
  payload=json.dumps({"model":model,"messages":[{"role":"system","content":prompt},{"role":"user","content":json.dumps({"headline":item["title"],"source":item["source"]},ensure_ascii=False)}],"response_format":{"type":"json_object"},"temperature":0.5},ensure_ascii=False).encode()
  request=urllib.request.Request("https://api.openai.com/v1/chat/completions",data=payload,headers={"Authorization":"Bearer "+key,"Content-Type":"application/json"})
  with urllib.request.urlopen(request,timeout=35) as res: data=json.load(res)
  result=json.loads(data["choices"][0]["message"]["content"])
- if not all(isinstance(result.get(k),str) and len(result[k])>60 for k in ("short","standard","long")): raise ValueError("incomplete response")
+ if not all(isinstance(result.get(k),str) and len(result[k])>60 for k in ("short","standard","long","extra")): raise ValueError("incomplete response")
  return {k:result[k] for k in ("short","standard","long")}
 if key:
  for item in unique[:3]:
