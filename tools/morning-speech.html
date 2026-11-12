@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>朝礼スピーチメーカー｜ニュースから無料で原稿作成</title>
+<title>ニュースから話す｜ハナシル</title><meta name="description" content="今日のニュースから朝礼の一言を。無料で話す原稿をつくるハナシル。">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f3f6f7;color:#243440;font:16px/1.8 system-ui,-apple-system,sans-serif}
 main{max-width:760px;margin:auto;padding:22px 16px 60px}a{color:#176b71}h1{font-size:clamp(25px,5vw,34px);line-height:1.35;margin:12px 0}
@@ -11,9 +11,9 @@ button.secondary{background:#e3eff0;color:#24575b}.row{display:flex;gap:12px;fle
 .muted{font-size:14px;color:#5f707b}.script{white-space:pre-wrap;line-height:2.05;background:#f5f8f8;border-radius:10px;padding:20px}
 .hidden{display:none}.notice{background:#f5f8f8;padding:12px;border-radius:9px;font-size:14px}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
 @media print{.inputs,.actions,.muted,.notice,a{display:none!important}.card{border:0;padding:0}body{background:white}main{padding:0}}
-</style></head><body><main>
-<a href="keyword-speech.html">← 会議台本メーカーへ</a>
-<h1>朝礼の一言スピーチ</h1>
+.brand{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0 25px;border-bottom:1px solid #d9e3e6;margin-bottom:22px}.brand a{font-size:22px;font-weight:850;text-decoration:none;color:#173e42;letter-spacing:-.05em}.brand span{font-size:11px;color:#6c8083}body{background:#f7f9f7;color:#1c363b}h1{letter-spacing:-.05em;color:#173e42}.card{box-shadow:0 8px 28px #173e4210}button{background:#176f66}button:hover{background:#11584f}select:focus,textarea:focus{outline:2px solid #77b7a9;outline-offset:2px}@media(max-width:500px){.brand span{display:none}.card{padding:17px}} </style></head><body><main><div class="brand"><a href="/">◈ ハナシル</a><span>伝えたいことが、ちゃんと伝わる。</span></div>
+<a href="keyword-speech.html">← 会議で伝える</a>
+<h1>ニュースから、<br>自分の言葉で話そう。</h1>
 <p class="muted">ニュースを選んで、朝礼で話せる原稿を無料作成。会員登録・APIキー・文章入力は不要です。</p>
 <section class="card inputs">
 <label for="news">1. ニュースを選ぶ</label>
@@ -33,10 +33,10 @@ button.secondary{background:#e3eff0;color:#24575b}.row{display:flex;gap:12px;fle
 <option value="natural">自然で親しみやすい</option><option value="formal">丁寧・落ち着いた</option><option value="light">明るく簡潔</option></select></div></div>
 <label for="experience">自分の体験・補足（任意）</label>
 <textarea id="experience" maxlength="450" placeholder="例：昨日、確認の声かけでミスを防げた"></textarea>
-<button id="make" type="button">朝礼原稿を作る</button>
+<button id="make" type="button">スピーチをつくる</button>
 </section>
 <section id="result" class="card hidden" aria-live="polite">
-<h2>完成した朝礼原稿</h2><p id="stats" class="muted"></p>
+<h2>あなたのスピーチ</h2><p id="stats" class="muted"></p>
 <div id="script" class="script"></div><p id="source" class="muted"></p>
 <p id="notice" class="notice"></p>
 <div class="actions"><button id="copy" type="button">原稿をコピー</button><button id="again" class="secondary" type="button">別の言い回しで作る</button><button id="print" class="secondary" type="button">印刷・PDF保存</button></div>
