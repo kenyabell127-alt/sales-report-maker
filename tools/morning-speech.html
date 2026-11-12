@@ -19,7 +19,7 @@ button.secondary{background:#e3eff0;color:#24575b}.row{display:flex;gap:12px;fle
 <label for="news">1. ニュースを選ぶ</label>
 <select id="news"><option value="">ニュースを使わない（仕事の話題から作る）</option></select>
 <p id="newsStatus" class="muted" role="status">ニュースを確認しています…</p>
-<label for="audience">2. 誰に話す？</label><select id="audience"><option value="team">同じ職場の仲間</option><option value="manager">上司・管理職</option><option value="general">幅広い年代の人</option></select><label for="topic">3. 話の切り口</label>
+<label for="audience">2. 誰に話す？</label><select id="audience"><option value="team">同じ職場の仲間</option><option value="manager">上司・管理職</option><option value="general">幅広い年代の人</option></select><label for="perspective">3. どんな話にしたい？</label><select id="perspective"><option value="insight">気づきがある話</option><option value="question">聞く人が考えたくなる話</option><option value="practical">仕事に役立つ具体的な話</option></select><label for="topic">4. 話の切り口</label>
 <select id="topic">
 <option value="auto">ニュースに合う切り口を自動で選ぶ</option>
 <option value="team">チームワーク</option><option value="safety">安全・確認</option>
@@ -27,9 +27,9 @@ button.secondary{background:#e3eff0;color:#24575b}.row{display:flex;gap:12px;fle
 <option value="improvement">業務改善・工夫</option><option value="thanks">感謝・気配り</option>
 <option value="season">季節・変化への対応</option><option value="challenge">挑戦・成長</option>
 </select>
-<div class="row"><div><label for="duration">4. 発表時間</label><select id="duration">
+<div class="row"><div><label for="duration">5. 発表時間</label><select id="duration">
 <option value="30">30秒</option><option value="60" selected>1分</option><option value="120">2分</option><option value="180">3分</option></select></div>
-<div><label for="tone">5. 話し方</label><select id="tone">
+<div><label for="tone">6. 話し方</label><select id="tone">
 <option value="natural">自然で親しみやすい</option><option value="formal">丁寧・落ち着いた</option><option value="light">明るく簡潔</option></select></div></div>
 <label for="stance">このニュースを見て、どう思った？（任意）</label><textarea id="stance" maxlength="280" placeholder="例：便利になる一方で、最後の確認は人がするべきだと思う"></textarea><label for="experience">実際にあったこと・身近な例（任意）</label>
 <textarea id="experience" maxlength="450" placeholder="例：昨日、確認の声かけでミスを防げた"></textarea>
@@ -87,37 +87,57 @@ function build(){
  const angle=news?angleFor(news.title):null;
  const requested=$('topic').value,topic=requested==='auto'?topicFor(news?.title||''):requested;
  const t=topics[topic],seconds=Number($('duration').value),tone=$('tone').value,audience=$('audience').value;
+ const perspective=$('perspective').value;
  const experience=$('experience').value.trim().replace(/[。！？\\s]+$/,'');
  const stance=$('stance').value.trim().replace(/[。！？\\s]+$/,'');
- const start=tone==='formal'?'おはようございます。本日は、気になった話題を一つお話しします。':tone==='light'?'おはようございます。今日は最近気になったことを一つ。':'おはようございます。今日は一つ、最近考えたことをお話しします。';
- let sections=[start];
+ const headline=news?news.title.replace(/\\s+-\\s+[^-]{2,35}$/,'').trim():'';
+ const opening=tone==='formal'?'おはようございます。今日は一つ、気になった話題についてお話しします。':tone==='light'?'おはようございます。ちょっと気になった話があります。':'おはようございます。最近、少し考えたことがあります。';
+ const audienceLine=audience==='manager'?'判断する側としては、目に見える結果だけでなく、そこに至る過程も知っておきたいところです。':audience==='general'?'立場が違えば、同じ出来事でも感じ方が違うかもしれません。':'自分の担当だけでなく、周りの人にも関係することだと思います。';
+ const sections=[opening];
  if(news){
-  const headline=news.title.replace(/\\s+-\\s+[^-]{2,35}$/,'').trim();
-  sections.push('最近、「'+headline+'」というニュースを見かけました。');
-  if(stance)sections.push('この話題について、私は'+stance+'と思いました。');
-  else if(angle)sections.push(variant%2===0?angle.view:angle.question);
-  else sections.push('見出しだけでは詳しい事情は分かりませんが、何が起きているのか自分で確かめることが大切だと感じました。');
- }else sections.push(variant%2===0?t.intro:t.point);
- if(!news&&stance)sections.push('私が考えているのは、'+stance+'ということです。');
- if(experience)sections.push('身近なところでは、'+experience+'ということがありました。');
- if(seconds>=60)sections.push(angle?(variant%2===0?angle.example:angle.view):t.example);
+   sections.push('「'+headline+'」というニュースを見ました。');
+   if(stance)sections.push('これを見て、私は'+stance+'と感じました。');
+   else if(angle)sections.push(perspective==='question'?'この話題で気になったのは、私たちならどうするだろう、ということです。':angle.view);
+   else sections.push('見出しだけで結論を出すのは難しいので、まず何が起きたのかを確認したいと思いました。');
+ }else{
+   sections.push(stance?'私が最近考えているのは、'+stance+'ということです。':t.intro);
+ }
+ if(experience)sections.push('そういえば、身近なところでも'+experience+'ということがありました。');
+ if(perspective==='question'){
+   sections.push('皆さんなら、こういう場面で何を一番大切にするでしょうか。');
+   if(seconds>=60)sections.push(angle?angle.example:t.example);
+ }else if(perspective==='practical'){
+   sections.push(angle?angle.example:t.example);
+   if(seconds>=60)sections.push('例えば今日なら、いつもの手順の中で一か所だけ見直してみる。それくらいの小さな行動でも十分だと思います。');
+ }else{
+   if(seconds>=60)sections.push(angle?angle.example:t.point);
+   if(seconds>=120)sections.push(audienceLine);
+ }
  if(seconds>=120){
-  sections.push(angle?angle.question:t.point);
-  sections.push(audience==='manager'?'管理する立場では、結果だけを見て判断せず、そこに至るまでの進め方も確認したいところです。':audience==='general'?'立場が違えば、同じ出来事でも受け止め方は変わると思います。自分と違う見方にも耳を傾けたいです。':'自分一人で完結する仕事は少ないので、周りの人と一緒に考えることにも意味があると思います。');
+   if(perspective==='question')sections.push(audienceLine);
+   else if(angle)sections.push(angle.question);
+   else sections.push(t.example);
  }
  if(seconds>=180){
-  sections.push(angle?angle.example:t.example);
-  sections.push('ここで大切なのは、ニュースの出来事と自分たちの仕事を無理に同じものとして考えないことです。違う場面でも参考になる考え方がないか、という視点で見てみたいです。');
+   sections.push('もちろん、ニュースで起きたことと自分たちの仕事は同じではありません。ただ、違う分野の話だからこそ、普段は気づかない視点をもらえることがあります。');
  }
- sections.push((angle&&requested==='auto'&&seconds<=60?angle.question:t.action)+'以上です。');
- // Prevent repeated sentences when the selected variant already uses the same angle.
+ const ending=perspective==='question'?'私もすぐに答えは出ませんが、今日は少し意識して過ごしてみたいと思います。':perspective==='practical'?'まずは今日、自分にできることから試してみます。':angle&&news?angle.question:t.action;
+ sections.push(ending);
  const deduped=sections.filter((line,i)=>sections.indexOf(line)===i);
- const speech=deduped.join(BL),chars=speech.replace(/\\s/g,'').length,estimate=Math.round(chars/300*60);
+ let speech=deduped.join(BL);
+ const target=Math.round(seconds*4.5);
+ const extra=[angle?angle.question:t.point,audienceLine,angle?angle.example:t.example,'大きな話に聞こえますが、実際には毎日の小さな判断の積み重ねなのかもしれません。','忙しいときほど、少し立ち止まって考える余裕を持ちたいと思います。'];
+ let idx=0;
+ while(speech.replace(/\\s/g,'').length<target-45&&idx<extra.length){
+   const line=extra[idx++];
+   if(!deduped.includes(line)){deduped.splice(deduped.length-1,0,line);speech=deduped.join(BL)}
+ }
+ const chars=speech.replace(/\\s/g,'').length,estimate=Math.round(chars/300*60);
  $('script').textContent=speech;
  $('stats').textContent='約'+chars+'文字／読み上げ目安 '+estimate+'秒／設定 '+seconds+'秒';
  const source=$('source');source.replaceChildren();
  if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
- $('notice').textContent=(news?'ニュース本文は未確認です。見出しに基づく意見の例なので、事実を確認し、ご自身の考えに直してから使ってください。 ':'')+(Math.abs(estimate-seconds)>20?'設定時間と読み上げ目安に差があります。必要に応じて調整してください。':'読み上げ時間は目安です。');
+ $('notice').textContent=(news?'見出しに基づく意見の下書きです。記事本文の要約ではありません。内容を確認してから話してください。 ':'')+(Math.abs(estimate-seconds)>20?'設定時間との差があります。原稿を直接編集して調整できます。':'読み上げ時間は目安です。');
  $('result').classList.remove('hidden');
 }
 $('make').addEventListener('click',()=>{variant=0;build()});
