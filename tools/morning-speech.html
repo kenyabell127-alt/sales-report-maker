@@ -97,15 +97,30 @@ function angleFor(title){return newsAngles.find(x=>x.re.test(title))||null}
 function topicFor(title){return angleFor(title)?.topic||'communication'}
 let newsItems=[],variant=0;
 async function loadNews(){
- try{
-  const res=await fetch('/data/morning-news.json',{cache:'no-store'});
-  if(!res.ok)throw new Error('not found');
-  const data=await res.json(),updated=Date.parse(data.updated_at);
-  if(!Number.isFinite(updated)||Date.now()-updated>4*86400000)throw new Error('stale');
-  newsItems=(data.items||[]).filter(item=>item&&typeof item.title==='string'&&/^https:\/\//.test(item.url)&&Date.now()-Date.parse(item.published)<4*86400000);
-  for(let i=0;i<newsItems.length;i++){const option=document.createElement('option');option.value=String(i);option.textContent=newsItems[i].title+(firstVerifiedSentence(newsItems[i].summary)?'':'［見出しのみ］');$('news').append(option)}
-  $('newsStatus').textContent=newsItems.length?'最近のニュース '+newsItems.length+'件（更新 '+new Date(updated).toLocaleString('ja-JP')+'）':'現在、朝礼向けのニュース候補がありません。';
- }catch(error){$('newsStatus').textContent='ニュースを取得できませんでした。ニュースなしの原稿は利用できます。'}
+ const urls=['/data/morning-news.json','https://raw.githubusercontent.com/kenyabell127-alt/sales-report-maker/main/data/morning-news.json'];
+ let errorMessage='';
+ for(const url of urls){
+  try{
+   const res=await fetch(url,{cache:'no-store'});
+   if(!res.ok)throw new Error('HTTP '+res.status);
+   const data=await res.json();
+   if(!Array.isArray(data.items))throw new Error('データ形式が不正');
+   const now=Date.now();
+   newsItems=data.items.filter(item=>item&&typeof item.title==='string'&&typeof item.url==='string'&&/^https:\/\//.test(item.url)&&(!item.published||!Number.isFinite(Date.parse(item.published))||Math.abs(now-Date.parse(item.published))<7*86400000));
+   $('news').querySelectorAll('option:not(:first-child)').forEach(el=>el.remove());
+   for(let i=0;i<newsItems.length;i++){
+    const option=document.createElement('option');option.value=String(i);
+    option.textContent=newsItems[i].title+(firstVerifiedSentence(newsItems[i].summary)?'':'［見出しのみ］');
+    $('news').append(option);
+   }
+   const updated=Date.parse(data.updated_at);
+   const stale=Number.isFinite(updated)&&now-updated>4*86400000;
+   $('newsStatus').textContent=newsItems.length?'ニュース '+newsItems.length+'件'+(stale?'（更新が止まっている可能性があります）':'')+(url!==urls[0]?'（予備の配信元から取得）':''):'ニュース候補がありません。';
+   if(newsItems.length)return;
+   errorMessage='ニュースデータに候補がありません';
+  }catch(error){errorMessage=String(error.message||error)}
+ }
+ $('newsStatus').textContent='ニュースを読み込めませんでした（'+errorMessage+'）。再読み込みするか、仕事の話題から作成してください。';
 }
 function cleanSentence(value){return String(value||'').trim().replace(/[。！？\s]+$/,'')}
 function completeSentence(value){
