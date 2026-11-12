@@ -55,8 +55,8 @@ button.primary{width:100%;margin-top:22px;display:flex;justify-content:space-bet
 <option value="improvement">業務改善・工夫</option><option value="thanks">感謝・気配り</option>
 <option value="season">季節・変化への対応</option><option value="challenge">挑戦・成長</option>
 </select>
-<div class="row"><div><label for="duration">5. 原稿の長さ</label><select id="duration">
-<option value="short">短め（要点だけ）</option><option value="normal" selected>標準（意見と具体例）</option><option value="detail">詳しめ（背景と体験）</option></select></div>
+<div class="row"><div><label for="duration">5. 話す時間の目安</label><select id="duration">
+<option value="30">30秒</option><option value="60" selected>1分</option><option value="120">2分</option><option value="180">3分</option></select><p class="muted">時間は目安です。内容を水増しせず、原稿が短い場合はお知らせします。</p></div>
 <div><label for="tone">6. 話し方</label><select id="tone">
 <option value="natural">自然で親しみやすい</option><option value="formal">丁寧・落ち着いた</option><option value="light">明るく簡潔</option></select></div></div>
 <label for="stance">このニュースを見て、どう思った？（任意）</label><textarea id="stance" maxlength="280" placeholder="例：便利になる一方で、最後の確認は人がするべきだと思う"></textarea><label for="experience">実際にあったこと・身近な例（任意）</label>
@@ -122,7 +122,7 @@ function build(){
  const summary=news&&news.detail_level==='rss-summary'&&typeof news.summary==='string'?news.summary.trim():'';
  const angle=news?angleFor(headline+' '+summary):null;
  const requested=$('topic').value,topic=requested==='auto'?topicFor(headline+' '+summary):requested;
- const t=topics[topic],length=$('duration').value,tone=$('tone').value,perspective=$('perspective').value;
+ const t=topics[topic],seconds=Number($('duration').value),tone=$('tone').value,perspective=$('perspective').value;
  const experience=cleanSentence($('experience').value),stance=normalizeSpoken($('stance').value);
  const opening=tone==='formal'?'おはようございます。':'おはようございます。';
  const parts=[opening];
@@ -145,12 +145,12 @@ function build(){
  }else{
    parts.push('この見出しを見て、まず詳しい背景を知りたいと思いました。');
  }
- if(length!=='short'){
+ if(seconds>=60){
    if(experience)parts.push('身近なところでは、'+experience+'ということがありました。');
    else if(!news)parts.push(t.example);
    else if(angle && perspective==='practical')parts.push(angle.example);
  }
- if(length==='detail'){
+ if(seconds>=120){
    if(experience)parts.push('ニュースそのものとは違う話ですが、自分の経験と照らし合わせて考えるきっかけになりました。');
    else if(news)parts.push('ただ、見出しだけで判断できることには限りがあります。背景も確かめてから、自分なりに考えたいと思います。');
    else parts.push('慣れていることほど、立ち止まって考える機会は少ないものです。');
@@ -164,11 +164,12 @@ function build(){
  }else if(!news){
    parts.push(t.action);
  }
+ if(seconds>=180 && experience && stance){parts.push('一度の経験だけで答えが出るわけではありませんが、これからも自分の考えを確かめていきたいです。');}
  const speech=parts.filter(Boolean).join(BL);
  const chars=speech.replace(/\s/g,'').length,estimate=readingEstimate(speech);
  $('script').textContent=speech;
- $('stats').textContent='約'+chars+'文字／読み上げ目安 約'+estimate+'秒（話す速さで変わります）';
- updateQuality(speech,null,!!news,!!summary);
+ $('stats').textContent='約'+chars+'文字／読み上げ目安 約'+estimate+'秒／希望 '+seconds+'秒';
+ updateQuality(speech,seconds,!!news,!!summary);
  const noteBits=[headline||'今日の話題',stance||'自分の考え',experience||'身近な例'];
  $('talkNotes').textContent='話すときのカンペ：'+noteBits.map((x,i)=>(i+1)+'．'+x).join(' ／ ');
  const source=$('source');source.replaceChildren();
@@ -183,7 +184,7 @@ function updateQuality(speech,seconds,hasNews,hasSummary){
  const duplicates=sentences.length-new Set(sentences.map(x=>x.trim())).size;
  const flags=[];
  if(/(?:大切だと思います|意識したいと思います|見直してみたいと思います)/.test(speech)&&!speech.includes('実際に、'))flags.push('少し抽象的です。自分の体験を一つ足すと伝わりやすくなります');
- if(seconds!==null&&Math.abs(actual-seconds)>20)flags.push('読み上げ時間が設定と'+Math.abs(actual-seconds)+'秒ずれています');
+ if(seconds!==null&&Math.abs(actual-seconds)>15)flags.push('希望の'+seconds+'秒に対して、原稿の目安は'+actual+'秒です。長さを合わせるには具体的な体験や背景を追加してください');
  if(long)flags.push('長い一文が'+long+'件あります。短く区切ると話しやすくなります');
  if(duplicates)flags.push('似た文の繰り返しがあります');
  if(hasNews&&!hasSummary)flags.push('見出しのみ。ニュースの具体的な事実は未確認です');
@@ -210,8 +211,8 @@ $('startTimer').addEventListener('click',()=>{
 });
 $('stopTimer').addEventListener('click',()=>{
  if(!timerStarted)return;
- const elapsed=Math.round((Date.now()-timerStarted)/1000),target=readingEstimate($('script').innerText),difference=elapsed-target;
- $('timerResult').textContent='実測 '+elapsed+'秒（文字数からの目安 '+target+'秒）。'+(Math.abs(difference)<=10?'ちょうどよい長さです。':difference>0?'目標より'+difference+'秒長め。少し短くすると収まります。':'目標より'+(-difference)+'秒短め。体験談を一つ加えると自然に伸ばせます。');
+ const elapsed=Math.round((Date.now()-timerStarted)/1000),target=Number($('duration').value),difference=elapsed-target;
+ $('timerResult').textContent='実測 '+elapsed+'秒（希望 '+target+'秒）。'+(Math.abs(difference)<=10?'ちょうどよい長さです。':difference>0?'目標より'+difference+'秒長め。少し短くすると収まります。':'目標より'+(-difference)+'秒短め。体験談を一つ加えると自然に伸ばせます。');
  timerStarted=0;$('startTimer').disabled=false;$('stopTimer').disabled=true;
 });
 loadNews();
