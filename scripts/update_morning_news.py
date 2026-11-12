@@ -9,9 +9,11 @@ from email.utils import parsedate_to_datetime
 
 OUTPUT = pathlib.Path("data/morning-news.json")
 FEEDS = [
-    ("NHK 主要", "https://www.nhk.or.jp/rss/news/cat0.xml"),
-    ("NHK 経済", "https://www.nhk.or.jp/rss/news/cat5.xml"),
-    ("NHK 科学・文化", "https://www.nhk.or.jp/rss/news/cat3.xml"),
+    ("NHK 主要", "https://news.web.nhk/n-data/conf/na/rss/cat0.xml"),
+    ("NHK 経済", "https://news.web.nhk/n-data/conf/na/rss/cat5.xml"),
+    ("NHK 科学・医療", "https://news.web.nhk/n-data/conf/na/rss/cat3.xml"),
+    ("Google ニュース", "https://news.google.com/rss?hl=ja&gl=JP&ceid=JP:ja"),
+    ("Google ニュース・ビジネス", "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=ja&gl=JP&ceid=JP:ja"),
 ]
 BLOCKED = re.compile(r"死亡|殺害|遺体|自殺|性的|虐待|逮捕|戦争|爆発|被害者|暴行|選挙|政党|宗教|容疑|銃撃|事故死|重体|災害|地震|津波")
 NOW = dt.datetime.now(dt.timezone.utc)
