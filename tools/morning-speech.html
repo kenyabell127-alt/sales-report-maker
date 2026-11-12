@@ -178,6 +178,31 @@ function conversationOpening(text){
  if(/旅行|観光|温泉/.test(text))return '最近、どこか出かけたい場所ってあります？';
  return 'ちょっと気になったニュースがあるんですけど。';
 }
+async function generateWithAI(){
+ const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)];
+ const summary=news&&news.detail_level==='rss-summary'?String(news.summary||'').slice(0,1200):'';
+ const opinion=$('stance').value.trim(),experience=$('experience').value.trim();
+ if(!summary&&!opinion&&!experience){build();$('notice').textContent='この記事は見出ししか取得できていないため、内容を確認した文章は生成できません。出典を確認し、ご自身の感想や経験を入力してください。';return}
+ const button=$('make');button.disabled=true;button.firstChild.textContent='AIが文章を整えています… ';
+ try{
+  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),18000);
+  let response;
+  try{response=await fetch('/api/conversation',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({title:news?.title||$('topic').selectedOptions[0].textContent,summary,opinion,experience,audience:$('audience').value==='team'?'friend':$('audience').value==='manager'?'work':'general',tone:$('tone').value}),signal:controller.signal})}
+  finally{clearTimeout(timeout)}
+  const data=await response.json();
+  if(!response.ok||!data.speech)throw new Error(data.error||'GENERATION_FAILED');
+  $('script').textContent=data.speech;
+  $('speechHeading').textContent=news?readableTitle(news.title):'話す文章';
+  $('stats').textContent='読み上げの目安：約'+readingEstimate(data.speech)+'秒（話す速さにより変わります）';
+  const source=$('source');source.replaceChildren();
+  if(news){const link=document.createElement('a');link.href=news.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='出典：'+news.source+'（記事を確認）';source.append(link)}
+  $('notice').textContent=news?'AIが配信元の概要から作った下書きです。記事本文を読んだものではありません。内容を確認してから使ってください。':'AIが入力内容から作った下書きです。';
+  $('result').classList.remove('hidden');
+ }catch(error){
+  build();
+  $('notice').textContent=(error.message==='AI_BINDING_REQUIRED'?'AI接続がまだ設定されていません。':error.name==='AbortError'?'AIの応答が遅いため、':'AIが利用できなかったため、')+'簡易版の文章を表示しています。';
+ }finally{button.disabled=false;button.firstChild.textContent='AIで話す文章をつくる '}
+}
 function build(){
  const selected=$('news').value,news=selected===''?null:newsItems[Number(selected)];
  const headline=news?readableTitle(news.title):'';
@@ -229,8 +254,8 @@ function showNewsDetail(){
  el.textContent=summary?'配信元の概要：'+summary:'このニュースは見出しのみ取得できています。出典を開いて本文を確認してください。';
 }
 $('news').addEventListener('change',showNewsDetail);
-$('make').addEventListener('click',()=>{variant=0;build()});
-$('again').addEventListener('click',()=>{variant++;const tones=['natural','light','formal'];$('tone').value=tones[variant%tones.length];build()});
+$('make').addEventListener('click',()=>{variant=0;generateWithAI()});
+$('again').addEventListener('click',()=>{variant++;const tones=['natural','light','formal'];$('tone').value=tones[variant%tones.length];generateWithAI()});
 $('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('speechHeading').innerText+'\n\n'+$('script').innerText);alert('コピーしました')}catch{alert('コピーできませんでした。原稿を長押ししてコピーしてください。')}});
 $('print').addEventListener('click',()=>window.print());
 $('script').addEventListener('input',()=>{const content=$('script').innerText,n=content.replace(/\s/g,'').length;$('stats').textContent='読み上げの目安：約'+Math.round(n/300*60)+'秒（話す速さにより変わります）'});
