@@ -1,245 +1,245 @@
 {
-  "updated_at": "2026-11-16T21:49:03.975100+00:00",
+  "updated_at": "2026-11-17T21:53:47.615161+00:00",
   "generation": "rss-summary-with-headline-fallback",
   "items": [
     {
-      "title": "ナスダック2.5％下落 エヌビディア経営混乱への懸念広がる",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261117de76894",
-      "source": "NHK 経済",
-      "published": "2026-11-16T21:41:15+00:00",
-      "summary": "16日のニューヨーク株式市場ではAI開発をめぐる先行きの不透明感などを背景に半導体や大手ITといった銘柄に売り注文が広がり、ハイテク株の比率が高いナスダックの株価指数は、先週末と比べて620ポイントあ…",
+      "title": "エヌビディア フアン氏「取締役会が求めればCEO復帰を」",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261118de77484",
+      "source": "NHK 主要",
+      "published": "2026-11-17T21:38:47+00:00",
+      "summary": "半導体大手「エヌビディア」のCEOを辞任したジェンスン・フアン氏は自身のSNSに「取締役会が最善だと判断したらCEOとして復帰することを光栄に思う」と投稿し、復帰に意欲を示しました。",
       "detail_level": "rss-summary"
     },
     {
-      "title": "「18日に中ロ首脳会談」ロシア側は中国との連携強調ねらいか",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261117de76886",
+      "title": "関東などで一時雨強まる 低気圧急発達で荒天に",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261118de77485",
       "source": "NHK 主要",
-      "published": "2026-11-16T21:15:25+00:00",
-      "summary": "ロシア大統領府は、中国で開かれるAPEC＝アジア太平洋経済協力会議の首脳会議にあわせて、プーチン大統領と習近平国家主席が18日、首脳会談を行うと発表しました。\n\nロシアとしては、ウクライナ侵攻をめぐっ…",
+      "published": "2026-11-17T21:35:01+00:00",
+      "summary": "気圧の谷や湿った空気の影響で、昨夜から関東や東海などで雨が強まり、千葉県では18日未明、局地的に非常に激しい雨が降りました。\n\n低気圧が急速に発達するため、沿岸部を中心にしだいに風が強まり各地で荒れた…",
       "detail_level": "rss-summary"
+    },
+    {
+      "title": "消費税減税 与党\"審議積み上げ成立を\"野党\"主張受け入れを\"",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261118de77460",
+      "source": "NHK 主要",
+      "published": "2026-11-17T20:19:37+00:00",
+      "summary": "食料品の消費税減税関連法案をめぐり、与党側は、参議院の特別委員会で高市総理大臣が出席して再度、質疑を行うなどして審議時間を積み上げ、成立を図りたい考えです。\n\nこれに対して野党側は、審議の充実に加えて…",
+      "detail_level": "rss-summary"
+    },
+    {
+      "title": "防衛費5年間で50兆円台前半の案 安保3文書改定の政府内調整",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261117de77432",
+      "source": "NHK 主要",
+      "published": "2026-11-17T20:13:05+00:00",
+      "summary": "安全保障関連の3文書の改定で焦点の1つとなる防衛費について、政府内のこれまでの調整で財務省が来年度からの5年間で50兆円台前半を目安とする案を示していることが分かりました。防衛省は防衛力の抜本的な強化…",
+      "detail_level": "rss-summary"
+    },
+    {
+      "title": "APEC首脳会議 日中接触や米中ロ首脳会談が焦点",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261118de77459",
+      "source": "NHK 主要",
+      "published": "2026-11-17T20:11:40+00:00",
+      "summary": "APEC＝アジア太平洋経済協力会議の首脳会議が18日から中国の深センで開かれます。\n\n日中関係が悪化した状態が続く中、高市総理大臣と中国の習近平国家主席が接触し、関係改善に向けた動きが見られるかや、ア…",
+      "detail_level": "rss-summary"
+    },
+    {
+      "title": "密輸の金と消費税の仕組みで不正に利益 対策検討へ",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261117de77421",
+      "source": "NHK 主要",
+      "published": "2026-11-17T20:09:18+00:00",
+      "summary": "密輸入した「金」と消費税の仕組みを悪用して不正に利益を得るケースが問題となっていることから、政府・与党は対策の検討に乗り出す方針で、来年度の税制改正に向けた論点の1つになる見通しです。",
+      "detail_level": "rss-summary"
+    },
+    {
+      "title": "教諭「楽をしようと」生成した授業案、子どもは退屈…通知表の所見欄下書き指示「頼ってしまっている」 - 読売新聞",
+      "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5FTGl4WGd4aERqN0FSbGd2Rmw1NHFFLTdpM1pmY2RWTWNycEtRSDMweHoteEcwUVVPQUhqOWtuRm9fMEg4Zk9JUjg3MEhQWThDcEpabGNvMEQxMVFXQ25IREpsNGc1QUw3aW02OTg0SGNqbEE?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-17T20:00:00+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "フアン氏の娘、メガスピード巡るエヌビディア対応を主導＝報道 - Reuters",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQLTVDSzhVS0ZnRTJNQ3hBcDRRaUJrelNTbEJQV0FCNGpTZ3JlWEd6cEhkUmJwZm0zZGpnUzFMdUdWenlGWi1nLVdmdy1xUXFwV2lra2E0ZGNGcWJTZHlyQnl4YUpYUmhJVnhtTjRkSTNDRVpvZF9KUUtpdzZhUDRzUUJwNWhlQzdIb0E?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-17T17:11:43+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "サッカー日本代表 森保監督最後の試合を勝利で飾れず",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261118de77462",
+      "source": "NHK 主要",
+      "published": "2026-11-17T16:31:19+00:00",
+      "summary": "サッカー日本代表はシンガポールで行われた強化試合でパラグアイに1対2で敗れ、森保一監督が指揮をとる最後の試合を勝利で飾ることはできませんでした。",
+      "detail_level": "rss-summary"
+    },
+    {
+      "title": "サッカー日本代表、パラグアイに1－2で敗れる 森保監督のラストマッチを白星で飾れず - 産経ニュース",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5WTngzSUdHcmFmcFZXX3ZRQ2dpNlVEcHlqMUkzSmlxeGttN19zZG9PRURTWER1QnI1S3dGblJRZW5FNEJiLVVjY2JibUFRd3hMcDJwanRfcWtHc0FyWHBTUVVnR3oxMklkTFZWV2hOMXZmejEwWHc?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-17T15:17:04+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "データセンター債権、英HSBCが損失覚悟の大幅割引で売却 - 日本経済新聞",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9XSlVDOEpiaXE3S1dYejBKaUtqdWhrT2d6NF81S1lJLWRSSGZuMF92aTlTbmVFcXpLU3JDU2dqNnA1WlYxVDNvQVRlekhEdUdmYUN5NzFfQ01kaFVfQW5EY2k3eUpzM25JVkh0SQ?oc=5",
+      "source": "Google ニュース・ビジネス",
+      "published": "2026-11-17T15:00:31+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "【速報】NHK、飲酒は午後10時までと職員に通達 - 47NEWS",
+      "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5pU3lfb2Q5d2NoaHRBenFOVnhWSGUwa3Y2aXExYTNHMTVOLWlpaG9xQ09URnphcFZHMk1wOTVoZ0xHYzQwbUFrMV9iVQ?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-17T14:54:11+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "アリス氏が日本に会社設立 エヌビディア・フアン氏の「不倫相手」 中国メディア報道 - 産経ニュース",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1YZG9MWkREd1JDYkw2aEJSaE9EMmR6anRHcEpjbmNGeWZ0Qko1Tm5Bd2hPOXBxSkF1TlN6dWRkNHNwMnQyaFNJckdVWkozWkJmVG5YMFp5WUJ1RHNPY0dTYTluUU1QUTV2cHdmbTVvZkRyVnl6akE?oc=5",
+      "source": "Google ニュース・ビジネス",
+      "published": "2026-11-17T14:32:32+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "パナソニックがボックス型コンパクトシネマカメラ・LUMIX SHX1を発表。フルサイズ6Kセンサー、Blackmagic RAW内部記録、ARRI LogC3を搭載 - VIDEO SALON",
+      "url": "https://news.google.com/rss/articles/CBMiSkFVX3lxTE0ydkQ5S2dtTGxsZE03X3FWYzI4cWZFeFJjTjN5SW1NYkVaVkU4VXdiSlhJRnNGdkp1MktkX3Bad1NkQ2Q1bktRcEt3?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-17T14:02:17+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "吉田羊主演のNHKドラマ10「会社員」第6回はワンカット撮影だった、南沙良「安心しました」 - ナタリー",
+      "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5FVFF0MFNWdXNiR1RyZ2ItOGdiSE1FdEdLaGNCSFQ3c2tHaXlmMnk1YUxEdWdpQUFvT1diRVdaRHc0YWRlak1TRFlqSQ?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-17T13:45:00+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "中国外務省 米の先端半導体輸出新規則に反発",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261117de77425",
+      "source": "NHK 経済",
+      "published": "2026-11-17T13:42:00+00:00",
+      "summary": "アメリカ商務省が先端半導体などの輸出に関する新たな規則を公表したことについて、中国外務省の報道官は「中国のハイテク産業の発展を不当に抑圧している」などと反発し、今後、必要な措置を講じる姿勢を示しました…",
+      "detail_level": "rss-summary"
+    },
+    {
+      "title": "個人向け国債の税優遇見送りへ 金利上昇で販売好調 政府・与党 - ｄメニューニュース",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNdUhoM1VUNUlWTnZOWG5WWXVudkpOTHZONVdjbFltYWxtV0xhNW5zWXVzNW9yZnJ2aVY0UFJUaW1oSzdqa1lCOGhJYXZQeUdhbTFvZlZCS0ZXY0NvY29BcGlRS19FdWpLZU9hb3ZoVElTSVV2VTBkTFVHVXUzSS1PNVF0dVRXa003Rjk5eTF5cENRVHpWNFHSAZsBQVVfeXFMTXN3TDkycEJVd3hQUlFrLWt6RFRVSzNtYjVZdVppeFVxbC05NE9yUEFiWHJlb0Jld3dWd0gxNWZqUWpNcDBmTGV0Zk1JNjVzcUVJdlNzR3dmXzNIOUowS3NrenNTVTVGQy1IY2p6RmFEc3JfMTNxeElGZ2ctRWJnN2xHWGtFTEdkSFg4WW5scGRNLW85aXcxS1FvY0U?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-17T13:42:00+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "リニア中央新幹線 JR東海“開業時期の見通し 年内公表断念”",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261117de77431",
+      "source": "NHK 経済",
+      "published": "2026-11-17T13:33:28+00:00",
+      "summary": "JR東海は、リニア中央新幹線の品川・名古屋間の開業時期の見通しについて、これまで目指していた年内の公表を断念し、国土交通省に伝えたことが関係者への取材で分かりました。",
+      "detail_level": "rss-summary"
+    },
+    {
+      "title": "江夏豊さん「最後の一球は俺のプロ生活の全て」…「江夏の２１球」捕手・水沼四郎さん「また一緒に野球がしたい」 - 読売新聞",
+      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE5Zc0xfM2NxV0xmcVRtdG0yTXpBWWVtQUVjX1VDdU9iZGRsb0kxN0pRNmFmMnRzWFZGNDdPcDV2UV9zSF9qUjFCTldqZE4yYU5tZzNsRFJxM1JucW9IRndIUUFjRHgtZw?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-17T12:55:00+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "クリミア大橋の「道路橋」が崩落か ウクライナがロシアに連日大規模ドローン攻撃 - テレ朝NEWS",
+      "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE5jdnhxbXk2V1cxMUhncjZSRlczZTRHS2V0bUU0YWxNRmpKakNIVlJQQm5ZSnZ3aTVocXVPYkxOekFCVHlQOUUydHg4TnZZWGRPV0V3QzNxeFYxd2hCQ2VQbC1tRVNjS2tHSE5FUEMzZjNJX3FNVC0zMjVn?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-17T12:36:14+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "眼鏡大手ジンズＨＤ、個人情報１８２９万件漏えいの恐れ…アインＨＤでは１２００万件超の会員情報流出か - 読売新聞",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE15REZEakJiTTk0VUJOZmM1aHZvRzd1NzRxTF93VTVvdVoyX2JCMEZEZE51VDRHMzB5TXZmcGpIVUU2RF95b1pHcnhzOWhqUURXa01MMFNGWUJOU2twaTJhUmFSUUM?oc=5",
+      "source": "Google ニュース・ビジネス",
+      "published": "2026-11-17T12:30:00+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "日米豪印首脳会談、輸出規制含む経済的威圧に「深刻な懸念」表明…名指し避けつつ中国をけん制 - 読売新聞",
+      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE1qNEtRRW9wLUc0cXZ0Y2hVWW5MR2x3em83d2xiR1ZfX1dFT0l1US1PTXVBdGhtMnVkQ1FzZGJLSzdaVFBEbkVTUldCMUE0Wkszc1Z4bFIxZ1BWWFBpaVlvdlBYS0VVUQ?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-17T12:24:00+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "【一番星きらり 倉敷天文台創立１００周年】㊤初の民間 私財投じ大型望遠鏡設置 - 山陽新聞",
+      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE1kaTE5OFBhM2x4NUpycnBzaEF5dEhvbnptRzdwZ1o3U0ptQS1YdzFxSnktQUFFZUR2dzBDZVYzNDdHbUo2bFRYSzloTDV6UFlsaUE?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-17T12:20:00+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "【独自】非核三原則、前文から削除 防衛装備品の輸出ルール改定案 - 47NEWS",
+      "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE4xVW5aN2tqZ1lXZ1NoME8zaHQwN1YzMUZ6MkI1a2Q1ZFkxVThVZjNMZm04VU9iVkt2UERRLWNkTXBDQ1ZHS0Vid2dLWQ?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-17T12:01:09+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "NY株見通しー米10月小売売上高に注目 エヌビディア決算控え様子見か(トレーダーズ・ウェブ) - Yahoo!ファイナンス",
+      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQUTdIMC1BQTY2WFowRjU5bi1xMFJ6OVRoM2Vfd3BlV0VTM3RUcThRdnpMeXNsMEVGWnRTc2JubHJiU0x1LWNiTWhLMkFKS1lPWlVBTjhabzNZeVRBcE0waDhHZXVsVk1WdWpfU3g0QTh1YjE3SHpCMHdKbzdMd0YxbXVfNkZtWVU?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-17T11:55:04+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "楽天証券 約447万口座で利用者の年収や保有商品情報漏えいか",
+      "url": "https://news.web.nhk/newsweb/na/nd-20261117de77397",
+      "source": "NHK 経済",
+      "published": "2026-11-17T11:34:37+00:00",
+      "summary": "ネット証券大手の楽天証券は、社内のシステムが不正アクセスを受け、およそ447万口座で利用者の年収や金融資産、保有する金融商品などの情報が漏えいした可能性があると発表しました。",
+      "detail_level": "rss-summary"
+    },
+    {
+      "title": "【トライアウト】矢野雅哉、潔白を主張「うわさ立てられてますけど」ゾンビたばこ騒動で胸中吐露 広島戦力外も２出塁と二盗→三盗でアピール（スポーツ報知） - Yahoo!ニュース",
+      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE1EVHRtZjc3VVNCbFdrUDB3M2lNODZaMGlmampGVUVTSnFDY05ZR2pxOXpnNnl4VUhBOG5QU2Fnelo4bXVqU1o3QnlwZk1aMHBXa0pWRi01QktRRHdEVzZlaWJ5YmwyQXFRWkZjTDJNSEw2MDJvRVl0VXFhZ29JWFk?oc=5",
+      "source": "Google ニュース",
+      "published": "2026-11-17T11:19:23+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "楽天証券に不正アクセス、最大1125万口座のIDなど漏えいか 「テスト環境」の一部情報が流出のおそれ - ITmedia",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9KY2NkbzNLV1BWdjNvMDU1azgybFAxNHYwcDQ1VzF0X2NzVjVtX1lHR2thazdHQU82SFZzZXZKcFQxUWJ2LWVBSXBJX0pIcDhlWEN0Vjhla0k3bW10NUprWjFSbnAtYURIQnc?oc=5",
+      "source": "Google ニュース・ビジネス",
+      "published": "2026-11-17T10:57:46+00:00",
+      "summary": "",
+      "detail_level": "headline"
+    },
+    {
+      "title": "米規制がアジアＡＩ産業直撃、データセンターなどサービス企業の対応必須 - Reuters",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNNkgtaVRqUjZtb1NMZ25BU0pqVzNCZGZQd2VHMEJrRmRQcnBnbHhwVDlMWEt3OTlQTWRQMU9YQXNJTmFseTJTZk9PTXRXQWdXRW9mUGJyWXZ5bnZVV1A1RHI2NUxoTEhEN25KMk1MdDJfRlUySXgtdGFJaXV4MnJncVhrU2x1QQ?oc=5",
+      "source": "Google ニュース・ビジネス",
+      "published": "2026-11-17T10:47:43+00:00",
+      "summary": "",
+      "detail_level": "headline"
     },
     {
       "title": "理研のスパコン「富岳」不正アクセス 研究データなど漏えいか",
       "url": "https://news.web.nhk/newsweb/na/nd-20261117de76883",
-      "source": "NHK 主要",
-      "published": "2026-11-16T20:44:00+00:00",
+      "source": "NHK 科学・医療",
+      "published": "2026-11-17T10:39:00+00:00",
       "summary": "理化学研究所は、スーパーコンピューター「富岳」が外部から不正アクセスを受け、利用者のメールアドレスなどの個人情報や、研究データなどが漏えいした可能性があると発表しました。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "クアッド首脳 中国動向念頭\"経済的威圧に深刻懸念表明\"で調整",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261117de76878",
-      "source": "NHK 主要",
-      "published": "2026-11-16T20:35:00+00:00",
-      "summary": "フィリピンを訪問中の高市総理大臣は17日、日米豪印4か国でつくる枠組み、クアッドの首脳会合に臨みます。\n\n4か国の首脳は、中国の動向も念頭に経済的な威圧に対して、深刻な懸念を表明する内容の共同文書をと…",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "安全保障3文書の改定 防衛産業基盤の強化説明へ 政府",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261117de76890",
-      "source": "NHK 主要",
-      "published": "2026-11-16T20:33:00+00:00",
-      "summary": "安全保障関連の3文書の改定に向けて、自民・維新両党の作業チームは17日2回目の協議を行います。\n\n政府側は「防衛と経済の好循環」を重視する柱の1つに位置づけて防衛産業基盤を強化する方向性を説明すること…",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "「アンコール遺跡群」研究の第一人者 石澤良昭さん死去",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76841",
-      "source": "NHK 科学・医療",
-      "published": "2026-11-16T13:15:20+00:00",
-      "summary": "カンボジアの世界遺産、アンコール遺跡群の研究や保存活動に尽力し、「アジアのノーベル賞」とも呼ばれるマグサイサイ賞を受賞した上智大学の元学長、石澤良昭さんが今月4日亡くなりました。\n\n89歳でした。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "日銀 高田審議委員「グッドポジションへ 機動的利上げを」",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76840",
-      "source": "NHK 経済",
-      "published": "2026-11-16T12:58:12+00:00",
-      "summary": "日銀の金融政策の決定に関わる高田創審議委員が16日に徳島市で講演し、景気を熱しも冷ましもしない水準に政策金利を早く近づけるために機動的に利上げを進めるべきだという考えを示しました。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "ニデック 半期報告書の提出期限延長を国に申請",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76825",
-      "source": "NHK 経済",
-      "published": "2026-11-16T12:04:06+00:00",
-      "summary": "電子部品大手の「ニデック」は、ことし9月までの半年間の財務諸表などをまとめた報告書について、不正会計問題の影響で、会計処理に時間がかかっているとして、法律で定められた16日までの提出期限の延長を国に申…",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "専門家仲介会社 不正入手のパスワードで200件のログイン",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76828",
-      "source": "NHK 科学・医療",
-      "published": "2026-11-16T11:52:47+00:00",
-      "summary": "専門家とのオンライン仲介を手がける「ミツモア」は、不正に入手されたとみられるIDとパスワードを使ってログインを試みる、いわゆる「リスト型攻撃」を受けたと発表しました。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "四国電力 ウェブ委託会社に不正アクセス 約60万件の情報流出",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76812",
-      "source": "NHK 科学・医療",
-      "published": "2026-11-16T11:49:49+00:00",
-      "summary": "四国電力は、電気料金などを確認できる会員制ウェブサービス「よんでんコンシェルジュ」の一部の運用を委託している会社が不正アクセスを受け、個人情報がおよそ60万件流出したと発表しました。\n\n流出したのは、…",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "7～9月GDP 年率-0.1％ 4期ぶりマイナス 節約する家計の実態は",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76344",
-      "source": "NHK 経済",
-      "published": "2026-11-16T10:38:35+00:00",
-      "summary": "ことし7月から9月までのGDP＝国内総生産は個人消費が減少したことなどから、前の3か月と比べた実質の伸び率が年率換算でマイナス0.1％と4期ぶりのマイナスとなりました。\n記事の後半では節約する家計の実…",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "片山財務相 消費税減税法案 支援金の対象“データ精査し確定”",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76659",
-      "source": "NHK 経済",
-      "published": "2026-11-16T09:55:40+00:00",
-      "summary": "食料品の消費税減税関連法案をめぐり片山財務大臣は、高市総理大臣が所得に応じた支援金の対象を勤労者の5割以上とする方向で検討する考えを示したことを受けて、最新のデータを精査しながら予算編成の過程で対象な…",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "バンダイナムコ 一番くじ関連の個人情報 のべ41万件余漏えいか",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76767",
-      "source": "NHK 経済",
-      "published": "2026-11-16T09:37:35+00:00",
-      "summary": "バンダイナムコホールディングスは、物流を手がける子会社のシステムが不正アクセスを受け、個人情報、のべ41万件余りが漏えいしたおそれがあると発表しました。\n\n会社によりますと、対象は「一番くじ」と呼ばれ…",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "円相場値上がり 市場介入警戒感や日銀早期利上げ意識も",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76757",
-      "source": "NHK 経済",
-      "published": "2026-11-16T09:29:56+00:00",
-      "summary": "16日の東京外国為替市場、政府・日銀による市場介入への警戒感などからいくぶん円を買ってドルを売る動きが出て、円相場は値上がりしました。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "NTT 国内完結のセキュリティーAI技術などを発表",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76421",
-      "source": "NHK 経済",
-      "published": "2026-11-16T09:29:01+00:00",
-      "summary": "不正アクセスによる情報漏えいが相次ぐ中、NTTは16日、システムのぜい弱性の解析に欠かせない重要な情報を自社で管理する国内の環境で処理することができる新たなセキュリティー技術などを発表しました。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "NTTドコモ通信障害 午後4時前に復旧 “交換機に不具合が原因”",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76369",
-      "source": "NHK 経済",
-      "published": "2026-11-16T09:09:49+00:00",
-      "summary": "NTTドコモの携帯電話サービスで、16日午前中から一部の利用者の間で通話やデータ通信などが利用しにくい状況が続いていましたが、会社は午後4時前に復旧したと発表しました。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "理研のスパコン「富岳」に不正アクセス 稼働停止して状況確認",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76603",
-      "source": "NHK 科学・医療",
-      "published": "2026-11-16T08:17:00+00:00",
-      "summary": "理化学研究所のスーパーコンピューター「富岳」が外部から不正アクセスを受けたことがわかり、理化学研究所は富岳の稼働を停止し、情報流出などの被害がないか詳しい状況を確認しています。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "中国・ASEAN首脳会議 中国は経済・貿易分野の協力推進呼びかけ",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76642",
-      "source": "NHK 経済",
-      "published": "2026-11-16T08:13:32+00:00",
-      "summary": "ASEAN＝東南アジア諸国連合と中国の首脳会議が16日にフィリピンで行われ、中国側は経済・貿易分野での協力推進を呼びかけました。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "株価 終値も6万円割れ 半導体関連の銘柄中心に売り注文広がる",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76445",
-      "source": "NHK 経済",
-      "published": "2026-11-16T07:38:44+00:00",
-      "summary": "週明け16日の東京株式市場、半導体関連の銘柄を中心に売り注文が広がり、日経平均株価は値下がりして終値として6万円を割り込みました。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "キリンビール オンラインショップ会員メアド 約5万件超漏えい",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76531",
-      "source": "NHK 経済",
-      "published": "2026-11-16T06:03:57+00:00",
-      "summary": "キリンビールは、不正アクセスの影響で自社が運営するオンラインショップ会員のメールアドレス、およそ5万8000件が外部に漏えいしたと発表しました。\n\n会社によりますと、漏えいした情報には名前や住所、クレ…",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "香港のディズニーで不正アクセス 電子チケット盗み取られたか",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76430",
-      "source": "NHK 科学・医療",
-      "published": "2026-11-16T05:54:07+00:00",
-      "summary": "香港のディズニーランドでオンラインチケットの販売システムに不正アクセスがあり、香港のメディアは、およそ1万7000枚分の電子チケットのQRコードが盗み取られた疑いがあると伝えています。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "トヨタ 来年の春闘で労使間協議開始時期早める 年内の12月に",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76419",
-      "source": "NHK 経済",
-      "published": "2026-11-16T04:41:00+00:00",
-      "summary": "トヨタ自動車と労働組合は来年の春闘で、これまで2月だった労使間の協議の開始時期を早め、年内の12月に始めることが、関係者への取材でわかりました。自動車メーカーを取り巻く環境が大きく変化する中、議論を深…",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "韓国の半導体製造の一大拠点公開 課題の中小企業育成へ",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76485",
-      "source": "NHK 経済",
-      "published": "2026-11-16T04:09:00+00:00",
-      "summary": "韓国政府と大手企業が連携してソウル近郊に建設している半導体の製造拠点が公開され、来年春には課題である中小企業の育成に向けて、半導体の素材や部品の開発を共同で進める施設が完成するとしています。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "ベッセント米財務長官「エヌビディア 後任は社外から登用を」",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76473",
-      "source": "NHK 経済",
-      "published": "2026-11-16T04:06:42+00:00",
-      "summary": "半導体大手エヌビディアのジェンスン・フアン氏が辞任した問題でアメリカのベッセント財務長官は、後任は社外から登用すべきだという考えを示しました。先端半導体の中国へのう回輸出があったのではないかという疑惑…",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "物流センター用地取得の5億円余を無申告か 脱税の疑いで告発",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76453",
-      "source": "NHK 経済",
-      "published": "2026-11-16T03:09:26+00:00",
-      "summary": "千葉県柏市の不動産会社が物流センターの建設用地の取得に関わって得た5億円あまりの所得を申告しなかったとして、東京国税局から脱税の疑いで告発されました。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "米産ジャガイモ輸入解禁めぐり北海道知事が農相に厳格対応要請",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76420",
-      "source": "NHK 経済",
-      "published": "2026-11-16T02:51:00+00:00",
-      "summary": "アメリカが全面的な輸入解禁を求めている生のジャガイモをめぐり、北海道の鈴木知事が16日、武部農林水産大臣に対し、アメリカとの協議に厳格に対応するよう要請しました。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "きょうのおはBiz 11月16日(月) AIスイーツ 大手コンビニの戦略",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76353",
-      "source": "NHK 経済",
-      "published": "2026-11-16T02:44:54+00:00",
-      "summary": "NHKニュース「おはよう日本」で平日朝に放送している経済ニュースコーナー「おはBiz」。最新のビジネストレンドや働き方、お役立ちサービスやスタートアップ企業の情報など、ギュギュっとコンパクトにお届けし…",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "マグサイサイ賞授賞式 ミャンマー人権団体創設者などに授与",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261115de76314",
-      "source": "NHK 科学・医療",
-      "published": "2026-11-15T22:03:00+00:00",
-      "summary": "「アジアのノーベル賞」とも呼ばれることしのマグサイサイ賞の授賞式が行われ、ミャンマーで拘束された政治犯の支援にあたる人権団体の創設者ら3人に賞が贈られました。",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "AIの安全確保に向け 事業者はリスク情報を国に報告 法規制検討",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261115de76259",
-      "source": "NHK 経済",
-      "published": "2026-11-15T21:47:35+00:00",
-      "summary": "政府は、AIの安全性の確保に向けて、提供事業者にリスクに関する情報は国に報告することなどを求める法規制を検討しています。\n\n事業者への罰則なども検討していて、AIの悪用や暴走のリスクの低減につながるか…",
-      "detail_level": "rss-summary"
-    },
-    {
-      "title": "消費税減税法案 参院で審議続く 国民 公明の協力が焦点に",
-      "url": "https://news.web.nhk/newsweb/na/nd-20261116de76325",
-      "source": "NHK 経済",
-      "published": "2026-11-15T20:38:00+00:00",
-      "summary": "食料品の消費税減税関連法案は、今週も与党が少数となっている参議院での審議が続きます。\n\n自民党内からは、国民民主党や公明党の協力に期待する声が出ていますが、両党は、それぞれの主張が受け入れられなければ…",
       "detail_level": "rss-summary"
     }
   ]
